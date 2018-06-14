@@ -13,11 +13,11 @@ sensor:
   sameid: 2190400
 ```
 **Configuration variables::**  
+  
 key | description  
 :--- | :---  
 **platform (Required)** | The platform name.  
 **sameid (Required)** | The SAME ID for your county.  
-|  
 #### Sample overview
 ![Sample overview](overview.png)
   

@@ -12,11 +12,11 @@ sensor:
   platform: weatheralerts
   sameid: 2190400
 ```
-**Configuration variables::**
-  **platform: 
-  (Required):**: 
-  **sameid: 
-  (Required):**: 
+**Configuration variables::**  
+**platform: 
+(Required):**: 
+**sameid: 
+(Required):**: 
 #### Sample overview
 ![Sample overview](overview.png)
   

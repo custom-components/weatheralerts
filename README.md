@@ -13,8 +13,8 @@ sensor:
   sameid: 2190400
 ```
 **Configuration variables::**  
-**platform (Required)**: null  
-**sameid (Required)**: null  
+**platform (Required)** | The platform name.  
+**sameid (Required)** | The SAME ID for your county.  
 #### Sample overview
 ![Sample overview](overview.png)
   

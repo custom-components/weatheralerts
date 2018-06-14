@@ -13,12 +13,8 @@ sensor:
   sameid: 2190400
 ```
 **Configuration variables::**  
-**platform**: null  
-**#**:   
-**Required:**:   
-**sameid**: null  
-**#**:   
-**Required:**:   
+**platform (Required)**: null  
+**sameid (Required)**: null  
 #### Sample overview
 ![Sample overview](overview.png)
   

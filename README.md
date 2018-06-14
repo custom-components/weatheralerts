@@ -8,9 +8,8 @@ To get started put `/custom_components/sensor/weatheralerts.py` here:
 **Example configuration.yaml:**
 ```yaml
 sensor:
-  -: 
-  platform: null
-  sameid: null
+  platform: weatheralerts
+  sameid: 2190400
 ```
 **Configuration variables:**  
   

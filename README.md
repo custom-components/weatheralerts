@@ -12,7 +12,7 @@ sensor:
   platform: weatheralerts
   sameid: 2190400
 ```
-**Configuration variables::**  
+**Configuration variables:**  
   
 key | description  
 :--- | :---  

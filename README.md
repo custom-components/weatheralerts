@@ -2,7 +2,7 @@
 ![Version](https://img.shields.io/badge/version-1.0.0-green.svg?style=for-the-badge) ![mantained](https://img.shields.io/maintenance/yes/2018.svg?style=for-the-badge)   
 A platform which allows you to get information from alerts.weather.gov. 
   
-To get started put `/custom_components/sensor/weatheralerts.py` here:
+To get started put `/custom_components/sensor/weatheralerts.py` here:  
 `<config directory>/custom_components/sensor/weatheralerts.py`  
   
 **Example configuration.yaml:**

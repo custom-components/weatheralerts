@@ -25,4 +25,4 @@ key | description
   
 To find the sameid go to [http://www.nws.noaa.gov/nwr/coverage/county_coverage.html](http://www.nws.noaa.gov/nwr/coverage/county_coverage.html).  
   
-Due to how  are importerd, it is normal to see a  error on first boot after adding this, to resolve it, restart Home-Assistant.
+Due to how `custom_componentes` are importerd, it is normal to see a `ModuleNotFoundError` error on first boot after adding this, to resolve it, restart Home-Assistant.

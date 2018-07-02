@@ -22,8 +22,6 @@ key | description
 #### Sample overview
 ![Sample overview](overview.png)
   
-[Home-Assistant demo site.](https://ha-test-weatheralerts.halfdecent.io)
-  
 To find the sameid go to [http://www.nws.noaa.gov/nwr/coverage/county_coverage.html](http://www.nws.noaa.gov/nwr/coverage/county_coverage.html).  
   
 ***

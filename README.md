@@ -10,7 +10,7 @@ To get started put `/custom_components/sensor/weatheralerts.py` here:
 ```yaml
 sensor:
   platform: weatheralerts
-  sameid: 2190400
+  sameid: '034035'
 ```
 **Configuration variables:**  
   

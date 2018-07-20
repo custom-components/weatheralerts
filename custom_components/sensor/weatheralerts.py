@@ -10,6 +10,8 @@ from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
 from homeassistant.components.switch import (PLATFORM_SCHEMA)
 
+__version_ = '0.0.3'
+
 REQUIREMENTS = ['weatheralerts']
 
 CONF_SAMEID = 'sameid'
@@ -22,7 +24,6 @@ ATTR_CATEGORY = 'category'
 ATTR_TITLE = 'title'
 ATTR_SUMMARY = 'summary'
 ATTR_LINK = 'link'
-
 
 SCAN_INTERVAL = timedelta(seconds=30)
 

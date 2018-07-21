@@ -21,9 +21,3 @@ labels:
     color: "008672"
   - name: "Stale"
     color: "930191"
-branches:
-  - name: master
-    protection:
-      required_pull_request_reviews:
-        dismiss_stale_reviews: true
-        require_code_owner_reviews: true

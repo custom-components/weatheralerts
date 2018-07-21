@@ -10,14 +10,14 @@ repository:
   allow_rebase_merge: false
 labels:
   - name: "Feature Request"
-    color: fbca04
+    color: "fbca04"
   - name: "Bug"
-    color: d73a4a
+    color: "b60205"
   - name: "Wont Fix"
-    color: ffffff
+    color: "ffffff"
   - name: "Enhancement"
     color: a2eeef
   - name: "Documentation"
-    color: 008672
+    color: "008672"
   - name: "Stale"
-    color: 930191
+    color: "930191"

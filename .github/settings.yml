@@ -32,3 +32,12 @@ branches:
         required_approving_review_count: 1
         # Dismiss approved reviews automatically when a new commit is pushed.
         dismiss_stale_reviews: false
+        # Blocks merge until code owners have reviewed.
+        require_code_owner_reviews: true
+      required_status_checks:
+        # Required. Require branches to be up to date before merging.
+        strict: true
+        # Required. The list of status checks to require in order to merge into this branch
+        contexts: [
+          "WIP"
+        ]

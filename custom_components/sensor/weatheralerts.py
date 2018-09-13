@@ -1,7 +1,7 @@
 """
 A component which allows you to get information about next departure from spesified stop.
 For more details about this component, please refer to the documentation at
-https://github.com/HalfDecent/HA-Custom_components/weatheralerts
+https://github.com/custom-components/sensor.weatheralerts
 """
 
 import voluptuous as vol

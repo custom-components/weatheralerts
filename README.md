@@ -2,8 +2,8 @@
 
 A platform which allows you to get information from alerts.weather.gov.
   
-To get started put `/custom_components/sensor/weatheralerts.py` here:  
-`<config directory>/custom_components/sensor/weatheralerts.py`  
+To get started put `/custom_components/weatheralerts/sensor.py` here:  
+`<config directory>/custom_components/weatheralerts/sensor.py`  
   
 **Example configuration.yaml:**
 

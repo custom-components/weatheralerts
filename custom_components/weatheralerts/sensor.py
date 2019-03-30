@@ -4,60 +4,53 @@ For more details about this component, please refer to the documentation at
 
 https://github.com/custom-components/sensor.weatheralerts
 """
-
-import voluptuous as vol
 from datetime import timedelta
+import voluptuous as vol
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
-from homeassistant.components.switch import (PLATFORM_SCHEMA)
+from homeassistant.components.switch import PLATFORM_SCHEMA
 
-__version_ = '0.0.3'
+VERSION = "0.1.0"
 
-REQUIREMENTS = ['weatheralerts']
+REQUIREMENTS = ["weatheralerts"]
 
-CONF_SAMEID = 'sameid'
-
-ATTR_DESTINATION = 'destination'
-ATTR_PUBLISHED = 'published'
-ATTR_URGENCY = 'urgency'
-ATTR_SEVERITY = 'severety'
-ATTR_CATEGORY = 'category'
-ATTR_TITLE = 'title'
-ATTR_SUMMARY = 'summary'
-ATTR_LINK = 'link'
+CONF_SAMEID = "sameid"
 
 SCAN_INTERVAL = timedelta(seconds=30)
 
-ICON = 'mdi:weather-hurricane'
+ICON = "mdi:weather-hurricane"
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-    vol.Required(CONF_SAMEID): cv.string,
-})
+PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({vol.Required(CONF_SAMEID): cv.string})
+
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
     sameid = str(config.get(CONF_SAMEID))
-    add_devices([WeatherAlertsSensor(sameid)])
+    add_devices([WeatherAlertsSensor(sameid)], True)
+
 
 class WeatherAlertsSensor(Entity):
     def __init__(self, sameid):
         self._sameid = sameid
-        self.update()
+        self._state = None
+        self._attr = {}
 
     def update(self):
         from weatheralerts import WeatherAlerts
-        nws = WeatherAlerts(samecodes=self._sameid)
-        self._published = nws.alerts[0].published
-        self._state = nws.alerts[0].event
-        self._urgency = nws.alerts[0].urgency
-        self._severity = nws.alerts[0].severity
-        self._category = nws.alerts[0].category
-        self._title = nws.alerts[0].title
-        self._summary = nws.alerts[0].summary
-        self._link = nws.alerts[0].link
-    
+
+        try:
+            nws = WeatherAlerts(samecodes=self._sameid)
+            last_event = nws.alerts[0]
+        except Exception:
+            last_event = {}
+        for item in last_event:
+            if item == "event":
+                self._state = last_event.get(item)
+            else:
+                self._attr[item] = last_event.get(item)
+
     @property
     def name(self):
-        return 'WeatherAlerts'
+        return "WeatherAlerts"
 
     @property
     def state(self):
@@ -69,12 +62,4 @@ class WeatherAlertsSensor(Entity):
 
     @property
     def device_state_attributes(self):
-        return {
-            ATTR_PUBLISHED: self._published,
-            ATTR_URGENCY: self._urgency,
-            ATTR_SEVERITY: self._severity,
-            ATTR_CATEGORY: self._category,
-            ATTR_TITLE: self._title,
-            ATTR_SUMMARY: self._summary,
-            ATTR_LINK: self._link,
-        }
+        return self._attr

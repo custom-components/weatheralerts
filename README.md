@@ -2,8 +2,8 @@
 
 A platform which allows you to get information from alerts.weather.gov.
   
-To get started put `/custom_components/weatheralerts/sensor.py` here:  
-`<config directory>/custom_components/weatheralerts/sensor.py`  
+To get started put all the files from `/custom_components/weatheralerts/` here:  
+`<config directory>/custom_components/weatheralerts/`  
   
 **Example configuration.yaml:**
 
@@ -26,5 +26,3 @@ key | description
   
 To find the sameid go to [http://www.nws.noaa.gov/nwr/coverage/county_coverage.html](http://www.nws.noaa.gov/nwr/coverage/county_coverage.html).  
   
-***
-Due to how `custom_components` are loaded, it is normal to see a `ModuleNotFoundError` error on first boot after adding this, to resolve it, restart Home-Assistant.

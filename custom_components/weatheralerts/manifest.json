@@ -1,0 +1,12 @@
+{
+  "domain": "weatheralerts",
+  "name": "Weatheralerts",
+  "documentation": "https://github.com/custom-components/weatheralerts",
+  "dependencies": [],
+  "codeowners": [
+    "@ludeeus"
+  ],
+  "requirements": [
+    "weatheralerts==0.5.0"
+  ]
+}

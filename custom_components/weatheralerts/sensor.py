@@ -11,10 +11,6 @@ from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
 from homeassistant.components.switch import PLATFORM_SCHEMA
 
-VERSION = "0.1.1"
-
-REQUIREMENTS = ["weatheralerts==0.5.0"]
-
 CONF_SAMEID = "sameid"
 
 SCAN_INTERVAL = timedelta(seconds=30)
@@ -26,7 +22,9 @@ _LOGGER = logging.getLogger(__name__)
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({vol.Required(CONF_SAMEID): cv.string})
 
 
-async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):  # pylint: disable=missing-docstring, unused-argument
+async def async_setup_platform(
+    hass, config, async_add_entities, discovery_info=None
+):  # pylint: disable=missing-docstring, unused-argument
     sameid = str(config.get(CONF_SAMEID))
     async_add_entities([WeatherAlertsSensor(sameid)], True)
 

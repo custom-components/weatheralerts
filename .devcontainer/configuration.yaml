@@ -4,8 +4,6 @@ logger:
   logs:
     custom_components.weatheralerts: debug
 
-
-
 sensor:
-  platform: weatheralerts
-  sameid: '034035'
+  - platform: weatheralerts
+    sameid: '008043'

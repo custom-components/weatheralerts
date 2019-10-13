@@ -10,110 +10,112 @@ import voluptuous as vol
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
 from homeassistant.components.switch import PLATFORM_SCHEMA
+from weatheralerts import WeatherAlerts
 
 CONF_SAMEID = "sameid"
 
 SCAN_INTERVAL = timedelta(seconds=30)
-
-ICON = "mdi:weather-hurricane"
 
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({vol.Required(CONF_SAMEID): cv.string})
 
 
-async def async_setup_platform(
-    hass, config, async_add_entities, discovery_info=None
+def setup_platform(
+    hass, config, add_entities, discovery_info=None
 ):  # pylint: disable=missing-docstring, unused-argument
-    sameid = str(config.get(CONF_SAMEID))
-    async_add_entities([WeatherAlertsSensor(sameid)], True)
+    add_entities([WeatherAlertsSensor(str(config.get(CONF_SAMEID)))], True)
 
 
 class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
     def __init__(self, sameid):
-        self._sameid = sameid
+        self.sameid = sameid
         self._state = None
         self._attr = {}
+        _LOGGER.info("Added sensor with sameid '%s'", sameid)
 
-    async def async_update(self):  # pylint: disable=missing-docstring
-        from weatheralerts import WeatherAlerts
+    def update(self):
+        """Run update."""
+        new = {"state": None, "attributes": {}}
 
-        current = {"state": self._state, "attributes": self._attr}
+        # Attach nws
+        try:
+            nws = WeatherAlerts(samecodes=self.sameid)
+        except Exception as exeption:  # pylint: disable=broad-except
+            nws = None
+            _LOGGER.error(exeption)
+
+        if nws is None:
+            return
+
+        # Get alerts
+        try:
+            alerts = nws.alerts
+        except Exception as exeption:  # pylint: disable=broad-except
+            alerts = None
+
+        if not isinstance(alerts, list):
+            return
+
+        # Get last event
+        try:
+            last_event = alerts[0]
+        except Exception as exeption:  # pylint: disable=broad-except
+            last_event = None
+
+        if last_event is None:
+            return
 
         try:
-            nws = None
-            last_event = None
-            try:
-                nws = WeatherAlerts(samecodes=self._sameid)
-            except Exception as error:  # pylint: disable=broad-except
-                _LOGGER.error(error)
-            if nws is None:
-                try:
-                    nws = WeatherAlerts(samecodes=self._sameid)
-                except Exception as error:  # pylint: disable=broad-except
-                    _LOGGER.error(error)
-            if nws is None:
-                try:
-                    nws = WeatherAlerts(samecodes=self._sameid)
-                except Exception as error:  # pylint: disable=broad-except
-                    _LOGGER.error(error)
-            if nws is None:
-                try:
-                    nws = WeatherAlerts(samecodes=self._sameid)
-                except Exception as error:  # pylint: disable=broad-except
-                    _LOGGER.error(error)
-            if nws is None:
-                try:
-                    nws = WeatherAlerts(samecodes=self._sameid)
-                except Exception as error:  # pylint: disable=broad-except
-                    _LOGGER.error(error)
-            last_event = nws.alerts[0]
-            if last_event is not None:
-                try:
-                    self._state = last_event.event
-                except Exception as error:  # pylint: disable=broad-except
-                    _LOGGER.error(error)
-                try:
-                    self._attr["published"] = last_event.published
-                except Exception as error:  # pylint: disable=broad-except
-                    _LOGGER.error(error)
-                try:
-                    self._attr["urgency"] = last_event.urgency
-                except Exception as error:  # pylint: disable=broad-except
-                    _LOGGER.error(error)
-                try:
-                    self._attr["category"] = last_event.category
-                except Exception as error:  # pylint: disable=broad-except
-                    _LOGGER.error(error)
-                try:
-                    self._attr["title"] = last_event.title
-                except Exception as error:  # pylint: disable=broad-except
-                    _LOGGER.error(error)
-                try:
-                    self._attr["summary"] = last_event.summary
-                except Exception as error:  # pylint: disable=broad-except
-                    _LOGGER.error(error)
-                try:
-                    self._attr["link"] = last_event.link
-                except Exception as error:  # pylint: disable=broad-except
-                    _LOGGER.error(error)
-        except Exception as error:  # pylint: disable=broad-except
-            _LOGGER.error(error)
-            self._state = current.get("state")
-            self._attr = current.get("attributes")
+            new["state"] = last_event.event
+        except Exception as exeption:  # pylint: disable=broad-except
+            _LOGGER.debug(exeption)
+        try:
+            new["attributes"]["published"] = last_event.published
+        except Exception as exeption:  # pylint: disable=broad-except
+            _LOGGER.debug(exeption)
+        try:
+            new["attributes"]["urgency"] = last_event.urgency
+        except Exception as exeption:  # pylint: disable=broad-except
+            _LOGGER.debug(exeption)
+        try:
+            new["attributes"]["category"] = last_event.category
+        except Exception as exeption:  # pylint: disable=broad-except
+            _LOGGER.debug(exeption)
+        try:
+            new["attributes"]["title"] = last_event.title
+        except Exception as exeption:  # pylint: disable=broad-except
+            _LOGGER.debug(exeption)
+        try:
+            new["attributes"]["summary"] = last_event.summary
+        except Exception as exeption:  # pylint: disable=broad-except
+            _LOGGER.debug(exeption)
+        try:
+            new["attributes"]["link"] = last_event.link
+        except Exception as exeption:  # pylint: disable=broad-except
+            _LOGGER.debug(exeption)
+
+        self._state = new.get("state")
+        self._attr = new.get("attributes", {})
 
     @property
-    def name(self):  # pylint: disable=missing-docstring
+    def name(self):
+        """Return the name."""
         return "WeatherAlerts"
 
     @property
-    def state(self):  # pylint: disable=missing-docstring
+    def state(self):
+        """Return the state."""
+        if self._state is None:
+            return "No alerts"
         return self._state
 
     @property
-    def icon(self):  # pylint: disable=missing-docstring
-        return ICON
+    def icon(self):
+        """Return icon."""
+        return "mdi:weather-hurricane"
 
     @property
-    def device_state_attributes(self):  # pylint: disable=missing-docstring
+    def device_state_attributes(self):
+        """Return attributes."""
         return self._attr

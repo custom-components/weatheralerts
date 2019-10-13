@@ -2,45 +2,27 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Start Home Assistant",
+            "label": "Run Home Assistant on port 9123",
             "type": "shell",
-            "command": "bash .devcontainer/custom_component_helper",
-            "group": {
-                "kind": "test",
-                "isDefault": true,
-            },
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
-            },
+            "command": "dc start",
             "problemMatcher": []
         },
         {
-            "label": "Pytest",
+            "label": "Run Home Assistant configuration against /config",
             "type": "shell",
-            "command": "pip3 install -r requirements.txt && pytest",
-            "group": {
-                "kind": "test",
-                "isDefault": true,
-            },
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
-            },
+            "command": "dc check",
             "problemMatcher": []
         },
         {
-            "label": "Upgrade Home Assistant",
+            "label": "Upgrade Home Assistant to latest dev",
             "type": "shell",
-            "command": "python -m pip install --upgrade git+git://github.com/home-assistant/home-assistant.git@dev",
-            "group": {
-                "kind": "test",
-                "isDefault": true,
-            },
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
-            },
+            "command": "dc start",
+            "problemMatcher": []
+        },
+        {
+            "label": "Install a spesific version of Home Assistant",
+            "type": "shell",
+            "command": "dc set-version",
             "problemMatcher": []
         }
     ]

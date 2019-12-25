@@ -17,7 +17,8 @@ To get started put all the files from `/custom_components/weatheralerts/` here:
 ```yaml
 sensor:
   platform: weatheralerts
-  sameid: '034035'
+  state: CA
+  zone: 560
 ```
 
 **Configuration variables:**

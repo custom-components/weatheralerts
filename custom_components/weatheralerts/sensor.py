@@ -38,7 +38,7 @@ async def async_setup_platform(
 
     # Check the zoneid
     try:
-        async with async_timeout.timeout(5, loop=hass.loop):
+        async with async_timeout.timeout(10, loop=hass.loop):
             response = await session.get(URL.format(zoneid))
             data = await response.json()
 
@@ -71,7 +71,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
         alerts = []
 
         try:
-            async with async_timeout.timeout(5, loop=self.hass.loop):
+            async with async_timeout.timeout(10, loop=self.hass.loop):
                 response = await self.session.get(URL.format(self.zoneid))
                 data = await response.json()
 
@@ -90,13 +90,15 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                                     "response": properties["response"],
                                     "sent": properties["sent"],
                                     "severity": properties["severity"],
-                                    "title": properties["headline"],
+                                    "title": properties["headline"].split(" issued ")[
+                                        0
+                                    ],
                                     "urgency": properties["urgency"],
                                 }
                             )
 
             self._state = len(alerts)
-            self._attr = {"alerts": alerts}
+            self._attr = {"alerts": alerts, "integration": "weatheralerts"}
         except Exception as exception:  # pylint: disable=broad-except
             _LOGGER.error(exception)
 

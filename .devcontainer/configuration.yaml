@@ -8,3 +8,7 @@ sensor:
   - platform: weatheralerts
     state: CA
     zone: 560
+
+  - platform: weatheralerts
+    state: LA
+    zone: 72

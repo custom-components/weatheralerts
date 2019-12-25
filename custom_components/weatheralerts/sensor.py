@@ -33,14 +33,34 @@ HEADERS = {
 async def async_setup_platform(
     hass, config, add_entities, discovery_info=None
 ):  # pylint: disable=missing-docstring, unused-argument
-    zoneid = f"{config[CONF_STATE]}Z{config[CONF_ZONE]}"
+    zoneid = f"{config[CONF_STATE]}Z{config[CONF_ZONE] if len(config[CONF_ZONE]) == 3 else str(0) + str(config[CONF_ZONE])}"
     session = async_create_clientsession(hass)
-    add_entities([WeatherAlertsSensor(zoneid, session)], True)
+
+    # Check the zoneid
+    try:
+        async with async_timeout.timeout(5, loop=hass.loop):
+            response = await session.get(URL.format(zoneid))
+            data = await response.json()
+
+            if "status" in data:
+                if data["status"] == 404:
+                    _LOGGER.critical("Compiled zone ID '%s' is not valid", zoneid)
+                    return False
+
+            _LOGGER.debug(data)
+            name = data["title"].split("advisories for ")[1].split(" (")[0]
+
+    except Exception as exception:  # pylint: disable=broad-except
+        _LOGGER.error(exception)
+        return False
+
+    add_entities([WeatherAlertsSensor(name, zoneid, session)], True)
     _LOGGER.info("Added sensor with zoneid '%s'", zoneid)
 
 
 class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
-    def __init__(self, zoneid, session):
+    def __init__(self, name, zoneid, session):
+        self._name = name
         self.zoneid = zoneid
         self.session = session
         self._state = 0
@@ -54,8 +74,6 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
             async with async_timeout.timeout(5, loop=self.hass.loop):
                 response = await self.session.get(URL.format(self.zoneid))
                 data = await response.json()
-
-                _LOGGER.debug(data)
 
                 if data.get("features") is not None:
                     for alert in data["features"]:
@@ -85,7 +103,12 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
     @property
     def name(self):
         """Return the name."""
-        return "WeatherAlerts"
+        return self._name
+
+    @property
+    def unique_id(self):
+        """Return a unique ID to use for this binary_sensor."""
+        return f"weatheralerts_{self.zoneid}"
 
     @property
     def state(self):

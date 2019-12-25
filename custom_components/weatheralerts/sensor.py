@@ -4,99 +4,83 @@ For more details about this component, please refer to the documentation at
 
 https://github.com/custom-components/sensor.weatheralerts
 """
-from datetime import timedelta
 import logging
+import async_timeout
 import voluptuous as vol
+
+from homeassistant.components.switch import PLATFORM_SCHEMA
+from homeassistant.const import __version__
+from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
-from homeassistant.components.switch import PLATFORM_SCHEMA
-from weatheralerts import WeatherAlerts
 
-CONF_SAMEID = "sameid"
-
-SCAN_INTERVAL = timedelta(seconds=30)
+CONF_STATE = "state"
+CONF_ZONE = "zone"
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({vol.Required(CONF_SAMEID): cv.string})
+PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
+    {vol.Required(CONF_STATE): cv.string, vol.Required(CONF_ZONE): cv.string}
+)
+
+URL = "https://api.weather.gov/alerts/active/zone/{}"
+HEADERS = {
+    "accept": "application/ld+json",
+    "user-agent": f"HomeAssistant/{__version__}",
+}
 
 
-def setup_platform(
+async def async_setup_platform(
     hass, config, add_entities, discovery_info=None
 ):  # pylint: disable=missing-docstring, unused-argument
-    add_entities([WeatherAlertsSensor(str(config.get(CONF_SAMEID)))], True)
+    zoneid = f"{config[CONF_STATE]}Z{config[CONF_ZONE]}"
+    session = async_create_clientsession(hass)
+    add_entities([WeatherAlertsSensor(zoneid, session)], True)
+    _LOGGER.info("Added sensor with zoneid '%s'", zoneid)
 
 
 class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
-    def __init__(self, sameid):
-        self.sameid = sameid
-        self._state = None
+    def __init__(self, zoneid, session):
+        self.zoneid = zoneid
+        self.session = session
+        self._state = 0
         self._attr = {}
-        _LOGGER.info("Added sensor with sameid '%s'", sameid)
 
-    def update(self):
+    async def async_update(self):
         """Run update."""
-        new = {"state": None, "attributes": {}}
-
-        # Attach nws
-        try:
-            nws = WeatherAlerts(samecodes=self.sameid)
-        except Exception as exeption:  # pylint: disable=broad-except
-            nws = None
-            _LOGGER.error(exeption)
-
-        if nws is None:
-            return
-
-        # Get alerts
-        try:
-            alerts = nws.alerts
-        except Exception as exeption:  # pylint: disable=broad-except
-            alerts = None
-
-        if not isinstance(alerts, list):
-            return
-
-        # Get last event
-        try:
-            last_event = alerts[0]
-        except Exception as exeption:  # pylint: disable=broad-except
-            last_event = None
-
-        if last_event is None:
-            return
+        alerts = []
 
         try:
-            new["state"] = last_event.event
-        except Exception as exeption:  # pylint: disable=broad-except
-            _LOGGER.debug(exeption)
-        try:
-            new["attributes"]["published"] = last_event.published
-        except Exception as exeption:  # pylint: disable=broad-except
-            _LOGGER.debug(exeption)
-        try:
-            new["attributes"]["urgency"] = last_event.urgency
-        except Exception as exeption:  # pylint: disable=broad-except
-            _LOGGER.debug(exeption)
-        try:
-            new["attributes"]["category"] = last_event.category
-        except Exception as exeption:  # pylint: disable=broad-except
-            _LOGGER.debug(exeption)
-        try:
-            new["attributes"]["title"] = last_event.title
-        except Exception as exeption:  # pylint: disable=broad-except
-            _LOGGER.debug(exeption)
-        try:
-            new["attributes"]["summary"] = last_event.summary
-        except Exception as exeption:  # pylint: disable=broad-except
-            _LOGGER.debug(exeption)
-        try:
-            new["attributes"]["link"] = last_event.link
-        except Exception as exeption:  # pylint: disable=broad-except
-            _LOGGER.debug(exeption)
+            async with async_timeout.timeout(5, loop=self.hass.loop):
+                response = await self.session.get(URL.format(self.zoneid))
+                data = await response.json()
 
-        self._state = new.get("state")
-        self._attr = new.get("attributes", {})
+                _LOGGER.debug(data)
+
+                if data.get("features") is not None:
+                    for alert in data["features"]:
+                        if alert.get("properties") is not None:
+                            properties = alert["properties"]
+                            alerts.append(
+                                {
+                                    "area": properties["areaDesc"],
+                                    "certainty": properties["certainty"],
+                                    "description": properties["description"],
+                                    "ends": properties["ends"],
+                                    "event": properties["event"],
+                                    "instruction": properties["instruction"],
+                                    "response": properties["response"],
+                                    "sent": properties["sent"],
+                                    "severity": properties["severity"],
+                                    "title": properties["headline"],
+                                    "urgency": properties["urgency"],
+                                }
+                            )
+
+            self._state = len(alerts)
+            self._attr = {"alerts": alerts}
+        except Exception as exception:  # pylint: disable=broad-except
+            _LOGGER.error(exception)
 
     @property
     def name(self):
@@ -106,9 +90,12 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
     @property
     def state(self):
         """Return the state."""
-        if self._state is None:
-            return "No alerts"
         return self._state
+
+    @property
+    def unit_of_measurement(self):
+        """Return the unit_of_measurement."""
+        return "Alerts"
 
     @property
     def icon(self):

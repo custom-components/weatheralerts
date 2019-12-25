@@ -6,7 +6,5 @@
   "codeowners": [
     "@ludeeus"
   ],
-  "requirements": [
-    "weatheralerts==0.5.0"
-  ]
+  "requirements": []
 }

@@ -6,4 +6,5 @@ logger:
 
 sensor:
   - platform: weatheralerts
-    sameid: '008043'
+    state: CA
+    zone: 560

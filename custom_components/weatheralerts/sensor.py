@@ -33,7 +33,15 @@ HEADERS = {
 async def async_setup_platform(
     hass, config, add_entities, discovery_info=None
 ):  # pylint: disable=missing-docstring, unused-argument
-    zoneid = f"{config[CONF_STATE]}Z{config[CONF_ZONE] if len(config[CONF_ZONE]) == 3 else str(0) + str(config[CONF_ZONE])}"
+    state = config[CONF_STATE]
+    zone = config[CONF_ZONE]
+
+    if len(zone) == 1:
+        zone = f"00{zone}"
+    if len(zone) == 2:
+        zone = f"0{zone}"
+
+    zoneid = f"{state}Z{zone}"
     session = async_create_clientsession(hass)
 
     # Check the zoneid
@@ -98,7 +106,12 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                             )
 
             self._state = len(alerts)
-            self._attr = {"alerts": alerts, "integration": "weatheralerts"}
+            self._attr = {
+                "alerts": alerts,
+                "integration": "weatheralerts",
+                "state": self.zoneid.split("Z")[0],
+                "zone": self.zoneid.split("Z")[1],
+            }
         except Exception as exception:  # pylint: disable=broad-except
             _LOGGER.error(exception)
 

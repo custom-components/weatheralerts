@@ -18,8 +18,10 @@ To get started put all the files from `/custom_components/weatheralerts/` here:
 sensor:
   platform: weatheralerts
   state: CA
-  zone: 560
+  zone: "560"
 ```
+
+**If your zone starts with the number `0` you need to wrap quotes around it, or just skip the first `0` (so `010`, should be `"010"` or `10`)**
 
 **Configuration variables:**
 

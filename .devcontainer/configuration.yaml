@@ -6,9 +6,13 @@ logger:
 
 sensor:
   - platform: weatheralerts
-    state: CA
-    zone: 560
-
-  - platform: weatheralerts
-    state: LA
-    zone: 72
+    state: NJ
+    zone: 10
+#
+#  - platform: weatheralerts
+#    state: NJ
+#    zone: 10
+#
+#  - platform: weatheralerts
+#    state: NJ
+#    zone: 1

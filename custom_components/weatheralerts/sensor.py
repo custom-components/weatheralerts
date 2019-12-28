@@ -4,6 +4,7 @@ For more details about this component, please refer to the documentation at
 
 https://github.com/custom-components/sensor.weatheralerts
 """
+import sys
 import logging
 import async_timeout
 import voluptuous as vol
@@ -24,6 +25,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 )
 
 URL = "https://api.weather.gov/alerts/active/zone/{}"
+
 HEADERS = {
     "accept": "application/ld+json",
     "user-agent": f"HomeAssistant/{__version__}",
@@ -72,6 +74,8 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
         self.zoneid = zoneid
         self.session = session
         self._state = 0
+        self.connected = True
+        self.exception = None
         self._attr = {}
 
     async def async_update(self):
@@ -112,8 +116,30 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                 "state": self.zoneid.split("Z")[0],
                 "zone": self.zoneid.split("Z")[1],
             }
-        except Exception as exception:  # pylint: disable=broad-except
-            _LOGGER.error(exception)
+        except Exception:  # pylint: disable=broad-except
+            self.exception = sys.exc_info()[0].__name__
+            connected = False
+        else:
+            connected = True
+        finally:
+            # Handle connection messages here.
+            if self.connected:
+                if not connected:
+                    _LOGGER.error(
+                        "[%s] Could not update the sensor (%s)",
+                        self.zoneid,
+                        self.exception,
+                    )
+
+            elif not self.connected:
+                if connected:
+                    _LOGGER.info("[%s] Update of the sensor completed", self.zoneid)
+                else:
+                    _LOGGER.debug(
+                        "[%s] Still no update (%s)", self.zoneid, self.exception
+                    )
+
+            self.connected = connected
 
     @property
     def name(self):

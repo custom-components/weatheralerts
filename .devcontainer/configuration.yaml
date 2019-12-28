@@ -7,12 +7,12 @@ logger:
 sensor:
   - platform: weatheralerts
     state: NJ
-    zone: 10
-#
-#  - platform: weatheralerts
-#    state: NJ
-#    zone: 10
-#
-#  - platform: weatheralerts
-#    state: NJ
-#    zone: 1
+    zone: 010
+
+  - platform: weatheralerts
+    state: NJ
+    zone: 11
+
+  - platform: weatheralerts
+    state: NJ
+    zone: 1

@@ -61,7 +61,7 @@ async def async_setup_platform(
             name = data["title"].split("advisories for ")[1].split(" (")[0]
 
     except Exception as exception:  # pylint: disable=broad-except
-        _LOGGER.error(exception)
+        _LOGGER.error("[%s] %s", sys.exc_info()[0].__name__, exception)
         return False
 
     add_entities([WeatherAlertsSensor(name, zoneid, session)], True)

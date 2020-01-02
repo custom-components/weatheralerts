@@ -5,14 +5,18 @@ logger:
     custom_components.weatheralerts: debug
 
 sensor:
-  - platform: weatheralerts
-    state: NJ
-    zone: 010
+#  - platform: weatheralerts
+#    state: NJ
+#    zone: 010
+#
+#  - platform: weatheralerts
+#    state: NJ
+#    zone: 11
+#
+#  - platform: weatheralerts
+#    state: NJ
+#    zone: 1
 
   - platform: weatheralerts
-    state: NJ
-    zone: 11
-
-  - platform: weatheralerts
-    state: NJ
-    zone: 1
+    state: LA
+    zone: 62

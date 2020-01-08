@@ -24,7 +24,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {vol.Required(CONF_STATE): cv.string, vol.Required(CONF_ZONE): cv.string}
 )
 
-URL = "https://api.weather.gov/alerts/active/zone/{}"
+URL = "https://api.weather.gov/alerts/active?zone={}"
 
 HEADERS = {
     "accept": "application/ld+json",
@@ -40,10 +40,16 @@ async def async_setup_platform(
 
     if len(zone) == 1:
         zone = f"00{zone}"
-    if len(zone) == 2:
+    elif len(zone) == 2:
         zone = f"0{zone}"
-
-    zoneid = f"{state}Z{zone}"
+    elif len(zone) == 3:
+        zoneid = f"{state}Z{zone}"
+    elif len(zone) >= 6:
+        zoneid = f"{zone}"
+    else:
+        _LOGGER.critical("Configured (YAML) zone '%s' is not valid", zone)
+        return False
+    
     session = async_create_clientsession(hass)
 
     # Check the zoneid
@@ -58,19 +64,25 @@ async def async_setup_platform(
                     return False
 
             _LOGGER.debug(data)
-            name = data["title"].split("advisories for ")[1].split(" (")[0]
 
     except Exception as exception:  # pylint: disable=broad-except
         _LOGGER.error("[%s] %s", sys.exc_info()[0].__name__, exception)
         return False
 
-    add_entities([WeatherAlertsSensor(name, zoneid, session)], True)
+    if len(zone) <= 6:
+        name = data["title"].split("advisories for ")[1].split(" (")[0]
+    if len(zone) > 6:
+        name = f"weatheralerts_{zoneid}"
+        name = name.replace(",", "_")
+
+    add_entities([WeatherAlertsSensor(name, state, zoneid, session)], True)
     _LOGGER.info("Added sensor with zoneid '%s'", zoneid)
 
 
 class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
-    def __init__(self, name, zoneid, session):
+    def __init__(self, name, zone_state, zoneid, session):
         self._name = name
+        self.zone_state = zone_state
         self.zoneid = zoneid
         self.session = session
         self._state = 0
@@ -113,8 +125,8 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
             self._attr = {
                 "alerts": alerts,
                 "integration": "weatheralerts",
-                "state": self.zoneid.split("Z")[0],
-                "zone": self.zoneid.split("Z")[1],
+                "state": self.zone_state,
+                "zone": self.zoneid,
             }
         except Exception:  # pylint: disable=broad-except
             self.exception = sys.exc_info()[0].__name__
@@ -149,7 +161,11 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
     @property
     def unique_id(self):
         """Return a unique ID to use for this binary_sensor."""
-        return f"weatheralerts_{self.zoneid}"
+        if len(self.zoneid) > 6:
+            uniqueid = self.zoneid.replace(",", "_")
+        else:
+            uniqueid = self.zoneid
+        return f"weatheralerts_{uniqueid}"
 
     @property
     def state(self):

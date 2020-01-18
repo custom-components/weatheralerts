@@ -42,7 +42,8 @@ async def async_setup_platform(
         zone = f"00{zone}"
     elif len(zone) == 2:
         zone = f"0{zone}"
-    elif len(zone) == 3:
+
+    if len(zone) == 3:
         zoneid = f"{state}Z{zone}"
     elif len(zone) >= 6:
         zoneid = f"{zone}"
@@ -114,10 +115,15 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                                     "response": properties["response"],
                                     "sent": properties["sent"],
                                     "severity": properties["severity"],
-                                    "title": properties["headline"].split(" issued ")[
-                                        0
-                                    ],
+                                    "title": properties["headline"].split(" by ")[0],
                                     "urgency": properties["urgency"],
+                                    "NWSheadline": properties["parameters"]["NWSheadline"],
+                                    "effective": properties["effective"],
+                                    "expires": properties["expires"],
+                                    "onset": properties["onset"],
+                                    "status": properties["status"],
+                                    "messageType": properties["messageType"],
+                                    "category": properties["category"],
                                 }
                             )
 

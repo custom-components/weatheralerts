@@ -1,5 +1,5 @@
 """
-A component which allows you to get information about next departure from spesified stop.
+A component which allows you to get weather alerts from weather.gov.
 For more details about this component, please refer to the documentation at
 
 https://github.com/custom-components/sensor.weatheralerts
@@ -40,7 +40,7 @@ async def async_setup_platform(
 
     if len(zone) == 1:
         zone = f"00{zone}"
-    elif len(zone) == 2:
+    if len(zone) == 2:
         zone = f"0{zone}"
 
     if len(zone) == 3:
@@ -71,13 +71,14 @@ async def async_setup_platform(
         return False
 
     if len(zone) <= 6:
-        name = data["title"].split("advisories for ")[1].split(" (")[0]
-    if len(zone) > 6:
-        name = f"weatheralerts_{zoneid}"
-        name = name.replace(",", "_")
+        county = data["title"].split("advisories for ")[1].split(" (")[0]
+        name = f"Weather Alerts: {county}"
+    else:
+        name = f"Weather Alerts: {zoneid}"
+        name = name.replace(",", "-")
 
     add_entities([WeatherAlertsSensor(name, state, zoneid, session)], True)
-    _LOGGER.info("Added sensor with zoneid '%s'", zoneid)
+    _LOGGER.info("Added sensor with friendly_name '%s' for zoneid '%s'", name, zoneid)
 
 
 class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
@@ -166,11 +167,8 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
 
     @property
     def unique_id(self):
-        """Return a unique ID to use for this binary_sensor."""
-        if len(self.zoneid) > 6:
-            uniqueid = self.zoneid.replace(",", "_")
-        else:
-            uniqueid = self.zoneid
+        """Return a unique ID to use for this sensor."""
+        uniqueid = self.zoneid.replace(",", "_")
         return f"weatheralerts_{uniqueid}"
 
     @property

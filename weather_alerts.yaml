@@ -1,0 +1,956 @@
+################################################################################
+#
+#    weather_alerts.yaml
+#
+#    weather alerts from weather.gov
+#
+################################################################################
+
+
+
+
+################################################################################
+## sensor ##
+
+sensor:
+  - platform: weatheralerts
+    state: WI
+    zone: "WIC087"
+
+  - platform: template
+    sensors: 
+      weatheralerts_alert_1:
+        friendly_name: Weather Alert 1
+        entity_id: sensor.weatheralerts_1
+        icon_template: mdi:alert
+        value_template: >- 
+          {% if states('sensor.weatheralerts_1')|int > 0 %}
+          on
+          {% else %}
+          off
+          {% endif %}
+        attribute_templates:
+          alert_event: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].event }}
+          alert_area: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].area }}
+          alert_NWSheadline: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
+          alert_description: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].description  }}
+          alert_messageType: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].messageType }}
+          alert_status: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].status }}
+          alert_category: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].category }}
+          alert_urgency: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].urgency }}
+          alert_severity: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].severity }}
+          alert_certainty: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].certainty }}
+          alert_response: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].response }}
+          alert_instruction: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction }}
+          alert_sent: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].sent }}
+          alert_effective: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].effective }}
+          alert_onset: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].onset }}
+          alert_expires: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].expires }}
+          alert_title: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}
+          display_title: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}################################################################################
+#
+#    weather_alerts.yaml
+#
+#    weather alerts from weather.gov
+#
+################################################################################
+
+
+
+
+################################################################################
+## sensor ##
+
+sensor:
+  - platform: weatheralerts
+    state: WI
+    zone: "WIC087"
+
+  - platform: template
+    sensors: 
+      weatheralerts_alert_1:
+        friendly_name: Weather Alert 1
+        entity_id: sensor.weatheralerts_1
+        icon_template: mdi:alert
+        value_template: >- 
+          {% if states('sensor.weatheralerts_1')|int > 0 %}
+          on
+          {% else %}
+          off
+          {% endif %}
+        attribute_templates:
+          alert_event: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].event }}
+          alert_area: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].area }}
+          alert_NWSheadline: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
+          alert_description: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].description  }}
+          alert_messageType: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].messageType }}
+          alert_status: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].status }}
+          alert_category: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].category }}
+          alert_urgency: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].urgency }}
+          alert_severity: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].severity }}
+          alert_certainty: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].certainty }}
+          alert_response: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].response }}
+          alert_instruction: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction }}
+          alert_sent: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].sent }}
+          alert_effective: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].effective }}
+          alert_onset: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].onset }}
+          alert_expires: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].expires }}
+          alert_title: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}
+          display_title: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}
+          display_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].description  }}<br>
+            {% if states.sensor.weatheralerts_1.attributes.alerts[0].instruction != None %}
+            <br>{{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction }}<br>
+            {% endif %}
+            <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[0].effective }}
+            {%- if states.sensor.weatheralerts_1.attributes.alerts[0].ends != None %}
+            <br>Ends: {{ states.sensor.weatheralerts_1.attributes.alerts[0].ends }}
+            {%- endif %}
+            <br>Expires: {{ states.sensor.weatheralerts_1.attributes.alerts[0].expires }}
+          spoken_title: >
+            Attention!!! Weather alert for a{{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+          spoken_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].description }}
+            {% if states.sensor.weatheralerts_1.attributes.alerts[0].instruction != None %}
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction }}
+            {% endif %}
+      weatheralerts_alert_2:
+        friendly_name: Weather Alert 2
+        entity_id: sensor.weatheralerts_1
+        icon_template: mdi:alert
+        value_template: >- 
+          {% if states('sensor.weatheralerts_1')|int > 1 %}
+          on
+          {% else %}
+          off
+          {% endif %}
+        attribute_templates:
+          alert_event: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].event }}
+          alert_area: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].area }}
+          alert_NWSheadline: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
+          alert_description: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].description  }}
+          alert_messageType: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].messageType }}
+          alert_status: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].status }}
+          alert_category: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].category }}
+          alert_urgency: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].urgency }}
+          alert_severity: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].severity }}
+          alert_certainty: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].certainty }}
+          alert_response: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].response }}
+          alert_instruction: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].instruction }}
+          alert_sent: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].sent }}
+          alert_effective: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].effective }}
+          alert_onset: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].onset }}
+          alert_expires: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].expires }}
+          alert_title: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].title }}
+          display_title: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].title }}
+          display_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].description  }}<br>
+            {% if states.sensor.weatheralerts_1.attributes.alerts[1].instruction != None %}
+            <br>{{ states.sensor.weatheralerts_1.attributes.alerts[1].instruction }}<br>
+            {% endif %}
+            <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[1].effective }}
+            {%- if states.sensor.weatheralerts_1.attributes.alerts[1].ends != None %}
+            <br>Ends: {{ states.sensor.weatheralerts_1.attributes.alerts[1].ends }}
+            {%- endif %}
+            <br>Alert Expires: {{ states.sensor.weatheralerts_1.attributes.alerts[1].expires }}
+          spoken_title: >
+            Attention!!! Weather alert for a {{ states.sensor.weatheralerts_1.attributes.alerts[1].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+          spoken_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].description  }}
+            {% if states.sensor.weatheralerts_1.attributes.alerts[1].instruction != None %}
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].instruction }}
+            {% endif %}
+      weatheralerts_alert_3:
+        friendly_name: Weather Alert 3
+        entity_id: sensor.weatheralerts_1
+        icon_template: mdi:alert
+        value_template: >- 
+          {% if states('sensor.weatheralerts_1')|int > 2 %}
+          on
+          {% else %}
+          off
+          {% endif %}
+        attribute_templates:
+          alert_event: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].event }}
+          alert_area: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].area }}
+          alert_NWSheadline: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
+          alert_description: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].description  }}
+          alert_messageType: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].messageType }}
+          alert_status: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].status }}
+          alert_category: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].category }}
+          alert_urgency: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].urgency }}
+          alert_severity: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].severity }}
+          alert_certainty: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].certainty }}
+          alert_response: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].response }}
+          alert_instruction: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].instruction }}
+          alert_sent: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].sent }}
+          alert_effective: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].effective }}
+          alert_onset: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].onset }}
+          alert_expires: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].expires }}
+          alert_title: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].title }}
+          display_title: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].title }}
+          display_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].description  }}<br>
+            {% if states.sensor.weatheralerts_1.attributes.alerts[2].instruction != None %}
+            <br>{{ states.sensor.weatheralerts_1.attributes.alerts[2].instruction }}<br>
+            {% endif %}
+            <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[2].effective }}
+            {%- if states.sensor.weatheralerts_1.attributes.alerts[2].ends != None %}
+            <br>Ends: {{ states.sensor.weatheralerts_1.attributes.alerts[2].ends }}
+            {%- endif %}
+            <br>Expires: {{ states.sensor.weatheralerts_1.attributes.alerts[2].expires }}
+          spoken_title: >
+            Attention!!! Weather alert for a {{ states.sensor.weatheralerts_1.attributes.alerts[2].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+          spoken_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].description  }}
+            {% if states.sensor.weatheralerts_1.attributes.alerts[2].instruction != None %}
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].instruction }}
+            {% endif %}
+      weatheralerts_alert_4:
+        friendly_name: Weather Alert 4
+        entity_id: sensor.weatheralerts_1
+        icon_template: mdi:alert
+        value_template: >- 
+          {% if states('sensor.weatheralerts_1')|int > 3 %}
+          on
+          {% else %}
+          off
+          {% endif %}
+        attribute_templates:
+          alert_event: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].event }}
+          alert_area: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].area }}
+          alert_NWSheadline: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
+          alert_description: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].description  }}
+          alert_messageType: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].messageType }}
+          alert_status: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].status }}
+          alert_category: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].category }}
+          alert_urgency: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].urgency }}
+          alert_severity: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].severity }}
+          alert_certainty: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].certainty }}
+          alert_response: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].response }}
+          alert_instruction: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].instruction }}
+          alert_sent: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].sent }}
+          alert_effective: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].effective }}
+          alert_onset: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].onset }}
+          alert_expires: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].expires }}
+          alert_title: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].title }}
+          display_title: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].title }}
+          display_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].description  }}<br>
+            {% if states.sensor.weatheralerts_1.attributes.alerts[3].instruction != None %}
+            <br>{{ states.sensor.weatheralerts_1.attributes.alerts[3].instruction }}<br>
+            {% endif %}
+            <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[3].effective }}
+            {%- if states.sensor.weatheralerts_1.attributes.alerts[3].ends != None %}
+            <br>Ends: {{ states.sensor.weatheralerts_1.attributes.alerts[3].ends }}
+            {%- endif %}
+            <br>Expires: {{ states.sensor.weatheralerts_1.attributes.alerts[3].expires }}
+          spoken_title: >
+            Attention!!! Weather alert for a {{ states.sensor.weatheralerts_1.attributes.alerts[3].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+          spoken_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].description  }}
+            {% if states.sensor.weatheralerts_1.attributes.alerts[3].instruction != None %}
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].instruction }}
+            {% endif %}
+      weatheralerts_alert_5:
+        friendly_name: Weather Alert 5
+        entity_id: sensor.weatheralerts_1
+        icon_template: mdi:alert
+        value_template: >- 
+          {% if states('sensor.weatheralerts_1')|int > 4 %}
+          on
+          {% else %}
+          off
+          {% endif %}
+        attribute_templates:
+          alert_event: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].event }}
+          alert_area: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].area }}
+          alert_NWSheadline: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
+          alert_description: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].description  }}
+          alert_messageType: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].messageType }}
+          alert_status: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].status }}
+          alert_category: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].category }}
+          alert_urgency: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].urgency }}
+          alert_severity: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].severity }}
+          alert_certainty: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].certainty }}
+          alert_response: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].response }}
+          alert_instruction: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].instruction }}
+          alert_sent: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].sent }}
+          alert_effective: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].effective }}
+          alert_onset: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].onset }}
+          alert_expires: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].expires }}
+          alert_title: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].title }}
+          display_title: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].title }}
+          display_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].description  }}<br>
+            {% if states.sensor.weatheralerts_1.attributes.alerts[4].instruction != None %}
+            <br>{{ states.sensor.weatheralerts_1.attributes.alerts[4].instruction }}<br>
+            {% endif %}
+            <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[4].effective }}
+            {%- if states.sensor.weatheralerts_1.attributes.alerts[4].ends != None %}
+            <br>Ends: {{ states.sensor.weatheralerts_1.attributes.alerts[4].ends }}
+            {%- endif %}
+            <br>Expires: {{ states.sensor.weatheralerts_1.attributes.alerts[4].expires }}
+          spoken_title: >
+            Attention!!! Weather alert for a {{ states.sensor.weatheralerts_1.attributes.alerts[4].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+          spoken_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].description  }}
+            {% if states.sensor.weatheralerts_1.attributes.alerts[4].instruction != None %}
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].instruction }}
+            {% endif %}
+
+      weatheralerts_alert_1_last_changed:
+        entity_id: sensor.weatheralerts_alert_1
+        value_template: >-
+          {% if states('sensor.weatheralerts_alert_1') == "on" %}
+            {{ states.sensor.weatheralerts_alert_1.last_updated }}
+          {% else %}
+            None
+          {% endif %}
+      weatheralerts_alert_2_last_changed:
+        entity_id: sensor.weatheralerts_alert_2
+        value_template: >-
+          {% if states('sensor.weatheralerts_alert_2') == "on" %}
+            {{ states.sensor.weatheralerts_alert_2.last_updated }}
+          {% else %}
+            None
+          {% endif %}
+      weatheralerts_alert_3_last_changed:
+        entity_id: sensor.weatheralerts_alert_3
+        value_template: >-
+          {% if states('sensor.weatheralerts_alert_3') == "on" %}
+            {{ states.sensor.weatheralerts_alert_3.last_updated }}
+          {% else %}
+            None
+          {% endif %}
+      weatheralerts_alert_4_last_changed:
+        entity_id: sensor.weatheralerts_alert_4
+        value_template: >-
+          {% if states('sensor.weatheralerts_alert_4') == "on" %}
+            {{ states.sensor.weatheralerts_alert_4.last_updated }}
+          {% else %}
+            None
+          {% endif %}
+      weatheralerts_alert_5_last_changed:
+        entity_id: sensor.weatheralerts_alert_5
+        value_template: >-
+          {% if states('sensor.weatheralerts_alert_5') == "on" %}
+            {{ states.sensor.weatheralerts_alert_5.last_changed }}
+          {% else %}
+            None
+          {% endif %}
+
+      weatheralerts_alerts_are_active:
+        friendly_name: Weather Alerts Are Active
+        entity_id: sensor.weatheralerts_1
+        icon_template: mdi:alert
+        value_template: >
+          {% if states.sensor.weatheralerts_1.state | int > 0 %}
+            on
+          {% else %}
+            off
+          {% endif %}
+
+
+
+
+################################################################################
+## automation ##
+
+automation:
+  - alias: 'Weather Alert UI Notification'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.weatheralerts_alert_1_last_changed
+      - platform: homeassistant
+        event: start
+    condition:
+      - condition: template
+        value_template: '{{states.sensor.weatheralerts_1.state | int > 0}}'
+    action:
+      service: script.weatheralerts_popup_on_wx_alert
+      data_template:
+        title: >
+            {{ states.sensor.weatheralerts_alert_1.attributes.display_title }}
+        message: >
+           {{ states.sensor.weatheralerts_alert_1.attributes.display_message }}
+          
+  - alias: Weather Alerts Pushbullet Notification
+    initial_state: 'on'
+    trigger:
+      platform: state
+      entity_id: sensor.weatheralerts_alert_1_last_changed
+    condition:
+      - condition: template
+        value_template: '{{states.sensor.weatheralerts_1.state | int > 0}}'
+    action:
+      - service: notify.pushbullet_notify
+        data_template:
+          message: |
+            Current NWS Weather Alerts:
+            {% if states.sensor.weatheralerts_alerts_1.state == "on" %}
+              {{ states.sensor.weatheralerts_alerts_1.attributes.event }}
+            {% endif %}
+            {% if states.sensor.weatheralerts_alerts_2.state == "on" %}
+              {{ states.sensor.weatheralerts_alerts_2.attributes.event }}
+            {% endif %}
+            {% if states.sensor.weatheralerts_alerts_3.state == "on" %}
+              {{ states.sensor.weatheralerts_alerts_3.attributes.event }}
+            {% endif %}
+            {% if states.sensor.weatheralerts_alerts_4.state == "on" %}
+              {{ states.sensor.weatheralerts_alerts_4.attributes.event }}
+            {% endif %}
+            {% if states.sensor.weatheralerts_alerts_5.state == "on" %}
+              {{ states.sensor.weatheralerts_alerts_5.attributes.event }}
+            {% endif %}
+
+
+
+
+################################################################################
+## script ##
+
+script:
+  weatheralerts_popup_on_wx_alert:
+    alias: Weather Alert Pop Up
+    sequence:
+        ## Dismiss any current alert so the UI isn't filled 
+        ## up with these if there are more then one.
+        ## Only show the latest alert
+      - service: persistent_notification.dismiss
+        data:
+          notification_id: "weatheralerts_alert"
+        ## Create a new persistant notification in the UI for a new alert
+      - service_template: >
+          {% if states.sensor.weatheralerts_1.state != '0' %}
+            persistent_notification.create
+          {% endif %}
+        data_template:
+          notification_id: "weatheralerts_alert"
+          message: "{{ message }}"
+          title: '{{ title }}'
+
+          display_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].description  }}<br>
+            {% if states.sensor.weatheralerts_1.attributes.alerts[0].instruction != None %}
+            <br>{{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction }}<br>
+            {% endif %}
+            <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[0].effective }}
+            {%- if states.sensor.weatheralerts_1.attributes.alerts[0].ends != None %}
+            <br>Ends: {{ states.sensor.weatheralerts_1.attributes.alerts[0].ends }}
+            {%- endif %}
+            <br>Expires: {{ states.sensor.weatheralerts_1.attributes.alerts[0].expires }}
+          spoken_title: >
+            Attention!!! Weather alert for a{{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+          spoken_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].description }}
+            {% if states.sensor.weatheralerts_1.attributes.alerts[0].instruction != None %}
+            {{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction }}
+            {% endif %}
+      weatheralerts_alert_2:
+        friendly_name: Weather Alert 2
+        entity_id: sensor.weatheralerts_1
+        icon_template: mdi:alert
+        value_template: >- 
+          {% if states('sensor.weatheralerts_1')|int > 1 %}
+          on
+          {% else %}
+          off
+          {% endif %}
+        attribute_templates:
+          alert_event: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].event }}
+          alert_area: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].area }}
+          alert_NWSheadline: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
+          alert_description: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].description  }}
+          alert_messageType: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].messageType }}
+          alert_status: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].status }}
+          alert_category: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].category }}
+          alert_urgency: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].urgency }}
+          alert_severity: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].severity }}
+          alert_certainty: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].certainty }}
+          alert_response: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].response }}
+          alert_instruction: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].instruction }}
+          alert_sent: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].sent }}
+          alert_effective: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].effective }}
+          alert_onset: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].onset }}
+          alert_expires: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].expires }}
+          alert_title: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].title }}
+          display_title: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].title }}
+          display_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].description  }}<br>
+            {% if states.sensor.weatheralerts_1.attributes.alerts[1].instruction != None %}
+            <br>{{ states.sensor.weatheralerts_1.attributes.alerts[1].instruction }}<br>
+            {% endif %}
+            <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[1].effective }}
+            {%- if states.sensor.weatheralerts_1.attributes.alerts[1].ends != None %}
+            <br>Ends: {{ states.sensor.weatheralerts_1.attributes.alerts[1].ends }}
+            {%- endif %}
+            <br>Alert Expires: {{ states.sensor.weatheralerts_1.attributes.alerts[1].expires }}
+          spoken_title: >
+            Attention!!! Weather alert for a {{ states.sensor.weatheralerts_1.attributes.alerts[1].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+          spoken_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].description  }}
+            {% if states.sensor.weatheralerts_1.attributes.alerts[1].instruction != None %}
+            {{ states.sensor.weatheralerts_1.attributes.alerts[1].instruction }}
+            {% endif %}
+      weatheralerts_alert_3:
+        friendly_name: Weather Alert 3
+        entity_id: sensor.weatheralerts_1
+        icon_template: mdi:alert
+        value_template: >- 
+          {% if states('sensor.weatheralerts_1')|int > 2 %}
+          on
+          {% else %}
+          off
+          {% endif %}
+        attribute_templates:
+          alert_event: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].event }}
+          alert_area: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].area }}
+          alert_NWSheadline: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
+          alert_description: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].description  }}
+          alert_messageType: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].messageType }}
+          alert_status: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].status }}
+          alert_category: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].category }}
+          alert_urgency: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].urgency }}
+          alert_severity: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].severity }}
+          alert_certainty: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].certainty }}
+          alert_response: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].response }}
+          alert_instruction: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].instruction }}
+          alert_sent: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].sent }}
+          alert_effective: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].effective }}
+          alert_onset: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].onset }}
+          alert_expires: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].expires }}
+          alert_title: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].title }}
+          display_title: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].title }}
+          display_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].description  }}<br>
+            {% if states.sensor.weatheralerts_1.attributes.alerts[2].instruction != None %}
+            <br>{{ states.sensor.weatheralerts_1.attributes.alerts[2].instruction }}<br>
+            {% endif %}
+            <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[2].effective }}
+            {%- if states.sensor.weatheralerts_1.attributes.alerts[2].ends != None %}
+            <br>Ends: {{ states.sensor.weatheralerts_1.attributes.alerts[2].ends }}
+            {%- endif %}
+            <br>Expires: {{ states.sensor.weatheralerts_1.attributes.alerts[2].expires }}
+          spoken_title: >
+            Attention!!! Weather alert for a {{ states.sensor.weatheralerts_1.attributes.alerts[2].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+          spoken_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].description  }}
+            {% if states.sensor.weatheralerts_1.attributes.alerts[2].instruction != None %}
+            {{ states.sensor.weatheralerts_1.attributes.alerts[2].instruction }}
+            {% endif %}
+      weatheralerts_alert_4:
+        friendly_name: Weather Alert 4
+        entity_id: sensor.weatheralerts_1
+        icon_template: mdi:alert
+        value_template: >- 
+          {% if states('sensor.weatheralerts_1')|int > 3 %}
+          on
+          {% else %}
+          off
+          {% endif %}
+        attribute_templates:
+          alert_event: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].event }}
+          alert_area: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].area }}
+          alert_NWSheadline: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
+          alert_description: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].description  }}
+          alert_messageType: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].messageType }}
+          alert_status: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].status }}
+          alert_category: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].category }}
+          alert_urgency: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].urgency }}
+          alert_severity: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].severity }}
+          alert_certainty: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].certainty }}
+          alert_response: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].response }}
+          alert_instruction: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].instruction }}
+          alert_sent: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].sent }}
+          alert_effective: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].effective }}
+          alert_onset: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].onset }}
+          alert_expires: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].expires }}
+          alert_title: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].title }}
+          display_title: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].title }}
+          display_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].description  }}<br>
+            {% if states.sensor.weatheralerts_1.attributes.alerts[3].instruction != None %}
+            <br>{{ states.sensor.weatheralerts_1.attributes.alerts[3].instruction }}<br>
+            {% endif %}
+            <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[3].effective }}
+            {%- if states.sensor.weatheralerts_1.attributes.alerts[3].ends != None %}
+            <br>Ends: {{ states.sensor.weatheralerts_1.attributes.alerts[3].ends }}
+            {%- endif %}
+            <br>Expires: {{ states.sensor.weatheralerts_1.attributes.alerts[3].expires }}
+          spoken_title: >
+            Attention!!! Weather alert for a {{ states.sensor.weatheralerts_1.attributes.alerts[3].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+          spoken_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].description  }}
+            {% if states.sensor.weatheralerts_1.attributes.alerts[3].instruction != None %}
+            {{ states.sensor.weatheralerts_1.attributes.alerts[3].instruction }}
+            {% endif %}
+      weatheralerts_alert_5:
+        friendly_name: Weather Alert 5
+        entity_id: sensor.weatheralerts_1
+        icon_template: mdi:alert
+        value_template: >- 
+          {% if states('sensor.weatheralerts_1')|int > 4 %}
+          on
+          {% else %}
+          off
+          {% endif %}
+        attribute_templates:
+          alert_event: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].event }}
+          alert_area: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].area }}
+          alert_NWSheadline: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
+          alert_description: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].description  }}
+          alert_messageType: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].messageType }}
+          alert_status: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].status }}
+          alert_category: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].category }}
+          alert_urgency: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].urgency }}
+          alert_severity: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].severity }}
+          alert_certainty: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].certainty }}
+          alert_response: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].response }}
+          alert_instruction: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].instruction }}
+          alert_sent: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].sent }}
+          alert_effective: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].effective }}
+          alert_onset: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].onset }}
+          alert_expires: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].expires }}
+          alert_title: >-
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].title }}
+          display_title: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].title }}
+          display_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].description  }}<br>
+            {% if states.sensor.weatheralerts_1.attributes.alerts[4].instruction != None %}
+            <br>{{ states.sensor.weatheralerts_1.attributes.alerts[4].instruction }}<br>
+            {% endif %}
+            <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[4].effective }}
+            {%- if states.sensor.weatheralerts_1.attributes.alerts[4].ends != None %}
+            <br>Ends: {{ states.sensor.weatheralerts_1.attributes.alerts[4].ends }}
+            {%- endif %}
+            <br>Expires: {{ states.sensor.weatheralerts_1.attributes.alerts[4].expires }}
+          spoken_title: >
+            Attention!!! Weather alert for a {{ states.sensor.weatheralerts_1.attributes.alerts[4].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+          spoken_message: >
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].description  }}
+            {% if states.sensor.weatheralerts_1.attributes.alerts[4].instruction != None %}
+            {{ states.sensor.weatheralerts_1.attributes.alerts[4].instruction }}
+            {% endif %}
+
+      weatheralerts_alert_1_last_changed:
+        entity_id: sensor.weatheralerts_alert_1
+        value_template: >-
+          {% if states('sensor.weatheralerts_alert_1') == "on" %}
+            {{ states.sensor.weatheralerts_alert_1.last_changed }}
+          {% else %}
+            None
+          {% endif %}
+      weatheralerts_alert_2_last_changed:
+        entity_id: sensor.weatheralerts_alert_2
+        value_template: >-
+          {% if states('sensor.weatheralerts_alert_2') == "on" %}
+            {{ states.sensor.weatheralerts_alert_2.last_changed }}
+          {% else %}
+            None
+          {% endif %}
+      weatheralerts_alert_3_last_changed:
+        entity_id: sensor.weatheralerts_alert_3
+        value_template: >-
+          {% if states('sensor.weatheralerts_alert_3') == "on" %}
+            {{ states.sensor.weatheralerts_alert_3.last_changed }}
+          {% else %}
+            None
+          {% endif %}
+      weatheralerts_alert_4_last_changed:
+        entity_id: sensor.weatheralerts_alert_4
+        value_template: >-
+          {% if states('sensor.weatheralerts_alert_4') == "on" %}
+            {{ states.sensor.weatheralerts_alert_4.last_changed }}
+          {% else %}
+            None
+          {% endif %}
+      weatheralerts_alert_5_last_changed:
+        entity_id: sensor.weatheralerts_alert_5
+        value_template: >-
+          {% if states('sensor.weatheralerts_alert_5') == "on" %}
+            {{ states.sensor.weatheralerts_alert_5.last_changed }}
+          {% else %}
+            None
+          {% endif %}
+
+      weatheralerts_alerts_are_active:
+        friendly_name: Weather Alerts Are Active
+        entity_id: sensor.weatheralerts_1
+        icon_template: mdi:alert
+        value_template: >
+          {% if states.sensor.weatheralerts_1.state | int > 0 %}
+            on
+          {% else %}
+            off
+          {% endif %}
+
+
+
+
+################################################################################
+## automation ##
+
+automation:
+  - alias: 'Weather Alert UI Notification'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.weatheralerts_alert_1_last_changed
+      - platform: homeassistant
+        event: start
+    condition:
+      - condition: template
+        value_template: '{{states.sensor.weatheralerts_1.state | int > 0}}'
+    action:
+      service: script.weatheralerts_popup_on_wx_alert
+      data_template:
+        title: >
+            {{ states.sensor.weatheralerts_alert_1.attributes.display_title }}
+        message: >
+           {{ states.sensor.weatheralerts_alert_1.attributes.display_message }}
+          
+  - alias: Weather Alerts Pushbullet Notification
+    initial_state: 'on'
+    trigger:
+      platform: state
+      entity_id: sensor.weatheralerts_alert_1_last_changed
+    condition:
+      - condition: template
+        value_template: '{{states.sensor.weatheralerts_1.state | int > 0}}'
+    action:
+      - service: notify.pushbullet_notify
+        data_template:
+          message: |
+            Current NWS Weather Alerts:
+            {% if states.sensor.weatheralerts_alerts_1.state == "on" %}
+              {{ states.sensor.weatheralerts_alerts_1.attributes.event }}
+            {% endif %}
+            {% if states.sensor.weatheralerts_alerts_2.state == "on" %}
+              {{ states.sensor.weatheralerts_alerts_2.attributes.event }}
+            {% endif %}
+            {% if states.sensor.weatheralerts_alerts_3.state == "on" %}
+              {{ states.sensor.weatheralerts_alerts_3.attributes.event }}
+            {% endif %}
+            {% if states.sensor.weatheralerts_alerts_4.state == "on" %}
+              {{ states.sensor.weatheralerts_alerts_4.attributes.event }}
+            {% endif %}
+            {% if states.sensor.weatheralerts_alerts_5.state == "on" %}
+              {{ states.sensor.weatheralerts_alerts_5.attributes.event }}
+            {% endif %}
+
+
+
+
+################################################################################
+## script ##
+
+script:
+  weatheralerts_popup_on_wx_alert:
+    alias: Weather Alert Pop Up
+    sequence:
+        ## Dismiss any current alert so the UI isn't filled 
+        ## up with these if there are more then one.
+        ## Only show the latest alert
+      - service: persistent_notification.dismiss
+        data:
+          notification_id: "weatheralerts_alert"
+        ## Create a new persistant notification in the UI for a new alert
+      - service_template: >
+          {% if states.sensor.weatheralerts_1.state != '0' %}
+            persistent_notification.create
+          {% endif %}
+        data_template:
+          notification_id: "weatheralerts_alert"
+          message: "{{ message }}"
+          title: '{{ title }}'

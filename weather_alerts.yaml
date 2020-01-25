@@ -141,9 +141,9 @@ sensor:
           display_message: >
             {% if states('sensor.weatheralerts_1')|int > 0 %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
-              {{ states.sensor.weatheralerts_1.attributes.alerts[0].description }}<br>
+              {{ states.sensor.weatheralerts_1.attributes.alerts[0].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_1.attributes.alerts[0].instruction != None %}
-                <br>{{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction }}<br>
+                <br>{{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% endif %}
               <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[0].effective }}
               {%- if states.sensor.weatheralerts_1.attributes.alerts[0].ends != None %}
@@ -161,9 +161,9 @@ sensor:
             {% endif %}
           spoken_message: >
             {% if states('sensor.weatheralerts_1')|int > 0 %}
-              {{ states.sensor.weatheralerts_1.attributes.alerts[0].description }}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[0].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% if states.sensor.weatheralerts_1.attributes.alerts[0].instruction != None %}
-                {{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction }}
+                {{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% endif %}
             {% else %}
               None
@@ -290,9 +290,9 @@ sensor:
           display_message: >
             {% if states('sensor.weatheralerts_1')|int > 1 %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
-              {{ states.sensor.weatheralerts_1.attributes.alerts[1].description }}<br>
+              {{ states.sensor.weatheralerts_1.attributes.alerts[1].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_1.attributes.alerts[1].instruction != None %}
-                <br>{{ states.sensor.weatheralerts_1.attributes.alerts[1].instruction }}<br>
+                <br>{{ states.sensor.weatheralerts_1.attributes.alerts[1].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% endif %}
               <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[1].effective }}
               {%- if states.sensor.weatheralerts_1.attributes.alerts[1].ends != None %}
@@ -310,9 +310,9 @@ sensor:
             {% endif %}
           spoken_message: >
             {% if states('sensor.weatheralerts_1')|int > 1 %}
-              {{ states.sensor.weatheralerts_1.attributes.alerts[1].description }}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[1].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% if states.sensor.weatheralerts_1.attributes.alerts[1].instruction != None %}
-                {{ states.sensor.weatheralerts_1.attributes.alerts[1].instruction }}
+                {{ states.sensor.weatheralerts_1.attributes.alerts[1].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% endif %}
             {% else %}
               None
@@ -439,9 +439,9 @@ sensor:
           display_message: >
             {% if states('sensor.weatheralerts_1')|int > 2 %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
-              {{ states.sensor.weatheralerts_1.attributes.alerts[2].description }}<br>
+              {{ states.sensor.weatheralerts_1.attributes.alerts[2].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_1.attributes.alerts[2].instruction != None %}
-                <br>{{ states.sensor.weatheralerts_1.attributes.alerts[2].instruction }}<br>
+                <br>{{ states.sensor.weatheralerts_1.attributes.alerts[2].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% endif %}
               <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[2].effective }}
               {%- if states.sensor.weatheralerts_1.attributes.alerts[2].ends != None %}
@@ -459,9 +459,9 @@ sensor:
             {% endif %}
           spoken_message: >
             {% if states('sensor.weatheralerts_1')|int > 2 %}
-              {{ states.sensor.weatheralerts_1.attributes.alerts[2].description }}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[2].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% if states.sensor.weatheralerts_1.attributes.alerts[2].instruction != None %}
-                {{ states.sensor.weatheralerts_1.attributes.alerts[2].instruction }}
+                {{ states.sensor.weatheralerts_1.attributes.alerts[2].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% endif %}
             {% else %}
               None
@@ -588,9 +588,9 @@ sensor:
           display_message: >
             {% if states('sensor.weatheralerts_1')|int > 3 %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
-              {{ states.sensor.weatheralerts_1.attributes.alerts[3].description }}<br>
+              {{ states.sensor.weatheralerts_1.attributes.alerts[3].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_1.attributes.alerts[3].instruction != None %}
-                <br>{{ states.sensor.weatheralerts_1.attributes.alerts[3].instruction }}<br>
+                <br>{{ states.sensor.weatheralerts_1.attributes.alerts[3].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% endif %}
               <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[3].effective }}
               {%- if states.sensor.weatheralerts_1.attributes.alerts[3].ends != None %}
@@ -608,9 +608,9 @@ sensor:
             {% endif %}
           spoken_message: >
             {% if states('sensor.weatheralerts_1')|int > 3 %}
-              {{ states.sensor.weatheralerts_1.attributes.alerts[3].description }}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[3].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% if states.sensor.weatheralerts_1.attributes.alerts[3].instruction != None %}
-                {{ states.sensor.weatheralerts_1.attributes.alerts[3].instruction }}
+                {{ states.sensor.weatheralerts_1.attributes.alerts[3].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% endif %}
             {% else %}
               None
@@ -737,9 +737,9 @@ sensor:
           display_message: >
             {% if states('sensor.weatheralerts_1')|int > 4 %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
-              {{ states.sensor.weatheralerts_1.attributes.alerts[4].description }}<br>
+              {{ states.sensor.weatheralerts_1.attributes.alerts[4].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_1.attributes.alerts[4].instruction != None %}
-                <br>{{ states.sensor.weatheralerts_1.attributes.alerts[4].instruction }}<br>
+                <br>{{ states.sensor.weatheralerts_1.attributes.alerts[4].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% endif %}
               <br>Effective: {{ states.sensor.weatheralerts_1.attributes.alerts[4].effective }}
               {%- if states.sensor.weatheralerts_1.attributes.alerts[4].ends != None %}
@@ -757,9 +757,9 @@ sensor:
             {% endif %}
           spoken_message: >
             {% if states('sensor.weatheralerts_1')|int > 4 %}
-              {{ states.sensor.weatheralerts_1.attributes.alerts[4].description }}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[4].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% if states.sensor.weatheralerts_1.attributes.alerts[4].instruction != None %}
-                {{ states.sensor.weatheralerts_1.attributes.alerts[4].instruction }}
+                {{ states.sensor.weatheralerts_1.attributes.alerts[4].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% endif %}
             {% else %}
               None
@@ -812,9 +812,9 @@ sensor:
         icon_template: mdi:alert
         value_template: >
           {% if (states.sensor.weatheralerts_1.state | int > 0) and (state_attr('sensor.weatheralerts_alert_1', 'alert_event') != None) %}
-            on
+            Yes
           {% else %}
-            off
+            No
           {% endif %}
 
 

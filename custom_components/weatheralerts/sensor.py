@@ -17,14 +17,15 @@ import homeassistant.helpers.config_validation as cv
 
 CONF_STATE = "state"
 CONF_ZONE = "zone"
+CONF_TYPE = "type"
 
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
-    {vol.Required(CONF_STATE): cv.string, vol.Required(CONF_ZONE): cv.string}
+    {vol.Required(CONF_STATE): cv.string, vol.Required(CONF_ZONE): cv.string, vol.Required(CONF_TYPE): cv.matches_regex("(^zone$|^county$)")}
 )
 
-URL = "https://api.weather.gov/alerts/active?zone={}"
+URL = "https://api.weather.gov/alerts/active/zone/{}"
 
 HEADERS = {
     "accept": "application/ld+json",
@@ -35,18 +36,23 @@ HEADERS = {
 async def async_setup_platform(
     hass, config, add_entities, discovery_info=None
 ):  # pylint: disable=missing-docstring, unused-argument
-    state = config[CONF_STATE]
+    state = config[CONF_STATE].upper()
     zone = config[CONF_ZONE]
+    zone_type = config[CONF_TYPE].lower()
+    
+    if len(state) != 2:
+        _LOGGER.critical("Configured (YAML) state '%s' is not valid", state)
+        return False
 
     if len(zone) == 1:
         zone = f"00{zone}"
     if len(zone) == 2:
         zone = f"0{zone}"
 
-    if len(zone) == 3:
+    if len(zone) == 3 and zone_type == "zone":
         zoneid = f"{state}Z{zone}"
-    elif len(zone) >= 6:
-        zoneid = f"{zone}"
+    elif len(zone) == 3 and zone_type == "county":
+        zoneid = f"{state}C{zone}"
     else:
         _LOGGER.critical("Configured (YAML) zone '%s' is not valid", zone)
         return False
@@ -65,20 +71,14 @@ async def async_setup_platform(
                     return False
 
             _LOGGER.debug(data)
+            name = data["title"].split("advisories for ")[1].split(" (")[0]
 
     except Exception as exception:  # pylint: disable=broad-except
         _LOGGER.error("[%s] %s", sys.exc_info()[0].__name__, exception)
         return False
 
-    if len(zone) <= 6:
-        county = data["title"].split("advisories for ")[1].split(" (")[0]
-        name = f"Weather Alerts: {county}"
-    else:
-        name = f"Weather Alerts: {zoneid}"
-        name = name.replace(",", "-")
-
     add_entities([WeatherAlertsSensor(name, state, zoneid, session)], True)
-    _LOGGER.info("Added sensor with friendly_name '%s' for zoneid '%s'", name, zoneid)
+    _LOGGER.info("Added sensor with name '%s' for zoneid '%s'", name, zoneid)
 
 
 class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
@@ -99,42 +99,47 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
         try:
             async with async_timeout.timeout(10, loop=self.hass.loop):
                 response = await self.session.get(URL.format(self.zoneid))
-                data = await response.json()
+                if response.status != 200:
+                    self._state = "unavailable"
+                    _LOGGER.critical("Weather alert download failure - HTTP status code %s", response.status)
+                else:
+                    data = await response.json()
 
-                if data.get("features") is not None:
-                    for alert in data["features"]:
-                        if alert.get("properties") is not None:
-                            properties = alert["properties"]
-                            alerts.append(
-                                {
-                                    "area": properties["areaDesc"],
-                                    "certainty": properties["certainty"],
-                                    "description": properties["description"],
-                                    "ends": properties["ends"],
-                                    "event": properties["event"],
-                                    "instruction": properties["instruction"],
-                                    "response": properties["response"],
-                                    "sent": properties["sent"],
-                                    "severity": properties["severity"],
-                                    "title": properties["headline"].split(" by ")[0],
-                                    "urgency": properties["urgency"],
-                                    "NWSheadline": properties["parameters"]["NWSheadline"],
-                                    "effective": properties["effective"],
-                                    "expires": properties["expires"],
-                                    "onset": properties["onset"],
-                                    "status": properties["status"],
-                                    "messageType": properties["messageType"],
-                                    "category": properties["category"],
-                                }
-                            )
+                    if data.get("features") is not None:
+                        for alert in data["features"]:
+                            if alert.get("properties") is not None:
+                                properties = alert["properties"]
+                                alerts.append(
+                                    {
+                                        "area": properties.get("areaDesc", "null"),
+                                        "certainty": properties.get("certainty", "null"),
+                                        "description": properties.get("description", "null"),
+                                        "ends": properties.get("ends", "null"),
+                                        "event": properties.get("event", "null"),
+                                        "instruction": properties.get("instruction", "null"),
+                                        "response": properties.get("response", "null"),
+                                        "sent": properties.get("sent", "null"),
+                                        "severity": properties.get("severity", "null"),
+                                        "title": properties.get("headline", "null").split(" by ")[0],
+                                        "urgency": properties.get("urgency", "null"),
+                                        "NWSheadline": properties["parameters"].get("NWSheadline", "null"),
+                                        "effective": properties.get("effective", "null"),
+                                        "expires": properties.get("expires", "null"),
+                                        "onset": properties.get("onset", "null"),
+                                        "status": properties.get("status", "null"),
+                                        "messageType": properties.get("messageType", "null"),
+                                        "category": properties.get("category", "null"),
+                                        "zoneid": self.zoneid,
+                                    }
+                                )
 
-            self._state = len(alerts)
-            self._attr = {
-                "alerts": alerts,
-                "integration": "weatheralerts",
-                "state": self.zone_state,
-                "zone": self.zoneid,
-            }
+                    self._state = len(alerts)
+                    self._attr = {
+                        "alerts": alerts,
+                        "integration": "weatheralerts",
+                        "state": self.zone_state,
+                        "zone": self.zoneid,
+                    }
         except Exception:  # pylint: disable=broad-except
             self.exception = sys.exc_info()[0].__name__
             connected = False
@@ -144,6 +149,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
             # Handle connection messages here.
             if self.connected:
                 if not connected:
+                    self._state = "unavailable"
                     _LOGGER.error(
                         "[%s] Could not update the sensor (%s)",
                         self.zoneid,
@@ -154,6 +160,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                 if connected:
                     _LOGGER.info("[%s] Update of the sensor completed", self.zoneid)
                 else:
+                    self._state = "unavailable"
                     _LOGGER.debug(
                         "[%s] Still no update (%s)", self.zoneid, self.exception
                     )
@@ -168,8 +175,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
     @property
     def unique_id(self):
         """Return a unique ID to use for this sensor."""
-        uniqueid = self.zoneid.replace(",", "_")
-        return f"weatheralerts_{uniqueid}"
+        return f"weatheralerts_{self.zoneid}"
 
     @property
     def state(self):
@@ -190,3 +196,4 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
     def device_state_attributes(self):
         """Return attributes."""
         return self._attr
+    

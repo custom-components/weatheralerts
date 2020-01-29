@@ -2,9 +2,42 @@
 #
 #    weather_alerts.yaml
 #
-#    weather alerts from weather.gov
+#    weather alerts from weather.gov using the weatheralerts custom component
 #
 ################################################################################
+#
+#    Requirements: weatheralerts custom component (installable via HACS)
+#
+#    To use this package change the state, zone, and type for the weatheralerts
+#    platform below to match your location. Then restart Home Assistant. Once
+#    restarted, go to your Home Assistant web interface, go to Configuration,
+#    then Entities, and find the new sensor.weatheralerts_* sensor that was
+#    created for your location. Rename that sensor Entity ID to 
+#    sensor.weatheralerts_1 and you shouldn't need to alter anything else in
+#    this yaml package to make it all work.
+#
+#    This yaml package stores up to 5 most recent active alerts from the
+#    weather alerts feed and places them in these sensors:
+#
+#        sensor.weatheralerts_1_alert_1
+#        sensor.weatheralerts_1_alert_2
+#        sensor.weatheralerts_1_alert_3
+#        sensor.weatheralerts_1_alert_4
+#        sensor.weatheralerts_1_alert_5
+#
+#    Additional sensors available:
+#        sensor.weatheralerts_1_alert_1_last_changed
+#        sensor.weatheralerts_1_alert_2_last_changed
+#        sensor.weatheralerts_1_alert_3_last_changed
+#        sensor.weatheralerts_1_alert_4_last_changed
+#        sensor.weatheralerts_1_alert_5_last_changed
+#        sensor.weatheralerts_1_alert_1_most_recent_active_alert
+#        sensor.weatheralerts_1_alert_2_most_recent_active_alert
+#        sensor.weatheralerts_1_alert_3_most_recent_active_alert
+#        sensor.weatheralerts_1_alert_4_most_recent_active_alert
+#        sensor.weatheralerts_1_alert_5_most_recent_active_alert
+#        weatheralerts_1_alerts_are_active
+#
 
 
 
@@ -15,131 +48,138 @@
 sensor:
   - platform: weatheralerts
     state: WI
-    zone: "WIC087"
+    zone: 87
+    type: county
 
   - platform: template
     sensors: 
-      weatheralerts_alert_1:
+      weatheralerts_1_alert_1:
         friendly_name: Weather Alert 1
         entity_id: sensor.weatheralerts_1
         icon_template: mdi:alert
         value_template: >- 
-          {% if states('sensor.weatheralerts_1')|int > 0 %}
+          {% if (states('sensor.weatheralerts_1')|int > 0) or (state_attr('sensor.weatheralerts_1', 'alerts')[0] != null) %}
             on
           {% else %}
             off
           {% endif %}
         attribute_templates:
           alert_event: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].event }}
             {% else %}
               None
             {% endif %}
           alert_area: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].area }}
             {% else %}
               None
             {% endif %}
           alert_NWSheadline: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
             {% else %}
               None
             {% endif %}
           alert_description: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].description  }}
             {% else %}
               None
             {% endif %}
           alert_messageType: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].messageType }}
             {% else %}
               None
             {% endif %}
           alert_status: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].status }}
             {% else %}
               None
             {% endif %}
           alert_category: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].category }}
             {% else %}
               None
             {% endif %}
           alert_urgency: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].urgency }}
             {% else %}
               None
             {% endif %}
           alert_severity: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].severity }}
             {% else %}
               None
             {% endif %}
           alert_certainty: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].certainty }}
             {% else %}
               None
             {% endif %}
           alert_response: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].response }}
             {% else %}
               None
             {% endif %}
           alert_instruction: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction }}
             {% else %}
               None
             {% endif %}
           alert_sent: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].sent }}
             {% else %}
               None
             {% endif %}
           alert_effective: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].effective }}
             {% else %}
               None
             {% endif %}
           alert_onset: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].onset }}
             {% else %}
               None
             {% endif %}
           alert_expires: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].expires }}
             {% else %}
               None
             {% endif %}
           alert_title: >-
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}
             {% else %}
               None
             {% endif %}
+          alert_zoneid: >-
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[0].zoneid }}
+            {% else %}
+              None
+            {% endif %}
           display_title: >
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}
             {% else %}
               None
             {% endif %}
           display_message: >
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_1.attributes.alerts[0].instruction != None %}
@@ -154,13 +194,13 @@ sensor:
               None
             {% endif %}
           spoken_title: >
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               Attention!!! Weather alert for a {{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
           spoken_message: >
-            {% if states('sensor.weatheralerts_1')|int > 0 %}
+            {% if states('sensor.weatheralerts_1')|int > 0 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_1') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[0].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% if states.sensor.weatheralerts_1.attributes.alerts[0].instruction != None %}
                 {{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
@@ -168,127 +208,133 @@ sensor:
             {% else %}
               None
             {% endif %}
-      weatheralerts_alert_2:
+      weatheralerts_1_alert_2:
         friendly_name: Weather Alert 2
         entity_id: sensor.weatheralerts_1
         icon_template: mdi:alert
         value_template: >- 
-          {% if states('sensor.weatheralerts_1')|int > 1 %}
+          {% if (states('sensor.weatheralerts_1')|int > 1) or (state_attr('sensor.weatheralerts_1', 'alerts')[1] != null) %}
             on
           {% else %}
             off
           {% endif %}
         attribute_templates:
           alert_event: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].event }}
             {% else %}
               None
             {% endif %}
           alert_area: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].area }}
             {% else %}
               None
             {% endif %}
           alert_NWSheadline: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
             {% else %}
               None
             {% endif %}
           alert_description: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].description  }}
             {% else %}
               None
             {% endif %}
           alert_messageType: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].messageType }}
             {% else %}
               None
             {% endif %}
           alert_status: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].status }}
             {% else %}
               None
             {% endif %}
           alert_category: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].category }}
             {% else %}
               None
             {% endif %}
           alert_urgency: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].urgency }}
             {% else %}
               None
             {% endif %}
           alert_severity: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].severity }}
             {% else %}
               None
             {% endif %}
           alert_certainty: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].certainty }}
             {% else %}
               None
             {% endif %}
           alert_response: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].response }}
             {% else %}
               None
             {% endif %}
           alert_instruction: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].instruction }}
             {% else %}
               None
             {% endif %}
           alert_sent: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].sent }}
             {% else %}
               None
             {% endif %}
           alert_effective: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].effective }}
             {% else %}
               None
             {% endif %}
           alert_onset: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].onset }}
             {% else %}
               None
             {% endif %}
           alert_expires: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].expires }}
             {% else %}
               None
             {% endif %}
           alert_title: >-
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].title }}
             {% else %}
               None
             {% endif %}
+          alert_zoneid: >-
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[1].zoneid }}
+            {% else %}
+              None
+            {% endif %}
           display_title: >
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].title }}
             {% else %}
               None
             {% endif %}
           display_message: >
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_1.attributes.alerts[1].instruction != None %}
@@ -303,13 +349,13 @@ sensor:
               None
             {% endif %}
           spoken_title: >
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               Attention!!! Weather alert for a {{ states.sensor.weatheralerts_1.attributes.alerts[1].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
           spoken_message: >
-            {% if states('sensor.weatheralerts_1')|int > 1 %}
+            {% if states('sensor.weatheralerts_1')|int > 1 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_2') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[1].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% if states.sensor.weatheralerts_1.attributes.alerts[1].instruction != None %}
                 {{ states.sensor.weatheralerts_1.attributes.alerts[1].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
@@ -317,127 +363,133 @@ sensor:
             {% else %}
               None
             {% endif %}
-      weatheralerts_alert_3:
+      weatheralerts_1_alert_3:
         friendly_name: Weather Alert 3
         entity_id: sensor.weatheralerts_1
         icon_template: mdi:alert
         value_template: >- 
-          {% if states('sensor.weatheralerts_1')|int > 2 %}
+          {% if (states('sensor.weatheralerts_1')|int > 2) or (state_attr('sensor.weatheralerts_1', 'alerts')[2] != null) %}
             on
           {% else %}
             off
           {% endif %}
         attribute_templates:
           alert_event: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].event }}
             {% else %}
               None
             {% endif %}
           alert_area: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].area }}
             {% else %}
               None
             {% endif %}
           alert_NWSheadline: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
             {% else %}
               None
             {% endif %}
           alert_description: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].description  }}
             {% else %}
               None
             {% endif %}
           alert_messageType: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].messageType }}
             {% else %}
               None
             {% endif %}
           alert_status: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].status }}
             {% else %}
               None
             {% endif %}
           alert_category: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].category }}
             {% else %}
               None
             {% endif %}
           alert_urgency: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].urgency }}
             {% else %}
               None
             {% endif %}
           alert_severity: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].severity }}
             {% else %}
               None
             {% endif %}
           alert_certainty: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].certainty }}
             {% else %}
               None
             {% endif %}
           alert_response: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].response }}
             {% else %}
               None
             {% endif %}
           alert_instruction: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].instruction }}
             {% else %}
               None
             {% endif %}
           alert_sent: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].sent }}
             {% else %}
               None
             {% endif %}
           alert_effective: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].effective }}
             {% else %}
               None
             {% endif %}
           alert_onset: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].onset }}
             {% else %}
               None
             {% endif %}
           alert_expires: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].expires }}
             {% else %}
               None
             {% endif %}
           alert_title: >-
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].title }}
             {% else %}
               None
             {% endif %}
+          alert_zoneid: >-
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[2].zoneid }}
+            {% else %}
+              None
+            {% endif %}
           display_title: >
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].title }}
             {% else %}
               None
             {% endif %}
           display_message: >
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_1.attributes.alerts[2].instruction != None %}
@@ -452,13 +504,13 @@ sensor:
               None
             {% endif %}
           spoken_title: >
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               Attention!!! Weather alert for a {{ states.sensor.weatheralerts_1.attributes.alerts[2].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
           spoken_message: >
-            {% if states('sensor.weatheralerts_1')|int > 2 %}
+            {% if states('sensor.weatheralerts_1')|int > 2 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_3') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[2].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% if states.sensor.weatheralerts_1.attributes.alerts[2].instruction != None %}
                 {{ states.sensor.weatheralerts_1.attributes.alerts[2].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
@@ -466,127 +518,133 @@ sensor:
             {% else %}
               None
             {% endif %}
-      weatheralerts_alert_4:
+      weatheralerts_1_alert_4:
         friendly_name: Weather Alert 4
         entity_id: sensor.weatheralerts_1
         icon_template: mdi:alert
         value_template: >- 
-          {% if states('sensor.weatheralerts_1')|int > 3 %}
+          {% if (states('sensor.weatheralerts_3')|int > 0) or (state_attr('sensor.weatheralerts_1', 'alerts')[3] != null) %}
             on
           {% else %}
             off
           {% endif %}
         attribute_templates:
           alert_event: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].event }}
             {% else %}
               None
             {% endif %}
           alert_area: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].area }}
             {% else %}
               None
             {% endif %}
           alert_NWSheadline: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
             {% else %}
               None
             {% endif %}
           alert_description: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].description  }}
             {% else %}
               None
             {% endif %}
           alert_messageType: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].messageType }}
             {% else %}
               None
             {% endif %}
           alert_status: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].status }}
             {% else %}
               None
             {% endif %}
           alert_category: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].category }}
             {% else %}
               None
             {% endif %}
           alert_urgency: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].urgency }}
             {% else %}
               None
             {% endif %}
           alert_severity: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].severity }}
             {% else %}
               None
             {% endif %}
           alert_certainty: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].certainty }}
             {% else %}
               None
             {% endif %}
           alert_response: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].response }}
             {% else %}
               None
             {% endif %}
           alert_instruction: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].instruction }}
             {% else %}
               None
             {% endif %}
           alert_sent: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].sent }}
             {% else %}
               None
             {% endif %}
           alert_effective: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].effective }}
             {% else %}
               None
             {% endif %}
           alert_onset: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].onset }}
             {% else %}
               None
             {% endif %}
           alert_expires: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].expires }}
             {% else %}
               None
             {% endif %}
           alert_title: >-
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].title }}
             {% else %}
               None
             {% endif %}
+          alert_zoneid: >-
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[3].zoneid }}
+            {% else %}
+              None
+            {% endif %}
           display_title: >
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].title }}
             {% else %}
               None
             {% endif %}
           display_message: >
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_1.attributes.alerts[3].instruction != None %}
@@ -601,13 +659,13 @@ sensor:
               None
             {% endif %}
           spoken_title: >
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               Attention!!! Weather alert for a {{ states.sensor.weatheralerts_1.attributes.alerts[3].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
           spoken_message: >
-            {% if states('sensor.weatheralerts_1')|int > 3 %}
+            {% if states('sensor.weatheralerts_1')|int > 3 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_4') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[3].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% if states.sensor.weatheralerts_1.attributes.alerts[3].instruction != None %}
                 {{ states.sensor.weatheralerts_1.attributes.alerts[3].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
@@ -615,127 +673,133 @@ sensor:
             {% else %}
               None
             {% endif %}
-      weatheralerts_alert_5:
+      weatheralerts_1_alert_5:
         friendly_name: Weather Alert 5
         entity_id: sensor.weatheralerts_1
         icon_template: mdi:alert
         value_template: >- 
-          {% if states('sensor.weatheralerts_1')|int > 4 %}
+          {% if (states('sensor.weatheralerts_1')|int > 4) or (state_attr('sensor.weatheralerts_1', 'alerts')[4] != null) %}
             on
           {% else %}
             off
           {% endif %}
         attribute_templates:
           alert_event: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].event }}
             {% else %}
               None
             {% endif %}
           alert_area: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].area }}
             {% else %}
               None
             {% endif %}
           alert_NWSheadline: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}
             {% else %}
               None
             {% endif %}
           alert_description: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].description  }}
             {% else %}
               None
             {% endif %}
           alert_messageType: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].messageType }}
             {% else %}
               None
             {% endif %}
           alert_status: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].status }}
             {% else %}
               None
             {% endif %}
           alert_category: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].category }}
             {% else %}
               None
             {% endif %}
           alert_urgency: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].urgency }}
             {% else %}
               None
             {% endif %}
           alert_severity: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].severity }}
             {% else %}
               None
             {% endif %}
           alert_certainty: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].certainty }}
             {% else %}
               None
             {% endif %}
           alert_response: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].response }}
             {% else %}
               None
             {% endif %}
           alert_instruction: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].instruction }}
             {% else %}
               None
             {% endif %}
           alert_sent: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].sent }}
             {% else %}
               None
             {% endif %}
           alert_effective: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].effective }}
             {% else %}
               None
             {% endif %}
           alert_onset: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].onset }}
             {% else %}
               None
             {% endif %}
           alert_expires: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].expires }}
             {% else %}
               None
             {% endif %}
           alert_title: >-
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].title }}
             {% else %}
               None
             {% endif %}
+          alert_zoneid: >-
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[4].zoneid }}
+            {% else %}
+              None
+            {% endif %}
           display_title: >
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].title }}
             {% else %}
               None
             {% endif %}
           display_message: >
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_1.attributes.alerts[4].instruction != None %}
@@ -750,13 +814,13 @@ sensor:
               None
             {% endif %}
           spoken_title: >
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               Attention!!! Weather alert for a {{ states.sensor.weatheralerts_1.attributes.alerts[4].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
           spoken_message: >
-            {% if states('sensor.weatheralerts_1')|int > 4 %}
+            {% if states('sensor.weatheralerts_1')|int > 4 or (states('sensor.weatheralerts_1') == "unavailable" and states('sensor.weatheralerts_1_alert_5') == "on") %}
               {{ states.sensor.weatheralerts_1.attributes.alerts[4].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
               {% if states.sensor.weatheralerts_1.attributes.alerts[4].instruction != None %}
                 {{ states.sensor.weatheralerts_1.attributes.alerts[4].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}
@@ -765,53 +829,94 @@ sensor:
               None
             {% endif %}
 
-      weatheralerts_alert_1_last_changed:
-        entity_id: sensor.weatheralerts_alert_1
+      weatheralerts_1_alert_1_last_changed:
+        entity_id: sensor.weatheralerts_1_alert_1
         value_template: >-
-          {% if states('sensor.weatheralerts_alert_1') == "on" %}
-            {{ states.sensor.weatheralerts_alert_1.last_updated }}
+          {% if states('sensor.weatheralerts_1_alert_1') == "on" %}
+            {{ states.sensor.weatheralerts_1_alert_1.last_updated }}
           {% else %}
             None
           {% endif %}
-      weatheralerts_alert_2_last_changed:
-        entity_id: sensor.weatheralerts_alert_2
+      weatheralerts_1_alert_2_last_changed:
+        entity_id: sensor.weatheralerts_1_alert_2
         value_template: >-
-          {% if states('sensor.weatheralerts_alert_2') == "on" %}
-            {{ states.sensor.weatheralerts_alert_2.last_updated }}
+          {% if states('sensor.weatheralerts_1_alert_2') == "on" %}
+            {{ states.sensor.weatheralerts_1_alert_2.last_updated }}
           {% else %}
             None
           {% endif %}
-      weatheralerts_alert_3_last_changed:
-        entity_id: sensor.weatheralerts_alert_3
+      weatheralerts_1_alert_3_last_changed:
+        entity_id: sensor.weatheralerts_1_alert_3
         value_template: >-
-          {% if states('sensor.weatheralerts_alert_3') == "on" %}
-            {{ states.sensor.weatheralerts_alert_3.last_updated }}
+          {% if states('sensor.weatheralerts_1_alert_3') == "on" %}
+            {{ states.sensor.weatheralerts_1_alert_3.last_updated }}
           {% else %}
             None
           {% endif %}
-      weatheralerts_alert_4_last_changed:
-        entity_id: sensor.weatheralerts_alert_4
+      weatheralerts_1_alert_4_last_changed:
+        entity_id: sensor.weatheralerts_1_alert_4
         value_template: >-
-          {% if states('sensor.weatheralerts_alert_4') == "on" %}
-            {{ states.sensor.weatheralerts_alert_4.last_updated }}
+          {% if states('sensor.weatheralerts_1_alert_4') == "on" %}
+            {{ states.sensor.weatheralerts_1_alert_4.last_updated }}
           {% else %}
             None
           {% endif %}
-      weatheralerts_alert_5_last_changed:
-        entity_id: sensor.weatheralerts_alert_5
+      weatheralerts_1_alert_5_last_changed:
+        entity_id: sensor.weatheralerts_1_alert_5
         value_template: >-
-          {% if states('sensor.weatheralerts_alert_5') == "on" %}
-            {{ states.sensor.weatheralerts_alert_5.last_changed }}
+          {% if states('sensor.weatheralerts_1_alert_5') == "on" %}
+            {{ states.sensor.weatheralerts_1_alert_5.last_changed }}
           {% else %}
             None
           {% endif %}
 
-      weatheralerts_alerts_are_active:
+      weatheralerts_1_alert_1_most_recent_active_alert:
+        entity_id: sensor.weatheralerts_1_alert_1
+        value_template: >-
+            {% if states('sensor.weatheralerts_1_alert_1') == "on" %}
+              {{ state_attr('sensor.weatheralerts_1_alert_1', 'alert_event') }}
+            {% elif states('sensor.weatheralerts_1_alert_1_most_recent_active_alert') == '' and states('sensor.weatheralerts_1_alert_1') == 'off' %}
+              unavailable
+            {% endif %}
+      weatheralerts_1_alert_2_most_recent_active_alert:
+        entity_id: sensor.weatheralerts_1_alert_2
+        value_template: >-
+            {% if states('sensor.weatheralerts_1_alert_2') == "on" %}
+              {{ state_attr('sensor.weatheralerts_1_alert_2', 'alert_event') }}
+            {% elif states('sensor.weatheralerts_1_alert_2_most_recent_active_alert') == '' and states('sensor.weatheralerts_1_alert_2') == 'off' %}
+              unavailable
+            {% endif %}
+      weatheralerts_1_alert_3_most_recent_active_alert:
+        entity_id: sensor.weatheralerts_1_alert_3
+        value_template: >-
+            {% if states('sensor.weatheralerts_1_alert_3') == "on" %}
+              {{ state_attr('sensor.weatheralerts_1_alert_3', 'alert_event') }}
+            {% elif states('sensor.weatheralerts_1_alert_3_most_recent_active_alert') == '' and states('sensor.weatheralerts_1_alert_3') == 'off' %}
+              unavailable
+            {% endif %}
+      weatheralerts_1_alert_4_most_recent_active_alert:
+        entity_id: sensor.weatheralerts_1_alert_4
+        value_template: >-
+            {% if states('sensor.weatheralerts_1_alert_4') == "on" %}
+              {{ state_attr('sensor.weatheralerts_1_alert_4', 'alert_event') }}
+            {% elif states('sensor.weatheralerts_1_alert_4_most_recent_active_alert') == '' and states('sensor.weatheralerts_1_alert_4') == 'off' %}
+              unavailable
+            {% endif %}
+      weatheralerts_1_alert_5_most_recent_active_alert:
+        entity_id: sensor.weatheralerts_1_alert_5
+        value_template: >-
+            {% if states('sensor.weatheralerts_1_alert_5') == "on" %}
+              {{ state_attr('sensor.weatheralerts_1_alert_5', 'alert_event') }}
+            {% elif states('sensor.weatheralerts_1_alert_5_most_recent_active_alert') == '' and states('sensor.weatheralerts_1_alert_5') == 'off' %}
+              unavailable
+            {% endif %}
+
+      weatheralerts_1_alerts_are_active:
         friendly_name: Weather Alerts Are Active
         entity_id: sensor.weatheralerts_1
         icon_template: mdi:alert
         value_template: >
-          {% if (states.sensor.weatheralerts_1.state | int > 0) and (state_attr('sensor.weatheralerts_alert_1', 'alert_event') != None) %}
+          {% if (states('sensor.weatheralerts_1') | int > 0) and (state_attr('sensor.weatheralerts_1_alert_1', 'alert_event') != None) %}
             Yes
           {% else %}
             No
@@ -825,28 +930,36 @@ sensor:
 
 automation:
   ## Automation to trigger a UI notification when there is an active weather alert.
-  ## weatheralerts_alert_1 should always contain most recent alert.
-  - alias: Weather Alert UI Notification
+  ## weatheralerts_1_alert_1 should always contain most recent alert.
+  - alias: Weather Alert UI Notification - 1
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: sensor.weatheralerts_alert_1_last_changed
+        entity_id: sensor.weatheralerts_1_alert_1_last_changed
       - platform: homeassistant
         event: start
     condition:
-      - condition: template
-        value_template: '{{ states.sensor.weatheralerts_1.state | int > 0 }}'
+      condition: or
+      conditions:
+        - condition: template
+          value_template: "{{ states('sensor.weatheralerts_1') | int > 0 }}"
+        - condition: and
+          conditions:
+            - condition: template
+              value_template: "{{ states('sensor.weatheralerts_1') == 'unavailable' }}"
+            - condition: template
+              value_template: "{{ states('sensor.weatheralerts_1_alert_1') == 'on' }}"
     action:
-      service: script.weatheralerts_popup_on_wx_alert
+      service: script.weatheralerts_1_popup_on_wx_alert
       data_template:
         title: >
-          {{ states.sensor.weatheralerts_alert_1.attributes.display_title }}
+          {{ states.sensor.weatheralerts_1_alert_1.attributes.display_title }}
         message: >
-          {{ states.sensor.weatheralerts_alert_1.attributes.display_message }}
+          {{ states.sensor.weatheralerts_1_alert_1.attributes.display_message }}
 
     ## Automation to dismiss UI notification if there are no active alerts for 30 minutes
-    ## Remove or disable this automation of you don't want notifications to auto-dismiss
-  - alias: Weather Alert UI Notification Auto-dismiss
+    ## Remove or disable this automation if you don't want notifications to auto-dismiss
+  - alias: Weather Alert UI Notification Auto-dismiss - 1
     initial_state: 'on'
     trigger:
       - platform: numeric_state
@@ -858,41 +971,49 @@ automation:
         event: start
     condition:
       - condition: template
-        value_template: '{{ states.sensor.weatheralerts_1.state | int == 0 }}'
+        value_template: "{{ states('sensor.weatheralerts_1') | int == 0 }}"
     action:
       - service: persistent_notification.dismiss
         data:
-          notification_id: "weatheralerts_alert"
+          notification_id: "weatheralerts_1_alert"
 
   ## Automation to push alerts via Pushbullet service
   ## Disable or remove this automation if you don't use Pushbullet
-  - alias: Weather Alerts Pushbullet Notification
+  - alias: Weather Alerts Pushbullet Notification - 1
     initial_state: 'on'
     trigger:
       platform: state
-      entity_id: sensor.weatheralerts_alert_1_last_changed
+      entity_id: sensor.weatheralerts_1_alert_1_last_changed
     condition:
-      - condition: template
-        value_template: '{{ states.sensor.weatheralerts_1.state | int > 0 }}'
+      condition: or
+      conditions:
+        - condition: template
+          value_template: "{{ states('sensor.weatheralerts_1') | int > 0 }}"
+        - condition: and
+          conditions:
+            - condition: template
+              value_template: "{{ states('sensor.weatheralerts_1') == 'unavailable' }}"
+            - condition: template
+              value_template: "{{ states('sensor.weatheralerts_1_alert_1') == 'on' }}"
     action:
       - service: notify.pushbullet_notify
         data_template:
           message: |
             Current NWS Weather Alerts:
-            {% if states.sensor.weatheralerts_alerts_1.state == "on" %}
-              {{ states.sensor.weatheralerts_alerts_1.attributes.event }}
+            {% if states.sensor.weatheralerts_1_alert_1.state == "on" %}
+              {{ states.sensor.weatheralerts_1_alert_1.attributes.event }}
             {% endif %}
-            {% if states.sensor.weatheralerts_alerts_2.state == "on" %}
-              {{ states.sensor.weatheralerts_alerts_2.attributes.event }}
+            {% if states.sensor.weatheralerts_1_alert_2.state == "on" %}
+              {{ states.sensor.weatheralerts_1_alert_2.attributes.event }}
             {% endif %}
-            {% if states.sensor.weatheralerts_alerts_3.state == "on" %}
-              {{ states.sensor.weatheralerts_alerts_3.attributes.event }}
+            {% if states.sensor.weatheralerts_1_alert_3.state == "on" %}
+              {{ states.sensor.weatheralerts_1_alert_3.attributes.event }}
             {% endif %}
-            {% if states.sensor.weatheralerts_alerts_4.state == "on" %}
-              {{ states.sensor.weatheralerts_alerts_4.attributes.event }}
+            {% if states.sensor.weatheralerts_1_alert_4.state == "on" %}
+              {{ states.sensor.weatheralerts_1_alert_4.attributes.event }}
             {% endif %}
-            {% if states.sensor.weatheralerts_alerts_5.state == "on" %}
-              {{ states.sensor.weatheralerts_alerts_5.attributes.event }}
+            {% if states.sensor.weatheralerts_1_alert_5.state == "on" %}
+              {{ states.sensor.weatheralerts_1_alert_5.attributes.event }}
             {% endif %}
 
 
@@ -902,21 +1023,22 @@ automation:
 ## script ##
 
 script:
-  weatheralerts_popup_on_wx_alert:
+  ## Script creates UI notification and is called via automation defined above
+  weatheralerts_1_popup_on_wx_alert:
     alias: Weather Alert Pop Up
     sequence:
         ## Dismiss any current alert so the UI isn't filled 
         ## up with these if there are more then one.
-        ## Only show the latest alert
+        ## Only show the most recent alert
       - service: persistent_notification.dismiss
         data:
-          notification_id: "weatheralerts_alert"
+          notification_id: "weatheralerts_1_alert"
         ## Create a new persistant notification in the UI for a new alert
       - service_template: >
           {% if states.sensor.weatheralerts_1.state != '0' %}
             persistent_notification.create
           {% endif %}
         data_template:
-          notification_id: "weatheralerts_alert"
+          notification_id: "weatheralerts_1_alert"
           message: "{{ message }}"
           title: "{{ title }}"

@@ -9,6 +9,7 @@ import logging
 import async_timeout
 import voluptuous as vol
 
+from homeassistant.exceptions import PlatformNotReady
 from homeassistant.components.switch import PLATFORM_SCHEMA
 from homeassistant.const import __version__
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
@@ -22,7 +23,11 @@ CONF_TYPE = "type"
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
-    {vol.Required(CONF_STATE): cv.string, vol.Required(CONF_ZONE): cv.string, vol.Required(CONF_TYPE): cv.matches_regex("(^zone$|^county$)")}
+    {
+        vol.Required(CONF_STATE): cv.string,
+        vol.Required(CONF_ZONE): cv.string,
+        vol.Required(CONF_TYPE): cv.matches_regex("(^zone$|^county$)")
+    }
 )
 
 URL = "https://api.weather.gov/alerts/active/zone/{}"
@@ -75,7 +80,7 @@ async def async_setup_platform(
 
     except Exception as exception:  # pylint: disable=broad-except
         _LOGGER.error("[%s] %s", sys.exc_info()[0].__name__, exception)
-        return False
+        raise PlatformNotReady
 
     add_entities([WeatherAlertsSensor(name, state, zoneid, session)], True)
     _LOGGER.info("Added sensor with name '%s' for zoneid '%s'", name, zoneid)
@@ -101,7 +106,11 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                 response = await self.session.get(URL.format(self.zoneid))
                 if response.status != 200:
                     self._state = "unavailable"
-                    _LOGGER.critical("Weather alert download failure - HTTP status code %s", response.status)
+                    _LOGGER.critical(
+                        "[%s] weatheralert download failure - HTTP status code %s",
+                        self.zoneid,
+                        response.status
+                    )
                 else:
                     data = await response.json()
 
@@ -129,6 +138,9 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                                         "status": properties.get("status", "null"),
                                         "messageType": properties.get("messageType", "null"),
                                         "category": properties.get("category", "null"),
+                                        "sender": properties.get("sender", "null"),
+                                        "senderName": properties.get("senderName", "null"),
+                                        "id": properties.get("id", "null"),
                                         "zoneid": self.zoneid,
                                     }
                                 )

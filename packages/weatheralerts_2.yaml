@@ -1,30 +1,30 @@
 ################################################################################
 #
-#    weather_alerts_2.yaml
+#    weatheralerts_2.yaml
 #
-#    weather alerts from weather.gov using the weatheralerts custom component
+#    weatheralerts sensors and automations (read comments below)
 #
 ################################################################################
 #
 #    Requirements: weatheralerts custom component (installable via HACS)
 #
-#    This second yaml package can be used to setup an alert for a second
-#    county or zone. To setup additional alerts for additional counties or
-#    zones, just copy this yaml to another file (i.e. weather_alerts_3.yaml)
-#    and do a find-and-replace to find all instances of sensor.weatheralerts_2
-#    and change them to the proper number (i.e. sensor.weatheralerts_3). Then,
-#    in the new yaml file, scroll to the bottom to find the automation and 
-#    script sections and change the 'alias' of each automation and script to
-#    identify for which alert the automations and script is used.
+#    This second yaml package can be used to setup a second weatheralerts
+#    platform configuration for a seperate geographical location (i.e. monitor
+#    alerts for a different zone or county). To setup additional alerts for
+#    additional counties or zones, just copy this yaml to another file
+#    (i.e. weather_alerts_3.yaml) and do a find-and-replace to find all
+#    instances of sensor.weatheralerts_2 and change them to the proper number
+#    (i.e. sensor.weatheralerts_3). Then, in the new yaml file, scroll to the
+#    bottom to find the automation and script sections and change the 'alias'
+#    of each automation and script to identify for which alert the automations
+#    and script is used.
 #
-#    To use this package change the state, type, and zone for the weatheralerts
-#    platform below to match your location. Then restart Home Assistant. Once
-#    restarted, go to your Home Assistant web interface, go to Configuration,
-#    then Entities, and find the new sensor.weatheralerts_* sensor that was
-#    created for your location (the '*' in sensor.weatheralerts_* will likely
-#    be your County or Zone name). Rename that sensor Entity ID to 
-#    sensor.weatheralerts_2 and you shouldn't need to alter anything else in
-#    this yaml package to make it all work.
+#    To use this package go to your Home Assistant web interface, go to
+#    Configuration, then Entities, and find the new sensor.ZoneName sensor
+#    that was created for your location (ZoneName will likely be the name of
+#    your county). Rename that sensor Entity ID to sensor.weatheralerts_2 and
+#    you shouldn't need to alter anything else in this yaml package to make it
+#    all work.
 #
 #    This yaml package stores up to 5 most recent active alerts from the
 #    weather alerts feed and places them in these sensors:
@@ -49,6 +49,7 @@
 #        sensor.weatheralerts_2_alert_4_most_recent_active_alert
 #        sensor.weatheralerts_2_alert_5_most_recent_active_alert
 #
+################################################################################
 
 
 
@@ -57,22 +58,11 @@
 ## sensor ##
 
 sensor:
-  - platform: weatheralerts
-    ## Change 'state' to your 2 character state or zone abbreviation
-    state: WI
-    ## Set 'type' to 'county' or 'zone' depending on which feed you want to use
-    type: zone
-    ## Set 'zone' to your county or zone number for the feed you want to use
-    zone: 38
-    ## You can uncomment and change scan_interval if you don't want
-    ## to check for weather alerts at the default 30 second interval.
-    #scan_interval: 90
-
   - platform: template
     sensors: 
       weatheralerts_2_active_alerts:
-        ## You can add your county or city name to friendly_name for personalization.
-        ## For example: Weather Alerts for Outagamie
+        ## You can add your county or city name to friendly_name for personalization
+        ## For example: Weather Alerts for YourCountyName
         friendly_name: Weather Alerts
         entity_id:
           - sensor.weatheralerts_2
@@ -1077,7 +1067,7 @@ automation:
   ## Automation to trigger a UI notification when there is an active weather alert.
   ## weatheralerts_2_alert_1 should always contain most recent alert.
   - alias: Weather Alert UI Notification - 2
-    initial_state: 'on'
+    #initial_state: 'on'
     trigger:
       - platform: state
         entity_id: sensor.weatheralerts_2_alert_1_last_changed
@@ -1141,7 +1131,7 @@ automation:
           {% endif %}
 
     ## Automation to dismiss UI notification if there are no active alerts for 30 minutes
-    ## Remove or disable this automation if you don't want notifications to auto-dismiss
+    ## Disable or remove this automation if you don't want notifications to auto-dismiss
   - alias: Weather Alert UI Notification Auto-dismiss - 2
     trigger:
       - platform: state
@@ -1171,11 +1161,11 @@ automation:
         - condition: and
           conditions:
             - condition: template
-              value_template: "{{ states('sensor.weatheralerts_1') | int > 0 }}"
+              value_template: "{{ states('sensor.weatheralerts_2') | int > 0 }}"
             - condition: template
-              value_template: "{{ states('sensor.weatheralerts_1_alert_1_last_changed') | lower != 'unknown' }}"
+              value_template: "{{ states('sensor.weatheralerts_2_alert_1_last_changed') | lower != 'unknown' }}"
             - condition: template
-              value_template: "{{ states('sensor.weatheralerts_1_alert_1_last_changed') | lower != 'none' }}"
+              value_template: "{{ states('sensor.weatheralerts_2_alert_1_last_changed') | lower != 'none' }}"
             - condition: template
               value_template: "{{ (as_timestamp(now()) - as_timestamp(states('sensor.weatheralerts_2_alert_1_last_changed'))) < 30 }}"
         - condition: and

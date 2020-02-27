@@ -1,21 +1,19 @@
 ################################################################################
 #
-#    weather_alerts.yaml
+#    weatheralerts_1.yaml
 #
-#    weather alerts from weather.gov using the weatheralerts custom component
+#    weatheralerts sensors and automations (read comments below)
 #
 ################################################################################
 #
 #    Requirements: weatheralerts custom component (installable via HACS)
 #
-#    To use this package change the state, type, and zone for the weatheralerts
-#    platform below to match your location. Then restart Home Assistant. Once
-#    restarted, go to your Home Assistant web interface, go to Configuration,
-#    then Entities, and find the new sensor.weatheralerts_* sensor that was
-#    created for your location (the '*' in sensor.weatheralerts_* will likely
-#    be your County or Zone name). Rename that sensor Entity ID to 
-#    sensor.weatheralerts_1 and you shouldn't need to alter anything else in
-#    this yaml package to make it all work.
+#    To use this package go to your Home Assistant web interface, go to
+#    Configuration, then Entities, and find the new sensor.ZoneName sensor
+#    that was created for your location (ZoneName will likely be the name of
+#    your county). Rename that sensor Entity ID to sensor.weatheralerts_1 and
+#    you shouldn't need to alter anything else in this yaml package to make it
+#    all work.
 #
 #    This yaml package stores up to 5 most recent active alerts from the
 #    weather alerts feed and places them in these sensors:
@@ -40,6 +38,7 @@
 #        sensor.weatheralerts_1_alert_4_most_recent_active_alert
 #        sensor.weatheralerts_1_alert_5_most_recent_active_alert
 #
+################################################################################
 
 
 
@@ -48,22 +47,11 @@
 ## sensor ##
 
 sensor:
-  - platform: weatheralerts
-    ## Change 'state' to your 2 character state or zone abbreviation
-    state: WI
-    ## Set 'type' to 'county' or 'zone' depending on which feed you want to use
-    type: county
-    ## Set 'zone' to your county or zone number for the feed you want to use
-    zone: 87
-    ## You can uncomment and change scan_interval if you don't want
-    ## to check for weather alerts at the default 30 second interval.
-    #scan_interval: 90
-
   - platform: template
     sensors: 
       weatheralerts_1_active_alerts:
-        ## You can add your county or city name to friendly_name for personalization.
-        ## For example: Weather Alerts for Outagamie
+        ## You can add your county or city name to friendly_name for personalization
+        ## For example: Weather Alerts for YourCountyName
         friendly_name: Weather Alerts
         entity_id: 
           - sensor.weatheralerts_1
@@ -1132,7 +1120,7 @@ automation:
           {% endif %}
 
     ## Automation to dismiss UI notification if there are no active alerts for 30 minutes
-    ## Remove or disable this automation if you don't want notifications to auto-dismiss
+    ## Disable or remove this automation if you don't want notifications to auto-dismiss
   - alias: Weather Alert UI Notification Auto-dismiss - 1
     trigger:
       - platform: state

@@ -1,0 +1,60 @@
+################################################################################
+#
+#    weatheralerts.yaml
+#
+#    weather alerts from weather.gov using the weatheralerts custom component
+#
+################################################################################
+#
+#    This yaml package file is where you should define your weatheralerts
+#    platform configurations. You can monitor alerts for different
+#    geographical areas by defining the platform multiple times.
+#
+#    To use this package change the state and zone for the weatheralerts
+#    platform below to match your location. If you also have a county feed
+#    available, you can uncomment the 'county' platform option and set your
+#    county ID to the appropriate value.
+#
+#    Additional weatheralerts sensors and automations are available in
+#    the weatheralerts_1.yaml package. (and weatheralerts_2.yaml package if
+#    you configure a second weatheralerts platform)
+#
+#    It is highly recommended to configure both the zone and county IDs for
+#    your geographical area to ensure reliable alerts. It is also highly
+#    recommended to not specify a zone ID for one geographical area and a
+#    county ID for a seperate geographical area. Doing so will likely cause
+#    multiple alerts that look like duplicates for the same weather event, but
+#    are not actually duplicates due to the start and end times of the alerts
+#    being different between the two seperate geographical areas.
+#
+################################################################################
+
+
+
+
+################################################################################
+## sensor ##
+
+sensor:
+  - platform: weatheralerts
+    ## Set (required) 'state' to your 2 character state or zone abbreviation
+    ## Set (required) 'zone' to your zone number for the zone feed you want to use
+    ## Uncomment and set (optional) 'county' to your county number for the county feed you want to use
+    ## The scan_interval is the length of time (in seconds) between alert feed checks (default is 30 seconds)
+    state: WI
+    zone: 38
+#    county: 87
+    scan_interval: 30
+
+## Uncomment platform, state, zone, (and county if needed) and scan_interval
+## below to add another platform configuration to monitor alerts for an
+## additional geographical area
+#  - platform: weatheralerts
+    ## Set (required) 'state' to your 2 character state or zone abbreviation
+    ## Set (required) 'zone' to your zone number for the zone feed you want to use
+    ## Uncomment and set (optional) 'county' to your county number for the county feed you want to use
+    ## The scan_interval is the length of time (in seconds) between alert feed checks (default is 30 seconds)
+#    state: WI
+#    zone: 39
+#    county: 9
+#    scan_interval: 30

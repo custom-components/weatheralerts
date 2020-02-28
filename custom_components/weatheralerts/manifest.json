@@ -4,7 +4,8 @@
   "documentation": "https://github.com/custom-components/weatheralerts",
   "dependencies": [],
   "codeowners": [
-    "@ludeeus"
+    "@ludeeus",
+    "@jlverhagen"
   ],
   "requirements": []
 }

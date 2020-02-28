@@ -177,7 +177,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                                         "sender": properties.get("sender", "null"),
                                         "senderName": properties.get("senderName", "null"),
                                         "id": properties.get("id", "null"),
-                                        "zoneid": self.zoneid,
+                                        "zoneid": self.feedid,
                                     }
                                 )
 

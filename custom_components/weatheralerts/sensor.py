@@ -2,7 +2,7 @@
 A component which allows you to get weather alerts from weather.gov.
 For more details about this component, please refer to the documentation at
 
-https://github.com/custom-components/sensor.weatheralerts
+https://github.com/custom-components/weatheralerts
 """
 import sys
 import logging
@@ -16,9 +16,11 @@ from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
 
+__version__ = '0.1.0'
+
 CONF_STATE = "state"
 CONF_ZONE = "zone"
-CONF_TYPE = "type"
+CONF_COUNTY = "county"
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -26,11 +28,13 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
         vol.Required(CONF_STATE): cv.string,
         vol.Required(CONF_ZONE): cv.string,
-        vol.Required(CONF_TYPE): cv.matches_regex("(^zone$|^county$)")
+        vol.Optional(CONF_COUNTY, default=''): cv.string,
     }
 )
 
-URL = "https://api.weather.gov/alerts/active/zone/{}"
+URL = "https://api.weather.gov/alerts/active?zone={}"
+URL_ID_CHECK = "https://alerts.weather.gov/cap/wwaatmget.php?x={}&y=0"
+ID_CHECK_ERRORS = ["? invalid county", "? invalid zone"]
 
 HEADERS = {
     "accept": "application/ld+json",
@@ -42,8 +46,11 @@ async def async_setup_platform(
     hass, config, add_entities, discovery_info=None
 ):  # pylint: disable=missing-docstring, unused-argument
     state = config[CONF_STATE].upper()
-    zone = config[CONF_ZONE]
-    zone_type = config[CONF_TYPE].lower()
+    zone_config = config[CONF_ZONE]
+    county_config = config[CONF_COUNTY]
+    
+    zone=zone_config
+    county=county_config
     
     if len(state) != 2:
         _LOGGER.critical("Configured (YAML) state '%s' is not valid", state)
@@ -53,19 +60,48 @@ async def async_setup_platform(
         zone = f"00{zone}"
     if len(zone) == 2:
         zone = f"0{zone}"
-
-    if len(zone) == 3 and zone_type == "zone":
+    if len(zone) == 3:
         zoneid = f"{state}Z{zone}"
-    elif len(zone) == 3 and zone_type == "county":
-        zoneid = f"{state}C{zone}"
     else:
-        _LOGGER.critical("Configured (YAML) zone '%s' is not valid", zone)
+        _LOGGER.critical("Configured (YAML) zone ID '%s' is not valid", zone_config)
         return False
-    
+
+    if len(county) == 1:
+        county = f"00{county}"
+    if len(county) == 2:
+        county = f"0{county}"
+    if len(county) == 3:
+        countyid = f"{state}C{county}"
+    elif county != '':
+        _LOGGER.critical("Configured (YAML) county ID '%s' is not valid", county_config)
+        return False
+
+    if len(county) == 3:
+        feedid = f"{zoneid},{countyid}"
+    else:
+        feedid = zoneid
+
     session = async_create_clientsession(hass)
 
-    # Check the zoneid
+    # Check the zoneid and set sensor name to county name from zoneid alert feed
     try:
+        async with async_timeout.timeout(10, loop=hass.loop):
+            zone_check_response = await session.get(URL_ID_CHECK.format(zoneid))
+            zone_data = await zone_check_response.text()
+
+            if any (id_error in zone_data for id_error in ID_CHECK_ERRORS):
+                _LOGGER.critical("Compiled zone ID '%s' is not valid", zoneid)
+                return False
+
+        if len(county) == 3:
+             async with async_timeout.timeout(10, loop=hass.loop):
+                county_check_response = await session.get(URL_ID_CHECK.format(countyid))
+                county_data = await county_check_response.text()
+
+                if any (id_error in county_data for id_error in ID_CHECK_ERRORS):
+                    _LOGGER.critical("Compiled county ID '%s' is not valid", countyid)
+                    return False
+
         async with async_timeout.timeout(10, loop=hass.loop):
             response = await session.get(URL.format(zoneid))
             data = await response.json()
@@ -82,15 +118,15 @@ async def async_setup_platform(
         _LOGGER.error("[%s] %s", sys.exc_info()[0].__name__, exception)
         raise PlatformNotReady
 
-    add_entities([WeatherAlertsSensor(name, state, zoneid, session)], True)
-    _LOGGER.info("Added sensor with name '%s' for zoneid '%s'", name, zoneid)
+    add_entities([WeatherAlertsSensor(name, state, feedid, session)], True)
+    _LOGGER.info("Added sensor with name '%s' for feedid '%s'", name, feedid)
 
 
 class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
-    def __init__(self, name, zone_state, zoneid, session):
+    def __init__(self, name, zone_state, feedid, session):
         self._name = name
         self.zone_state = zone_state
-        self.zoneid = zoneid
+        self.feedid = feedid
         self.session = session
         self._state = 0
         self.connected = True
@@ -103,12 +139,12 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
 
         try:
             async with async_timeout.timeout(10, loop=self.hass.loop):
-                response = await self.session.get(URL.format(self.zoneid))
+                response = await self.session.get(URL.format(self.feedid))
                 if response.status != 200:
                     self._state = "unavailable"
                     _LOGGER.critical(
                         "[%s] weatheralert download failure - HTTP status code %s",
-                        self.zoneid,
+                        self.feedid,
                         response.status
                     )
                 else:
@@ -150,7 +186,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                         "alerts": alerts,
                         "integration": "weatheralerts",
                         "state": self.zone_state,
-                        "zone": self.zoneid,
+                        "zone": self.feedid,
                     }
         except Exception:  # pylint: disable=broad-except
             self.exception = sys.exc_info()[0].__name__
@@ -164,17 +200,17 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                     self._state = "unavailable"
                     _LOGGER.error(
                         "[%s] Could not update the sensor (%s)",
-                        self.zoneid,
+                        self.feedid,
                         self.exception,
                     )
 
             elif not self.connected:
                 if connected:
-                    _LOGGER.info("[%s] Update of the sensor completed", self.zoneid)
+                    _LOGGER.info("[%s] Update of the sensor completed", self.feedid)
                 else:
                     self._state = "unavailable"
                     _LOGGER.debug(
-                        "[%s] Still no update (%s)", self.zoneid, self.exception
+                        "[%s] Still no update (%s)", self.feedid, self.exception
                     )
 
             self.connected = connected
@@ -187,7 +223,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
     @property
     def unique_id(self):
         """Return a unique ID to use for this sensor."""
-        return f"weatheralerts_{self.zoneid}"
+        return f"weatheralerts_{self.feedid}".replace(",", "")
 
     @property
     def state(self):
@@ -208,4 +244,3 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
     def device_state_attributes(self):
         """Return attributes."""
         return self._attr
-    

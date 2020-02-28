@@ -51,7 +51,7 @@ sensor:
 When there are alerts, the information about them are stored in a list in the attributes.
 The content of that list can be used in automation templates, template sensors and a good amount of custom Lovelace cards.
 
-Sample yaml packages are included in the repository packages directory (`/custom_components/weatheralerts/packages/`):
+Sample yaml packages are included in the repository packages directory [https://github.com/custom-components/weatheralerts/packages/](https://github.com/custom-components/weatheralerts/packages/):
 * **weatheralerts.yaml** - includes platform configuration. If you already have the weatheralerts platform configured elsewhere, you won't need this.
 * **weatheralerts_1.yaml** - rename your first weatheralerts platform sensor entity ID to `sensor.weatheralerts_1` to use this yaml package which includes template sensors for upto 5 active alerts and a script and automations to handle UI notifications.
 * **weatheralerts_2.yaml** - rename your second weatheralerts platform sensor entity ID to `sensor.weatheralerts_2` to use this yaml package which includes template sensors for upto 5 active alerts and a script and automations to handle UI notifications.

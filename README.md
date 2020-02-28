@@ -4,10 +4,15 @@ A platform which allows you to get information from alerts.weather.gov.
 
 # Breaking change
 
-On December 25 2019, this custom_component was rewritten to use a more modern API to get alerts.
-At the same time the configuration and storing of alert data was changed.
+No breaking changes (unless you manually installed pull request updates or are updating from a version dated prior to December 25, 2019 - read the documentation below for potential configuration changes). 
 
-To find your zone go to [https://www.weather.gov/pimar/PubZone](https://www.weather.gov/pimar/PubZone), click the PDF or JPG for your state, then find your Zone number on the map.
+# Configuration
+
+To find your zone ID number, go to [https://www.weather.gov/pimar/PubZone](https://www.weather.gov/pimar/PubZone), click the PDF or JPG for your state, and then find your Zone number on the map.
+
+To find your county ID number, go to [https://alerts.weather.gov/](https://alerts.weather.gov/), scroll down the page to find your state, click the County List link next to your state, lookup the six character county code for your county in the table, and then take just the number from that county code to use as your county ID number. For example, Outagamie County in Wisconsin has county code WIC087. The county ID number to use in the platform configuration would be 87.
+
+You can also use [https://alerts.weather.gov/](https://alerts.weather.gov/) to get marine zone IDs and configure another weatheralerts platform to monitor weather alerts for marine zones. Use the same general procedure as mentioned above for county ID, but here you will find your primary marine zone name at the bottom of the list of states, and then you click the Zone List link next to your marine zone to find the specific marine zone ID for your desired location.
 
 To get started put all the files from `/custom_components/weatheralerts/` here:
 `<config directory>/custom_components/weatheralerts/`
@@ -17,19 +22,23 @@ To get started put all the files from `/custom_components/weatheralerts/` here:
 ```yaml
 sensor:
   platform: weatheralerts
-  state: CA
-  zone: "560"
+  state: WI
+  zone: 38
+  county: 87
+  
 ```
 
-**If your zone starts with the number `0` you need to wrap quotes around it, or just skip the first `0` (so `010`, should be `"010"` or `10`)**
+**If your zone or county ID number starts with one or more 0's you need to wrap quotes around it, or just skip the leading 0's (so `010` should be `"010"` or `10`, and `003` should be `"003"` or `3`)**
 
 **Configuration variables:**
 
-key | description
-:--- | :---
-**platform (Required)** | The platform name.
-**state (Required)** | Two letter code for your state ex.("CA" for California).
-**zone (Required)** | 3 number code of the zone you want to monitor ex. "560"
+| key | description |
+| :--- | :--- |
+| **platform (Required)** | The platform name. |
+| **state (Required)** | Two letter code for your state ex.("CA" for California). |
+| **zone (Required)** |  One, two, or three digit code of the zone you want to monitor ex. 38 |
+| **county (Optional)** | One, two, or three digit code of the zone you want to monitor ex. 87 |
+| **scan_interval (Optional)** | Number of seconds between updates. Default is 30 seconds if option is not specified. |
 
 ## Sample overview
 
@@ -41,3 +50,14 @@ key | description
 
 When there are alerts, the information about them are stored in a list in the attributes.
 The content of that list can be used in automation templates, template sensors and a good amount of custom Lovelace cards.
+
+Sample yaml packages are included in the repository packages directory (`/custom_components/weatheralerts/packages/`):
+* **weatheralerts.yaml** - includes platform configuration. If you already have the weatheralerts platform configured elsewhere, you won't need this.
+* **weatheralerts_1.yaml** - rename your first weatheralerts platform sensor entity ID to `sensor.weatheralerts_1` to use this yaml package which includes template sensors for upto 5 active alerts and a script and automations to handle UI notifications.
+* **weatheralerts_2.yaml** - rename your second weatheralerts platform sensor entity ID to `sensor.weatheralerts_2` to use this yaml package which includes template sensors for upto 5 active alerts and a script and automations to handle UI notifications.
+
+The yaml packages have some documentation included in them. Additional yaml package documentation and lovelace examples will be added here in the near future.
+
+Todo list:
+* Add more documentation
+* Add config flow to allow UI-based configuration (eliminate yaml-based platform configuration)

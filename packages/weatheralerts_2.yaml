@@ -218,7 +218,7 @@ sensor:
               {{ states.sensor.weatheralerts_2.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
               {{ states.sensor.weatheralerts_2.attributes.alerts[0].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_2.attributes.alerts[0].instruction != None %}
-                <br>{{ states.sensor.weatheralerts_2.attributes.alerts[0].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
+              {{ states.sensor.weatheralerts_2.attributes.alerts[0].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% endif %}
               <br>Where : {{ state_attr('sensor.weatheralerts_2', 'friendly_name') }}
               <br>Effective: {{ states.sensor.weatheralerts_2.attributes.alerts[0].effective }}
@@ -374,7 +374,7 @@ sensor:
               {{ states.sensor.weatheralerts_2.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
               {{ states.sensor.weatheralerts_2.attributes.alerts[1].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_2.attributes.alerts[1].instruction != None %}
-                <br>{{ states.sensor.weatheralerts_2.attributes.alerts[1].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
+              {{ states.sensor.weatheralerts_2.attributes.alerts[1].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% endif %}
               <br>Where : {{ state_attr('sensor.weatheralerts_2', 'friendly_name') }}
               <br>Effective: {{ states.sensor.weatheralerts_2.attributes.alerts[1].effective }}
@@ -530,7 +530,7 @@ sensor:
               {{ states.sensor.weatheralerts_2.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
               {{ states.sensor.weatheralerts_2.attributes.alerts[2].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_2.attributes.alerts[2].instruction != None %}
-                <br>{{ states.sensor.weatheralerts_2.attributes.alerts[2].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
+              {{ states.sensor.weatheralerts_2.attributes.alerts[2].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% endif %}
               <br>Where : {{ state_attr('sensor.weatheralerts_2', 'friendly_name') }}
               <br>Effective: {{ states.sensor.weatheralerts_2.attributes.alerts[2].effective }}
@@ -686,7 +686,7 @@ sensor:
               {{ states.sensor.weatheralerts_2.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
               {{ states.sensor.weatheralerts_2.attributes.alerts[3].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_2.attributes.alerts[3].instruction != None %}
-                <br>{{ states.sensor.weatheralerts_2.attributes.alerts[3].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
+              {{ states.sensor.weatheralerts_2.attributes.alerts[3].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% endif %}
               <br>Where : {{ state_attr('sensor.weatheralerts_2', 'friendly_name') }}
               <br>Effective: {{ states.sensor.weatheralerts_2.attributes.alerts[3].effective }}
@@ -842,7 +842,7 @@ sensor:
               {{ states.sensor.weatheralerts_2.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') }}<br><br>
               {{ states.sensor.weatheralerts_2.attributes.alerts[4].description | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% if states.sensor.weatheralerts_2.attributes.alerts[4].instruction != None %}
-                <br>{{ states.sensor.weatheralerts_2.attributes.alerts[4].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
+              {{ states.sensor.weatheralerts_2.attributes.alerts[4].instruction | regex_replace('\n\n','<p>') |regex_replace('\n',' ')|regex_replace('<p>','\n\n') }}<br>
               {% endif %}
               <br>Where : {{ state_attr('sensor.weatheralerts_2', 'friendly_name') }}
               <br>Effective: {{ states.sensor.weatheralerts_2.attributes.alerts[4].effective }}

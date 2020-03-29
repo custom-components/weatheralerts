@@ -16,7 +16,7 @@ from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 CONF_STATE = "state"
 CONF_ZONE = "zone"
@@ -180,6 +180,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                                         "zoneid": self.feedid,
                                     }
                                 )
+                        alerts.sort(key=lambda x: (x['sent'], x['id']), reverse=True)
 
                     self._state = len(alerts)
                     self._attr = {

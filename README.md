@@ -5,6 +5,9 @@ A platform which allows you to get information from alerts.weather.gov.
 
 # Breaking change
 
+v0.1.1 - No breaking changes
+
+v0.1.0 - Breaking changes:
 No configuration breaking changes (unless you manually installed pull request updates or are updating from a version dated prior to December 25, 2019 - read the documentation below for potential configuration changes). 
 
 Potential breaking change on the weatheralerts platform sensor entity state. The state will be set to the number of active alerts if the sensor update succeeds and will be set to 'unavailable' if the sensor update fails. The weatheralerts_\*.yaml packages [here](https://github.com/custom-components/weatheralerts/packages/) contain template sensors that will hold on to alerts and the alert count even if the main weatheralerts sensor update fails.

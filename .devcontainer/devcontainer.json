@@ -1,7 +1,7 @@
 // See https://aka.ms/vscode-remote/devcontainer.json for format details.
 {
 	"name": "weatheralerts dev",
-	"image": "ludeeus/devcontainer:integration",
+	"image": "ludeeus/container:integration",
 	"context": "..",
 	"appPort": [
 		"9123:8123"

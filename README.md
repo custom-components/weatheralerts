@@ -2,6 +2,14 @@
 
 A platform which allows you to get information from alerts.weather.gov.
 
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/custom-components/weatheralerts?style=plastic)](https://github.com/custom-components/weatheralerts/releases)
+[![GitHub](https://img.shields.io/github/license/custom-components/weatheralerts?style=plastic)](https://github.com/custom-components/weatheralerts/blob/master/LICENSE)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=plastic)](https://github.com/custom-components/hacs)
+
+[![GitHub stars](https://img.shields.io/github/stars/custom-components/weatheralerts?style=plastic)](https://github.com/custom-components/weatheralerts/stargazers)
+![GitHub](https://img.shields.io/maintenance/yes/2020.svg?style=plastic)
+[![GitHub issues](https://img.shields.io/github/issues/custom-components/weatheralerts?style=plastic)](https://github.com/custom-components/weatheralerts/issues)
+[![GitHub commits since latest release (by SemVer)](https://img.shields.io/github/commits-since/custom-components/weatheralerts/latest?style=plastic)](https://github.com/custom-components/weatheralerts/commits/master)
 
 # Breaking change
 

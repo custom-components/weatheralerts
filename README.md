@@ -2,14 +2,14 @@
 
 A platform which allows you to get information from alerts.weather.gov.
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/custom-components/weatheralerts?style=plastic)](https://github.com/custom-components/weatheralerts/releases)
-[![GitHub](https://img.shields.io/github/license/custom-components/weatheralerts?style=plastic)](https://github.com/custom-components/weatheralerts/blob/master/LICENSE)
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=plastic)](https://github.com/custom-components/hacs)
+[![GitHub release (latest by date)][release-badge]][release-link]
+[![GitHub][license-badge]][license-link]
+[![hacs_badge][hacs-badge]][hacs-link]
 
-[![GitHub stars](https://img.shields.io/github/stars/custom-components/weatheralerts?style=plastic)](https://github.com/custom-components/weatheralerts/stargazers)
-![GitHub](https://img.shields.io/maintenance/yes/2020.svg?style=plastic)
-[![GitHub issues](https://img.shields.io/github/issues/custom-components/weatheralerts?style=plastic)](https://github.com/custom-components/weatheralerts/issues)
-[![GitHub commits since latest release (by SemVer)](https://img.shields.io/github/commits-since/custom-components/weatheralerts/latest?style=plastic)](https://github.com/custom-components/weatheralerts/commits/master)
+[![GitHub stars][stars-badge]][stars-link]
+![GitHub][maintained-badge]
+[![GitHub issues][issues-badge]][issues-link]
+[![GitHub commits since latest release (by SemVer)][commits-badge]][commits-link]
 
 # Breaking change
 
@@ -87,3 +87,17 @@ The yaml packages have some documentation included in them. Additional yaml pack
 # Todo list
 * Add more documentation
 * Add config flow to allow UI-based configuration (eliminate yaml-based platform configuration)
+
+[release-badge]: https://img.shields.io/github/v/release/custom-components/weatheralerts?style=plastic
+[release-link]: https://github.com/custom-components/weatheralerts/releases
+[license-badge]: https://img.shields.io/github/license/custom-components/weatheralerts?style=plastic
+[license-link]: https://github.com/custom-components/weatheralerts/blob/master/LICENSE
+[hacs-badge]: https://img.shields.io/badge/HACS-Default-orange.svg?style=plastic
+[hacs-link]: https://github.com/custom-components/hacs
+[stars-badge]: https://img.shields.io/github/stars/custom-components/weatheralerts?style=plastic
+[stars-link]: https://github.com/custom-components/weatheralerts/stargazers
+[maintained-badge]: https://img.shields.io/maintenance/yes/2020.svg?style=plastic
+[issues-badge]: https://img.shields.io/github/issues/custom-components/weatheralerts?style=plastic
+[issues-link]: https://github.com/custom-components/weatheralerts/issues
+[commits-badge]: https://img.shields.io/github/commits-since/custom-components/weatheralerts/latest?style=plastic
+[commits-link]: https://github.com/custom-components/weatheralerts/commits/master

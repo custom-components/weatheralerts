@@ -142,8 +142,8 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                 response = await self.session.get(URL.format(self.feedid))
                 if response.status != 200:
                     self._state = "unavailable"
-                    _LOGGER.info(
-                        "[%s] Currently unable to download from weather.gov - HTTP status code %s",
+                    _LOGGER.warning(
+                        "[%s] Possible API outage. Currently unable to download from weather.gov - HTTP status code %s",
                         self.feedid,
                         response.status
                     )
@@ -214,7 +214,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
             if self.connected:
                 if not connected:
                     self._state = "unavailable"
-                    _LOGGER.error(
+                    _LOGGER.warning(
                         "[%s] Could not update the sensor (%s)",
                         self.feedid,
                         self.exception,
@@ -225,7 +225,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                     _LOGGER.info("[%s] Update of the sensor completed", self.feedid)
                 else:
                     self._state = "unavailable"
-                    _LOGGER.info(
+                    _LOGGER.warning(
                         "[%s] Still no update (%s)", self.feedid, self.exception
                     )
 

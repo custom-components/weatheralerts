@@ -180,7 +180,14 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                                         "zoneid": self.feedid,
                                     }
                                 )
-                        alerts.sort(key=lambda x: (x['id']), reverse=True)
+                    alerts.sort(key=lambda x: (x['id']), reverse=True)
+
+                    for sorted_alert in alerts:
+                        _LOGGER.debug(
+                            "[%s] Sorted alert ID: %s",
+                            self.feedid,
+                            sorted_alert.get("id", "null")
+                        )
 
                     self._state = len(alerts)
                     self._attr = {

@@ -85,7 +85,7 @@ async def async_setup_platform(
 
     # Check the zoneid and set sensor name to county name from zoneid alert feed
     try:
-        async with async_timeout.timeout(10, loop=hass.loop):
+        async with async_timeout.timeout(20, loop=hass.loop):
             zone_check_response = await session.get(URL_ID_CHECK.format(zoneid))
             zone_data = await zone_check_response.text()
 
@@ -94,7 +94,7 @@ async def async_setup_platform(
                 return False
 
         if len(county) == 3:
-             async with async_timeout.timeout(10, loop=hass.loop):
+             async with async_timeout.timeout(20, loop=hass.loop):
                 county_check_response = await session.get(URL_ID_CHECK.format(countyid))
                 county_data = await county_check_response.text()
 
@@ -102,7 +102,7 @@ async def async_setup_platform(
                     _LOGGER.critical("Compiled county ID '%s' is not valid", countyid)
                     return False
 
-        async with async_timeout.timeout(10, loop=hass.loop):
+        async with async_timeout.timeout(20, loop=hass.loop):
             response = await session.get(URL.format(zoneid))
             data = await response.json()
 

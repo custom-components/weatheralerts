@@ -48,7 +48,7 @@ async def async_setup_platform(
     state = config[CONF_STATE].upper()
     zone_config = config[CONF_ZONE]
     county_config = config[CONF_COUNTY]
-    
+
     zone=zone_config
     county=county_config
     
@@ -111,11 +111,11 @@ async def async_setup_platform(
                     _LOGGER.critical("Compiled zone ID '%s' is not valid", zoneid)
                     return False
 
-            _LOGGER.debug(data)
+            _LOGGER.info(data)
             name = data["title"].split("advisories for ")[1].split(" (")[0]
 
     except Exception as exception:  # pylint: disable=broad-except
-        _LOGGER.error("[%s] %s", sys.exc_info()[0].__name__, exception)
+        _LOGGER.warning("[%s] %s", sys.exc_info()[0].__name__, exception)
         raise PlatformNotReady
 
     add_entities([WeatherAlertsSensor(name, state, feedid, session)], True)
@@ -142,8 +142,8 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                 response = await self.session.get(URL.format(self.feedid))
                 if response.status != 200:
                     self._state = "unavailable"
-                    _LOGGER.critical(
-                        "[%s] weatheralert download failure - HTTP status code %s",
+                    _LOGGER.info(
+                        "[%s] Currently unable to download from weather.gov - HTTP status code %s",
                         self.feedid,
                         response.status
                     )
@@ -210,7 +210,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                     _LOGGER.info("[%s] Update of the sensor completed", self.feedid)
                 else:
                     self._state = "unavailable"
-                    _LOGGER.debug(
+                    _LOGGER.info(
                         "[%s] Still no update (%s)", self.feedid, self.exception
                     )
 

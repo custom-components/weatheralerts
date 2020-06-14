@@ -154,6 +154,10 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                         for alert in data["features"]:
                             if alert.get("properties") is not None:
                                 properties = alert["properties"]
+                                if properties["ends"] is None:
+                                    properties["endsExpires"] = properties.get("expires", "null")
+                                else:
+                                    properties["endsExpires"] = properties.get("ends", "null")
                                 alerts.append(
                                     {
                                         "area": properties.get("areaDesc", "null"),
@@ -170,6 +174,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                                         "NWSheadline": properties["parameters"].get("NWSheadline", "null"),
                                         "effective": properties.get("effective", "null"),
                                         "expires": properties.get("expires", "null"),
+                                        "endsExpires": properties.get("endsExpires", "null"),
                                         "onset": properties.get("onset", "null"),
                                         "status": properties.get("status", "null"),
                                         "messageType": properties.get("messageType", "null"),

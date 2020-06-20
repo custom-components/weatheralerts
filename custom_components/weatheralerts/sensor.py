@@ -254,7 +254,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
     @property
     def icon(self):
         """Return icon."""
-        return "mdi:weather-hurricane"
+        return "mdi:alert-octagram"
 
     @property
     def device_state_attributes(self):

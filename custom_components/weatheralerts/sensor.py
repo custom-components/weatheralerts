@@ -1,6 +1,6 @@
 """
-A component which allows you to get weather alerts from weather.gov.
-For more details about this component, please refer to the documentation at
+An integration which allows you to get weather alerts from weather.gov.
+For more details about this integration, please refer to the documentation at
 
 https://github.com/custom-components/weatheralerts
 """

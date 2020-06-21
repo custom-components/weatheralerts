@@ -1,13 +1,13 @@
 # Lovelace UI Examples
 
-  * [Detailed Instructions](https://github.com/custom-components/documentation/DOCUMENTATION.md)
-  * [Troubleshooting](https://github.com/custom-components/documentation/TROUBLESHOOTING.md)
-  * [YAML Package Info](https://github.com/custom-components/documentation/YAML_PACKAGES_DOCS.md)
+  * [Detailed Instructions](DOCUMENTATION.md)
+  * [Troubleshooting](TROUBLESHOOTING.md)
+  * [YAML Package Info](YAML_PACKAGES_DOCS.md)
   * **Lovelace UI Examples**
   * [GitHub Repository](https://github.com/custom-components/weatheralerts)
   * [View Issues/Feature Requests](https://github.com/custom-components/weatheralerts/issues)
   * [Report an Issue/Feature Request](https://github.com/custom-components/weatheralerts/issues/new/choose)
-  * [Changelog](https://github.com/custom-components/CHANGELOG.md)
+  * [Changelog](/CHANGELOG.md)
 
 
 ## Examples (no YAML package required)

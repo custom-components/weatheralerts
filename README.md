@@ -1,6 +1,4 @@
-# custom_component to get info from alerts.weather.gov
-
-A platform which allows you to get information from alerts.weather.gov.
+# An integration to get weather alerts from weather.gov
 
 [![GitHub release (latest by date)][release-badge]][release-link]
 [![GitHub][license-badge]][license-link]
@@ -11,82 +9,61 @@ A platform which allows you to get information from alerts.weather.gov.
 [![GitHub issues][issues-badge]][issues-link]
 [![GitHub commits since latest release (by SemVer)][commits-badge]][commits-link]
 
-# Breaking change
 
-v0.1.1 - No breaking changes
+# Breaking changes
 
-v0.1.0 - Breaking changes:
-No configuration breaking changes (unless you manually installed pull request updates or are updating from a version dated prior to December 25, 2019 - read the documentation below for potential configuration changes). 
-
-Potential breaking change on the weatheralerts platform sensor entity state. The state will be set to the number of active alerts if the sensor update succeeds and will be set to 'unavailable' if the sensor update fails. The weatheralerts_\*.yaml packages [here](https://github.com/custom-components/weatheralerts/packages/) contain template sensors that will hold on to alerts and the alert count even if the main weatheralerts sensor update fails.
-
-# Installation
-
-It is recommended to install weatheralerts via HACS. To install manually, put all the files from `/custom_components/weatheralerts/` here:
-`<config directory>/custom_components/weatheralerts/`
-
-Once installed (via HACS or manually), continue reading below to configure the weatheralerts sensor platform.
+### v0.1.2
+ * The [YAML packages](https://github.com/custom-components/documentation/YAML_PACKAGES_DOCS.md) currently available for *weatheralerts v0.1.2* are not compatible with prior versions of *weatheralerts*. Older YAML packages should still work with *weatheralerts v0.1.2*, however, the most recent YAML package files contain new features and fixes.
 
 
-# Configuration
+# Installation Quickstart
 
-To find your zone ID number, go to [https://www.weather.gov/pimar/PubZone](https://www.weather.gov/pimar/PubZone), click the PDF or JPG for your state, and then find your Zone number on the map.
+This qickstart install guide assumes you are already familiar with custom component installation and with the Home Assistant YAML configuration. If you need more detailed step-by-step instructions, check the links at the bottom for detailed instructions. Troubleshooting information, weatheralerts YAML package information, and Lovelace UI examples are also included in the [links](https://github.com/custom-components/weatheralerts/README.md#links) at the bottom.
 
-To find your county ID number, go to [https://alerts.weather.gov/](https://alerts.weather.gov/), scroll down the page to find your state, click the County List link next to your state, lookup the six character county code for your county in the table, and then take just the number from that county code to use as your county ID number. For example, Outagamie County in Wisconsin has county code WIC087. The county ID number to use in the platform configuration would be 87.
+Install the *weatheralerts* integration via *HACS*. After installing via *HACS*, don't restart Home Assistant yet. We will do that after completing the YAML platform configuration.
 
-You can also use [https://alerts.weather.gov/](https://alerts.weather.gov/) to get marine zone IDs and configure another weatheralerts platform to monitor weather alerts for marine zones. Use the same general procedure as mentioned above for county ID, but here you will find your primary marine zone name at the bottom of the list of states, and then you click the Zone List link next to your marine zone to find the specific marine zone ID for your desired location.
+You will need to find your zone and county codes by looking for your state or marine zone at [https://alerts.weather.gov/](https://alerts.weather.gov/). Once you find your state or marine zone, click into the **Zone List** and **County List** links and find the **Zone Code** and **County Code** your county. All you need are just the first two letters (your state or marine zone abbreviation) and the last three digits (zone/county ID number) of your zone code and county code to put into the platform configuration. The zone and county ID numbers are not usually the same number, so be sure to look up both codes. 
 
-**Example configuration.yaml:**
-
+Once installed and you have your state (or marine zone) abbreviation and ID numbers, add the weatheralerts sensor platform to your configuration. If your state is Wisconsin and your county is Outagamie, then the state abbreviation is `WI`, the zone ID number is `038`, and the county ID number is `087`. For the ID numbers, remove any leading zeros and your YAML platform configuration would look something like this:
 ```yaml
 sensor:
   platform: weatheralerts
   state: WI
   zone: 38
   county: 87
-  
 ```
+Once your configuration is saved, restart Home Assistant. 
 
-**If your zone or county ID number starts with one or more 0's you need to wrap quotes around it, or just skip the leading 0's (so `010` should be `"010"` or `10`, and `003` should be `"003"` or `3`)**
+That completes the integration (custom component) installation.
 
-**Configuration variables:**
-
-| key | description |
-| :--- | :--- |
-| **platform (Required)** | The platform name. |
-| **state (Required)** | Two letter code for your state ex.("CA" for California). |
-| **zone (Required)** |  One, two, or three digit code of the zone you want to monitor ex. 38 |
-| **county (Optional)** | One, two, or three digit code of the zone you want to monitor ex. 87 |
-| **scan_interval (Optional)** | Number of seconds between updates. Default is 30 seconds if option is not specified. |
-
-### **It is highly recommended to use BOTH zone and county IDs in the platform configuration to increase the reliability of alerts. If you only use the 'zone' config option, you may not get all of the active alerts for your location.**
+Check the [links](https://github.com/custom-components/weatheralerts/README.md#links) below for more detailed instructions, troubleshooting, and for YAML package and Lovelace UI usage and examples.
 
 
-## Sample overview
+# Updating via HACS
 
-![Sample overview](sensor.png)
-
-
-## Attributes
-
-![Sample overview](attributes.png)
-
-When there are alerts, the information about them are stored in a list in the attributes.
-The content of that list can be used in automation templates, template sensors and a good amount of custom Lovelace cards.
+Check the [Breaking Changes](https://github.com/custom-components/weatheralerts/README.md#breaking-changes) section of this README to see if you need to manually update the YAML packages or make any changes to your custom YAML or Lovelace UI cards. Simply use the **Update** button for the *weatheralerts* integration within *HACS* if there are no breaking changes and then restart Home Assistant. 
 
 
-## YAML and Lovelace
-Sample yaml packages are included in the repository packages directory [https://github.com/custom-components/weatheralerts/packages/](https://github.com/custom-components/weatheralerts/packages/). See [Home Assistant Packages](https://www.home-assistant.io/docs/configuration/packages/) for more info on how to use yaml packages. The yaml packages currently available:
-* **weatheralerts.yaml** - includes the main weatheralerts sensor platform configuration. If you already have the weatheralerts platform configured elsewhere, you won't need this.
-* **weatheralerts_1.yaml** - rename your first weatheralerts platform sensor entity ID to `sensor.weatheralerts_1` to use this yaml package which includes template sensors for up to 5 active alerts and a script and automations to handle UI notifications.
-* **weatheralerts_2.yaml** - rename your second weatheralerts platform sensor entity ID to `sensor.weatheralerts_2` to use this yaml package which includes template sensors for up to 5 active alerts and a script and automations to handle UI notifications.
+# Links
 
-The yaml packages have some documentation included in them. Additional yaml package documentation and lovelace examples will be added here in the near future.
+  * [Detailed Instructions](https://github.com/custom-components/documentation/DOCUMENTATION.md)
+  * [Troubleshooting](https://github.com/custom-components/documentation/TROUBLESHOOTING.md)
+  * [YAML Package Info](https://github.com/custom-components/documentation/YAML_PACKAGES_DOCS.md)
+  * [Lovelace UI Examples](https://github.com/custom-components/documentation/LOVELACE_EXAMPLES.md)
+  * [GitHub Repository](https://github.com/custom-components/weatheralerts)
+  * [View Issues/Feature Requests](https://github.com/custom-components/weatheralerts/issues)
+  * [Report an Issue/Feature Request](https://github.com/custom-components/weatheralerts/issues/new/choose)
+  * [Changelog](https://github.com/custom-components/CHANGELOG.md)
+
+
 
 
 # Todo list
-* Add more documentation
-* Add config flow to allow UI-based configuration (eliminate yaml-based platform configuration)
+- [x] Add more documentation
+- [ ] Add config flow to allow UI-based configuration (eliminate yaml-based platform configuration)
+- [ ] Create alternative (possibly simpler) YAML package or move some template sensors into the integration
+- [ ] Add backup weather alert source for occasions when weather.gov json feed is experiencing an outage
+
 
 [release-badge]: https://img.shields.io/github/v/release/custom-components/weatheralerts?style=plastic
 [release-link]: https://github.com/custom-components/weatheralerts/releases

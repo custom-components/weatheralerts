@@ -2,14 +2,14 @@
 
 Note: Don't forget to *Star* or *Watch* the *weatheralerts* GitHub repository so you can get notifications when the YAML packages are updated in between releases!
 
-  * [Detailed Instructions](https://github.com/custom-components/documentation/DOCUMENTATION.md)
-  * [Troubleshooting](https://github.com/custom-components/documentation/TROUBLESHOOTING.md)
+  * [Detailed Instructions](DOCUMENTATION.md)
+  * [Troubleshooting](TROUBLESHOOTING.md)
   * **YAML Package Info**
-  * [Lovelace UI Examples](https://github.com/custom-components/documentation/LOVELACE_EXAMPLES.md)
+  * [Lovelace UI Examples](LOVELACE_EXAMPLES.md)
   * [GitHub Repository](https://github.com/custom-components/weatheralerts)
   * [View Issues/Feature Requests](https://github.com/custom-components/weatheralerts/issues)
   * [Report an Issue/Feature Request](https://github.com/custom-components/weatheralerts/issues/new/choose)
-  * [Changelog](https://github.com/custom-components/CHANGELOG.md)
+  * [Changelog](/CHANGELOG.md)
 
 
 ## YAML Package Setup

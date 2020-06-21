@@ -1,5 +1,7 @@
 # YAML Package Info
 
+Note: Don't forget to *Star* or *Watch* the *weatheralerts* GitHub repository so you can get notifications when the YAML packages are updated in between releases!
+
   * [Detailed Instructions](https://github.com/custom-components/documentation/DOCUMENTATION.md)
   * [Troubleshooting](https://github.com/custom-components/documentation/TROUBLESHOOTING.md)
   * **YAML Package Info**

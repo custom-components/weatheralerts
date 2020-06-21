@@ -1,13 +1,13 @@
 # Detailed Instructions
 
  * **Detailed Instructions**
- * [Troubleshooting](https://github.com/custom-components/documentation/TROUBLESHOOTING.md)
- * [YAML Package Info](https://github.com/custom-components/documentation/YAML_PACKAGES_DOCS.md)
- * [Lovelace UI Examples](https://github.com/custom-components/documentation/LOVELACE_EXAMPLES.md)
+ * [Troubleshooting](TROUBLESHOOTING.md)
+ * [YAML Package Info](YAML_PACKAGES_DOCS.md)
+ * [Lovelace UI Examples](LOVELACE_EXAMPLES.md)
  * [GitHub Repository](https://github.com/custom-components/weatheralerts)
  * [View Issues/Feature Requests](https://github.com/custom-components/weatheralerts/issues)
  * [Report an Issue/Feature Request](https://github.com/custom-components/weatheralerts/issues/new/choose)
- * [Changelog](https://github.com/custom-components/CHANGELOG.md)
+ * [Changelog](/CHANGELOG.md)
 
 
 ## Installation
@@ -66,7 +66,7 @@ sensor:
 
 ## Sample Overview
 
-![Sample overview](sensor.png)
+![Sample overview](/sensor.png)
 
 The main *weatheralerts* sensor will be given the name of your zone or county and can be changed via the Home Assistant Entities Overview in the Home Assistant Configuration menu.
 
@@ -74,7 +74,7 @@ This main sensor state will be the number of alerts that are currently active, o
 
 ## Attributes
 
-![Sample overview](attributes.png)
+![Sample overview](/attributes.png)
 
 When there are alerts, the information about them are stored in a list in the attributes.
 The content of that list can be used in automations, template sensors, and Lovelace cards.

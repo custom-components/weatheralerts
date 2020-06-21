@@ -1,15 +1,15 @@
 # Changelog
 
-  * [Detailed Instructions](https://github.com/custom-components/documentation/DOCUMENTATION.md)
-  * [Troubleshooting](https://github.com/custom-components/documentation/TROUBLESHOOTING.md)
-  * [YAML Package Info](https://github.com/custom-components/documentation/YAML_PACKAGES_DOCS.md)
-  * [Lovelace UI Examples](https://github.com/custom-components/documentation/LOVELACE_EXAMPLES.md)
+  * [Detailed Instructions](documentation/DOCUMENTATION.md)
+  * [Troubleshooting](documentation/TROUBLESHOOTING.md)
+  * [YAML Package Info](documentation/YAML_PACKAGES_DOCS.md)
+  * [Lovelace UI Examples](documentation/LOVELACE_EXAMPLES.md)
   * [GitHub Repository](https://github.com/custom-components/weatheralerts)
   * [View Issues/Feature Requests](https://github.com/custom-components/weatheralerts/issues)
   * [Report an Issue/Feature Request](https://github.com/custom-components/weatheralerts/issues/new/choose)
   * **Changelog**
 
-## [v0.1.2](https://github.com/custom-components/tree/0.1.2) (2020-06-21)
+## [v0.1.2](https://github.com/custom-components/weatheralerts/tree/0.1.2) (2020-06-21)
 
 **Changes:**
 

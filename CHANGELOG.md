@@ -9,6 +9,13 @@
   * [Report an Issue/Feature Request](https://github.com/custom-components/weatheralerts/issues/new/choose)
   * **Changelog**
 
+## [v0.1.3](https://github.com/custom-components/weatheralerts/tree/v0.1.3) (2020-06-21)
+
+**Changes:**
+
+weatheralerts v0.1.3
+  * Update README.md so links will work in HACS
+
 ## [v0.1.2](https://github.com/custom-components/weatheralerts/tree/0.1.2) (2020-06-21)
 
 **Changes:**

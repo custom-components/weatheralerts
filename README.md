@@ -42,7 +42,7 @@ Check the **Breaking Changes** section of this README to see if you need to manu
 # Links
 
   * [Detailed Instructions](https://github.com/custom-components/weatheralerts/blob/master/documentation/DOCUMENTATION.md)
-  * [Troubleshooting](documentation/https://github.com/custom-components/weatheralerts/blob/master/documentation/TROUBLESHOOTING.md)
+  * [Troubleshooting](https://github.com/custom-components/weatheralerts/blob/master/documentation/TROUBLESHOOTING.md)
   * [YAML Package Info](https://github.com/custom-components/weatheralerts/blob/master/documentation/YAML_PACKAGES_DOCS.md)
   * [Lovelace UI Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/LOVELACE_EXAMPLES.md)
   * [GitHub Repository](https://github.com/custom-components/weatheralerts)

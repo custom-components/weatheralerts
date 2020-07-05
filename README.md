@@ -58,6 +58,7 @@ Check the **Breaking Changes** section of this README to see if you need to manu
 - [ ] Add config flow to allow UI-based configuration (eliminate yaml-based platform configuration)
 - [ ] Create alternative (possibly simpler) YAML package or move some template sensors into the integration
 - [ ] Add backup weather alert source for occasions when weather.gov json feed is experiencing an outage
+- [ ] Add Canadian weather alerts
 
 
 [release-badge]: https://img.shields.io/github/v/release/custom-components/weatheralerts?style=plastic

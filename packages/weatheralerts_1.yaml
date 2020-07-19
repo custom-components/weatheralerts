@@ -148,7 +148,7 @@ sensor:
             {% set important = namespace(count=0) %}
             {% if (state_attr('sensor.weatheralerts_1', 'alerts')) %}
               {% for alert in state_attr('sensor.weatheralerts_1', 'alerts') %}
-                {% if 'emergency' or 'danger' or 'immediate' in alert.event.lower() and (as_timestamp(alert['endsExpires']) - as_timestamp(now()) > 0) %}
+                {% if ('emergency' in alert.event.lower() or 'danger' in alert.event.lower() or 'immediate' in alert.event.lower()) and (as_timestamp(alert['endsExpires']) - as_timestamp(now()) > 0) %}
                   {% set important.count = important.count + 1 %} 
                 {% endif %}
               {% endfor %}

@@ -64,14 +64,6 @@ sensor:
         ## You can add your county or city name to friendly_name for personalization
         ## For example: Weather Alerts for YourCountyName
         friendly_name: Weather Alerts
-        entity_id:
-          - sensor.weatheralerts_2
-          - sensor.weatheralerts_2_alert_1
-          - sensor.weatheralerts_2_alert_2
-          - sensor.weatheralerts_2_alert_3
-          - sensor.weatheralerts_2_alert_4
-          - sensor.weatheralerts_2_alert_5
-          - sensor.time_hour
         unit_of_measurement: Alerts
         icon_template: mdi:alert-rhombus
         value_template: >-
@@ -178,7 +170,6 @@ sensor:
 
       weatheralerts_2_alert_1:
         friendly_name: Weather Alert 1
-        entity_id: sensor.weatheralerts_2
         icon_template: mdi:alert-rhombus
         value_template: >-
           {% if (states('sensor.weatheralerts_2') != 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null) or ((states('sensor.weatheralerts_2') == 'unavailable') and (as_timestamp(state_attr('sensor.weatheralerts_2', 'alerts')[0].endsExpires) - as_timestamp(now()) > 0)) %}
@@ -342,7 +333,6 @@ sensor:
             {% endif %}
       weatheralerts_2_alert_2:
         friendly_name: Weather Alert 2
-        entity_id: sensor.weatheralerts_2
         icon_template: mdi:alert-rhombus
         value_template: >-
           {% if (states('sensor.weatheralerts_2') != 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[1] != null) or ((states('sensor.weatheralerts_2') == 'unavailable') and (as_timestamp(state_attr('sensor.weatheralerts_2', 'alerts')[1].endsExpires) - as_timestamp(now()) > 0)) %}
@@ -506,7 +496,6 @@ sensor:
             {% endif %}
       weatheralerts_2_alert_3:
         friendly_name: Weather Alert 3
-        entity_id: sensor.weatheralerts_2
         icon_template: mdi:alert-rhombus
         value_template: >-
           {% if (states('sensor.weatheralerts_2') != 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[2] != null) or ((states('sensor.weatheralerts_2') == 'unavailable') and (as_timestamp(state_attr('sensor.weatheralerts_2', 'alerts')[2].endsExpires) - as_timestamp(now()) > 0)) %}
@@ -670,7 +659,6 @@ sensor:
             {% endif %}
       weatheralerts_2_alert_4:
         friendly_name: Weather Alert 4
-        entity_id: sensor.weatheralerts_2
         icon_template: mdi:alert-rhombus
         value_template: >-
           {% if (states('sensor.weatheralerts_2') != 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[3] != null) or ((states('sensor.weatheralerts_2') == 'unavailable') and (as_timestamp(state_attr('sensor.weatheralerts_2', 'alerts')[3].endsExpires) - as_timestamp(now()) > 0)) %}
@@ -834,7 +822,6 @@ sensor:
             {% endif %}
       weatheralerts_2_alert_5:
         friendly_name: Weather Alert 5
-        entity_id: sensor.weatheralerts_2
         icon_template: mdi:alert-rhombus
         value_template: >-
           {% if (states('sensor.weatheralerts_2') != 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[4] != null) or ((states('sensor.weatheralerts_2') == 'unavailable') and (as_timestamp(state_attr('sensor.weatheralerts_2', 'alerts')[4].endsExpires) - as_timestamp(now()) > 0)) %}
@@ -998,7 +985,6 @@ sensor:
             {% endif %}
 
       weatheralerts_2_alert_1_last_changed:
-        entity_id: sensor.weatheralerts_2_alert_1
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_1') == "on" %}
             {{ states.sensor.weatheralerts_2_alert_1.last_updated }}
@@ -1006,7 +992,6 @@ sensor:
             None
           {% endif %}
       weatheralerts_2_alert_2_last_changed:
-        entity_id: sensor.weatheralerts_2_alert_2
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_2') == "on" %}
             {{ states.sensor.weatheralerts_2_alert_2.last_updated }}
@@ -1014,7 +999,6 @@ sensor:
             None
           {% endif %}
       weatheralerts_2_alert_3_last_changed:
-        entity_id: sensor.weatheralerts_2_alert_3
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_3') == "on" %}
             {{ states.sensor.weatheralerts_2_alert_3.last_updated }}
@@ -1022,7 +1006,6 @@ sensor:
             None
           {% endif %}
       weatheralerts_2_alert_4_last_changed:
-        entity_id: sensor.weatheralerts_2_alert_4
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_4') == "on" %}
             {{ states.sensor.weatheralerts_2_alert_4.last_updated }}
@@ -1030,7 +1013,6 @@ sensor:
             None
           {% endif %}
       weatheralerts_2_alert_5_last_changed:
-        entity_id: sensor.weatheralerts_2_alert_5
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_5') == "on" %}
             {{ states.sensor.weatheralerts_2_alert_5.last_updated }}
@@ -1039,7 +1021,6 @@ sensor:
           {% endif %}
 
       weatheralerts_2_alert_1_most_recent_active_alert:
-        entity_id: sensor.weatheralerts_2_alert_1
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_1_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_1') != 'on' %}
             unavailable
@@ -1078,7 +1059,6 @@ sensor:
               {{ state_attr('sensor.weatheralerts_2_alert_1_most_recent_active_alert', 'alert_id') }}
             {% endif %}
       weatheralerts_2_alert_2_most_recent_active_alert:
-        entity_id: sensor.weatheralerts_2_alert_2
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_2_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_2') != 'on' %}
             unavailable
@@ -1117,7 +1097,6 @@ sensor:
               {{ state_attr('sensor.weatheralerts_2_alert_2_most_recent_active_alert', 'alert_id') }}
             {% endif %}
       weatheralerts_2_alert_3_most_recent_active_alert:
-        entity_id: sensor.weatheralerts_2_alert_3
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_3_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_3') != 'on' %}
             unavailable
@@ -1156,7 +1135,6 @@ sensor:
               {{ state_attr('sensor.weatheralerts_2_alert_3_most_recent_active_alert', 'alert_id') }}
             {% endif %}
       weatheralerts_2_alert_4_most_recent_active_alert:
-        entity_id: sensor.weatheralerts_2_alert_4
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_4_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_4') != 'on' %}
             unavailable
@@ -1195,7 +1173,6 @@ sensor:
               {{ state_attr('sensor.weatheralerts_2_alert_4_most_recent_active_alert', 'alert_id') }}
             {% endif %}
       weatheralerts_2_alert_5_most_recent_active_alert:
-        entity_id: sensor.weatheralerts_2_alert_5
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_5_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_5') != 'on' %}
             unavailable
@@ -1236,7 +1213,6 @@ sensor:
 
       weatheralerts_2_alerts_are_active:
         friendly_name: Weather Alerts Are Active
-        entity_id: sensor.weatheralerts_2
         icon_template: mdi:alert-rhombus
         value_template: >
           {% if (states('sensor.weatheralerts_2') | int > 0) or ((states('sensor.weatheralerts_2') == 'unavailable') and (states('sensor.weatheralerts_2_alert_1') == 'on')) %}

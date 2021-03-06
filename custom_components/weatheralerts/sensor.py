@@ -16,7 +16,7 @@ from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
 
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 
 CONF_STATE = "state"
 CONF_ZONE = "zone"

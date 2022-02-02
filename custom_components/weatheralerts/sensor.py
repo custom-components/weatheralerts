@@ -16,7 +16,7 @@ from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
 
-__version__ = '0.1.4'
+__version__ = '0.1.5'
 
 CONF_STATE = "state"
 CONF_ZONE = "zone"
@@ -85,7 +85,7 @@ async def async_setup_platform(
 
     # Check the zoneid and set sensor name to county name from zoneid alert feed
     try:
-        async with async_timeout.timeout(20, loop=hass.loop):
+        async with async_timeout.timeout(20):
             zone_check_response = await session.get(URL_ID_CHECK.format(zoneid))
             zone_data = await zone_check_response.text()
 
@@ -94,7 +94,7 @@ async def async_setup_platform(
                 return False
 
         if len(county) == 3:
-             async with async_timeout.timeout(20, loop=hass.loop):
+             async with async_timeout.timeout(20):
                 county_check_response = await session.get(URL_ID_CHECK.format(countyid))
                 county_data = await county_check_response.text()
 
@@ -102,7 +102,7 @@ async def async_setup_platform(
                     _LOGGER.critical("Compiled county ID '%s' is not valid", countyid)
                     return False
 
-        async with async_timeout.timeout(20, loop=hass.loop):
+        async with async_timeout.timeout(20):
             response = await session.get(URL.format(zoneid))
             data = await response.json()
 
@@ -138,7 +138,7 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
         alerts = []
 
         try:
-            async with async_timeout.timeout(10, loop=self.hass.loop):
+            async with async_timeout.timeout(10):
                 response = await self.session.get(URL.format(self.feedid))
                 if response.status != 200:
                     self._state = "unavailable"
@@ -257,6 +257,6 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
         return "mdi:alert-octagram"
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         """Return attributes."""
         return self._attr

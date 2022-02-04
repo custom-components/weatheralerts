@@ -300,7 +300,11 @@ sensor:
               'Winter Storm Warning' : 'hass:snowflake-alert',
               'Winter Storm Watch' : 'hass:snowflake-alert',
               'Winter Weather Advisory' : 'hass:snowflake-alert' } %}
-          {% set state =  states['sensor.weatheralerts_2_alert_1'].attributes.alert_event %}
+          {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null)) %}
+            {% set state =  states['sensor.weatheralerts_2_alert_1'].attributes.alert_event %}
+          {% else %}
+            {% set state = 'unavailable' %}
+          {% endif %}
           {{ mapper[state] if state in mapper else 'hass:alert-rhombus' }}
         value_template: >-
           {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null) and (as_timestamp(state_attr('sensor.weatheralerts_2', 'alerts')[0].endsExpires) - as_timestamp(now()) > 0)) %}
@@ -594,7 +598,11 @@ sensor:
               'Winter Storm Warning' : 'hass:snowflake-alert',
               'Winter Storm Watch' : 'hass:snowflake-alert',
               'Winter Weather Advisory' : 'hass:snowflake-alert' } %}
-          {% set state =  states['sensor.weatheralerts_2_alert_2'].attributes.alert_event %}
+          {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null)) %}
+            {% set state =  states['sensor.weatheralerts_2_alert_2'].attributes.alert_event %}
+          {% else %}
+            {% set state = 'unavailable' %}
+          {% endif %}
           {{ mapper[state] if state in mapper else 'hass:alert-rhombus' }}
         value_template: >-
           {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[1] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[1] != null) and (as_timestamp(state_attr('sensor.weatheralerts_2', 'alerts')[1].endsExpires) - as_timestamp(now()) > 0)) %}
@@ -888,7 +896,11 @@ sensor:
               'Winter Storm Warning' : 'hass:snowflake-alert',
               'Winter Storm Watch' : 'hass:snowflake-alert',
               'Winter Weather Advisory' : 'hass:snowflake-alert' } %}
-          {% set state =  states['sensor.weatheralerts_2_alert_3'].attributes.alert_event %}
+          {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null)) %}
+            {% set state =  states['sensor.weatheralerts_2_alert_3'].attributes.alert_event %}
+          {% else %}
+            {% set state = 'unavailable' %}
+          {% endif %}
           {{ mapper[state] if state in mapper else 'hass:alert-rhombus' }}
         value_template: >-
           {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[2] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[2] != null) and (as_timestamp(state_attr('sensor.weatheralerts_2', 'alerts')[2].endsExpires) - as_timestamp(now()) > 0)) %}
@@ -1182,7 +1194,11 @@ sensor:
               'Winter Storm Warning' : 'hass:snowflake-alert',
               'Winter Storm Watch' : 'hass:snowflake-alert',
               'Winter Weather Advisory' : 'hass:snowflake-alert' } %}
-          {% set state =  states['sensor.weatheralerts_2_alert_4'].attributes.alert_event %}
+          {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null)) %}
+            {% set state =  states['sensor.weatheralerts_2_alert_4'].attributes.alert_event %}
+          {% else %}
+            {% set state = 'unavailable' %}
+          {% endif %}
           {{ mapper[state] if state in mapper else 'hass:alert-rhombus' }}
         value_template: >-
           {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[3] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[3] != null) and (as_timestamp(state_attr('sensor.weatheralerts_2', 'alerts')[3].endsExpires) - as_timestamp(now()) > 0)) %}
@@ -1476,7 +1492,11 @@ sensor:
               'Winter Storm Warning' : 'hass:snowflake-alert',
               'Winter Storm Watch' : 'hass:snowflake-alert',
               'Winter Weather Advisory' : 'hass:snowflake-alert' } %}
-          {% set state =  states['sensor.weatheralerts_2_alert_5'].attributes.alert_event %}
+          {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null)) %}
+            {% set state =  states['sensor.weatheralerts_2_alert_5'].attributes.alert_event %}
+          {% else %}
+            {% set state = 'unavailable' %}
+          {% endif %}
           {{ mapper[state] if state in mapper else 'hass:alert-rhombus' }}
         value_template: >-
           {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[4] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[4] != null) and (as_timestamp(state_attr('sensor.weatheralerts_2', 'alerts')[4].endsExpires) - as_timestamp(now()) > 0)) %}
@@ -1806,7 +1826,21 @@ sensor:
               'Winter Storm Warning' : 'hass:snowflake-alert',
               'Winter Storm Watch' : 'hass:snowflake-alert',
               'Winter Weather Advisory' : 'hass:snowflake-alert' } %}
-          {% set state =  states['sensor.weatheralerts_2_alert_1'].attributes.alert_event %}
+          {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null)) %}
+            {% if states('sensor.weatheralerts_2_alert_1_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_1') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_1_most_recent_active_alert') == 'unavailable' and states('sensor.weatheralerts_2_alert_1') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_1_most_recent_active_alert') == 'unknown' and states('sensor.weatheralerts_2_alert_1') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_1') == 'on' %}
+              {% set state = state_attr('sensor.weatheralerts_2_alert_1', 'alert_event') %}
+            {% else %}
+               {% set state = states('sensor.weatheralerts_2_alert_1_most_recent_active_alert') %}
+            {% endif %}
+          {% else %}
+            {% set state = 'unavailable' %}
+          {% endif %}
           {{ mapper[state] if state in mapper else 'hass:alert-rhombus' }}
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_1_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_1') != 'on' %}
@@ -1976,7 +2010,21 @@ sensor:
               'Winter Storm Warning' : 'hass:snowflake-alert',
               'Winter Storm Watch' : 'hass:snowflake-alert',
               'Winter Weather Advisory' : 'hass:snowflake-alert' } %}
-          {% set state =  states['sensor.weatheralerts_2_alert_1'].attributes.alert_event %}
+          {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null)) %}
+            {% if states('sensor.weatheralerts_2_alert_2_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_2') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_2_most_recent_active_alert') == 'unavailable' and states('sensor.weatheralerts_2_alert_2') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_2_most_recent_active_alert') == 'unknown' and states('sensor.weatheralerts_2_alert_2') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_2') == 'on' %}
+              {% set state = state_attr('sensor.weatheralerts_2_alert_2', 'alert_event') %}
+            {% else %}
+               {% set state = states('sensor.weatheralerts_2_alert_2_most_recent_active_alert') %}
+            {% endif %}
+          {% else %}
+            {% set state = 'unavailable' %}
+          {% endif %}
           {{ mapper[state] if state in mapper else 'hass:alert-rhombus' }}
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_2_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_2') != 'on' %}
@@ -2146,7 +2194,21 @@ sensor:
               'Winter Storm Warning' : 'hass:snowflake-alert',
               'Winter Storm Watch' : 'hass:snowflake-alert',
               'Winter Weather Advisory' : 'hass:snowflake-alert' } %}
-          {% set state =  states['sensor.weatheralerts_2_alert_1'].attributes.alert_event %}
+          {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null)) %}
+            {% if states('sensor.weatheralerts_2_alert_3_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_3') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_3_most_recent_active_alert') == 'unavailable' and states('sensor.weatheralerts_2_alert_3') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_3_most_recent_active_alert') == 'unknown' and states('sensor.weatheralerts_2_alert_3') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_3') == 'on' %}
+              {% set state = state_attr('sensor.weatheralerts_2_alert_3', 'alert_event') %}
+            {% else %}
+               {% set state = states('sensor.weatheralerts_2_alert_3_most_recent_active_alert') %}
+            {% endif %}
+          {% else %}
+            {% set state = 'unavailable' %}
+          {% endif %}
           {{ mapper[state] if state in mapper else 'hass:alert-rhombus' }}
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_3_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_3') != 'on' %}
@@ -2316,7 +2378,21 @@ sensor:
               'Winter Storm Warning' : 'hass:snowflake-alert',
               'Winter Storm Watch' : 'hass:snowflake-alert',
               'Winter Weather Advisory' : 'hass:snowflake-alert' } %}
-          {% set state =  states['sensor.weatheralerts_2_alert_1'].attributes.alert_event %}
+          {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null)) %}
+            {% if states('sensor.weatheralerts_2_alert_4_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_4') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_4_most_recent_active_alert') == 'unavailable' and states('sensor.weatheralerts_2_alert_4') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_4_most_recent_active_alert') == 'unknown' and states('sensor.weatheralerts_2_alert_4') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_4') == 'on' %}
+              {% set state = state_attr('sensor.weatheralerts_2_alert_4', 'alert_event') %}
+            {% else %}
+               {% set state = states('sensor.weatheralerts_2_alert_4_most_recent_active_alert') %}
+            {% endif %}
+          {% else %}
+            {% set state = 'unavailable' %}
+          {% endif %}
           {{ mapper[state] if state in mapper else 'hass:alert-rhombus' }}
         value_template: >-
             {% if states('sensor.weatheralerts_2_alert_4_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_4') != 'on' %}
@@ -2486,7 +2562,21 @@ sensor:
               'Winter Storm Warning' : 'hass:snowflake-alert',
               'Winter Storm Watch' : 'hass:snowflake-alert',
               'Winter Weather Advisory' : 'hass:snowflake-alert' } %}
-          {% set state =  states['sensor.weatheralerts_2_alert_1'].attributes.alert_event %}
+          {% if not is_state('sensor.weatheralerts_2', 'unavailable') and not is_state('sensor.weatheralerts_2', 'unknown') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null) or (not is_state('sensor.weatheralerts_2', 'unavailable') and (state_attr('sensor.weatheralerts_2', 'alerts')[0] != null)) %}
+            {% if states('sensor.weatheralerts_2_alert_5_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_5') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_5_most_recent_active_alert') == 'unavailable' and states('sensor.weatheralerts_2_alert_5') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_5_most_recent_active_alert') == 'unknown' and states('sensor.weatheralerts_2_alert_5') != 'on' %}
+              {% set state = 'unavailable' %}
+            {% elif states('sensor.weatheralerts_2_alert_5') == 'on' %}
+              {% set state = state_attr('sensor.weatheralerts_2_alert_5', 'alert_event') %}
+            {% else %}
+               {% set state = states('sensor.weatheralerts_2_alert_5_most_recent_active_alert') %}
+            {% endif %}
+          {% else %}
+            {% set state = 'unavailable' %}
+          {% endif %}
           {{ mapper[state] if state in mapper else 'hass:alert-rhombus' }}
         value_template: >-
           {% if states('sensor.weatheralerts_2_alert_5_most_recent_active_alert') == '' and states('sensor.weatheralerts_2_alert_5') != 'on' %}
@@ -2530,7 +2620,7 @@ sensor:
         friendly_name: Weather Alerts Are Active
         icon_template: mdi:alert-rhombus
         value_template: >
-          {% if (states('sensor.weatheralerts_2') | int > 0) or ((states('sensor.weatheralerts_2') == 'unavailable') and (states('sensor.weatheralerts_2_alert_1') == 'on')) %}
+          {% if (states('sensor.weatheralerts_2')|int(default=0) > 0) or ((states('sensor.weatheralerts_2') == 'unavailable') and (states('sensor.weatheralerts_2_alert_1') == 'on')) %}
             Yes
           {% else %}
             No

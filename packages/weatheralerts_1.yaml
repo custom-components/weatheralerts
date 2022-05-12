@@ -2708,6 +2708,127 @@ automation:
           entity_id: input_text.weatheralerts_1_triggered_ui_alert_ids
           value: "{{ state_attr('sensor.weatheralerts_1_alert_1', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_2', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_3', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_4', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_5', 'alert_id') }}"
 
+    description: ''
+    trigger:
+      - platform: state
+        entity_id: sensor.weatheralerts_1_alert_1_last_changed
+      - platform: homeassistant
+        event: start
+    condition:
+      - condition: and
+        conditions:
+          - condition: template
+            value_template: "{{ states('sensor.weatheralerts_1_alerts_are_active') == 'Yes' }}"
+          - condition: template
+            value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_1', 'alert_sent'))) < 3600 }}"
+          - condition: template
+            value_template: "{{ state_attr('sensor.weatheralerts_1_alert_1', 'alert_id') not in states('input_text.weatheralerts_1_triggered_ui_alert_ids') }}"
+    action:
+    - service: media_player.volume_set
+      data:
+        volume_level: 0.6
+      target:
+        entity_id:
+        - media_player.friendly_name
+        - media_player.friendly_name_1
+        - media_player.friendly_name_2
+    - service: tts.google_translate_say
+      data:
+        entity_id:
+        - media_player.friendly_name
+        - media_player.friendly_name_1
+        - media_player.friendly_name_2
+        message: >
+            {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'warning_count')|int > 1) %}
+                THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER WARNINGS FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'warning_count')|int == 1) %}
+                THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER WARNING FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'watch_count')|int > 1) %}
+                THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER WATCHES FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'watch_count')|int == 1) %}
+                THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER WATCH FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'advisory_count')|int > 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER ADVISORIES FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'advisory_count')|int == 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER ADVISORY FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'statement_count')|int > 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER STATEMENTS FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'statement_count')|int == 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER STATEMENT FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'outlook_count')|int > 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER OUTLOOKS FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'outlook_count')|int == 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER OUTLOOK FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'alert_count')|int > 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER ALERTS FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'alert_count')|int == 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER ALERT FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'message_count')|int > 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER MESSAGES FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'message_count')|int == 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER MESSAGE FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'important_count')|int > 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED IMPORTANT WEATHER ALERTS FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'important_count')|int == 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED AN IMPORTANT WEATHER ALERT FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'test_count')|int > 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER ALERT TESTS FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
+            'test_count')|int == 1) %}
+               THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER ALERT TEST FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+            {% endif %}
+            {% if (states('sensor.weatheralerts_1_alert_1') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_1', 'alert_effective'))|float) <= 3600) %}
+              {{ state_attr('sensor.weatheralerts_1_alert_1', 'spoken_message') }}
+            {% endif %}
+            {% if (states('sensor.weatheralerts_1_alert_1') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_1', 'alert_effective'))|float) > 3600) %}
+              {{ state_attr('sensor.weatheralerts_1_alert_1', 'spoken_title') }}
+            {% endif %}
+            {% if (states('sensor.weatheralerts_1_alert_2') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_2', 'alert_effective'))|float) <= 3600) %}
+              {{ state_attr('sensor.weatheralerts_1_alert_2', 'spoken_title') }}
+              {{ state_attr('sensor.weatheralerts_1_alert_2', 'spoken_message') }}
+            {% endif %}
+            {% if (states('sensor.weatheralerts_1_alert_2') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_2', 'alert_effective'))|float) > 3600) %}
+              {{ state_attr('sensor.weatheralerts_1_alert_2', 'spoken_title') }}
+            {% endif %}
+            {% if (states('sensor.weatheralerts_1_alert_3') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_3', 'alert_effective'))|float) <= 3600) %}
+              {{ state_attr('sensor.weatheralerts_1_alert_3', 'spoken_title') }}
+              {{ state_attr('sensor.weatheralerts_1_alert_3', 'spoken_message') }}
+            {% endif %}
+            {% if (states('sensor.weatheralerts_1_alert_3') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_3', 'alert_effective'))|float) > 3600) %}
+              {{ state_attr('sensor.weatheralerts_1_alert_3', 'spoken_title') }}
+            {% endif %}
+            {% if (states('sensor.weatheralerts_1_alert_4') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_4', 'alert_effective'))|float) <= 3600) %}
+              {{ state_attr('sensor.weatheralerts_1_alert_4', 'spoken_title') }}
+              {{ state_attr('sensor.weatheralerts_1_alert_4', 'spoken_message') }}
+            {% endif %}
+            {% if (states('sensor.weatheralerts_1_alert_4') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_4', 'alert_effective'))|float) > 3600) %}
+              {{ state_attr('sensor.weatheralerts_1_alert_4', 'spoken_title') }}
+            {% endif %}
+            {% if (states('sensor.weatheralerts_1_alert_5') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_5', 'alert_effective'))|float) <= 3600) %}
+              {{ state_attr('sensor.weatheralerts_1_alert_5', 'spoken_title') }}
+              {{ state_attr('sensor.weatheralerts_1_alert_5', 'spoken_message') }}
+            {% endif %}
+            {% if (states('sensor.weatheralerts_1_alert_5') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_5', 'alert_effective'))|float) > 3600) %}
+              {{ state_attr('sensor.weatheralerts_1_alert_5', 'spoken_title') }}
+            {% endif %}
+
     ## Automation to dismiss UI notification if there are no active alerts for 30 minutes
     ## Disable or remove this automation if you don't want notifications to auto-dismiss
   - alias: Weather Alert UI Notification Auto-dismiss - 1
@@ -2747,25 +2868,25 @@ automation:
         data_template:
           message: >
             Current NWS Weather Alerts:
-              
+
             {% if states('sensor.weatheralerts_1_alerts_are_active') == "No" %}
             No alerts at this time for {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
             {% endif %}
             {% if states.sensor.weatheralerts_1_alert_1.state == "on" %}
             {{ states.sensor.weatheralerts_1_alert_1.attributes.display_title }} for {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
-              
+
             {% endif %}
             {% if states.sensor.weatheralerts_1_alert_2.state == "on" %}
             {{ states.sensor.weatheralerts_1_alert_2.attributes.display_title }} for {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
-              
+
             {% endif %}
             {% if states.sensor.weatheralerts_1_alert_3.state == "on" %}
             {{ states.sensor.weatheralerts_1_alert_3.attributes.display_title }} for {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
-              
+
             {% endif %}
             {% if states.sensor.weatheralerts_1_alert_4.state == "on" %}
             {{ states.sensor.weatheralerts_1_alert_4.attributes.display_title }} for {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
-              
+
             {% endif %}
             {% if states.sensor.weatheralerts_1_alert_5.state == "on" %}
             {{ states.sensor.weatheralerts_1_alert_5.attributes.display_title }} for {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
@@ -2786,7 +2907,7 @@ script:
   weatheralerts_1_popup_on_wx_alert:
     alias: Weather Alert Pop Up - 1
     sequence:
-        ## Dismiss any current alert so the UI isn't filled 
+        ## Dismiss any current alert so the UI isn't filled
         ## up with these if there are more then one.
         ## Only show the most recent alert
       - service: persistent_notification.dismiss

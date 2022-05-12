@@ -2709,8 +2709,8 @@ automation:
           value: "{{ state_attr('sensor.weatheralerts_1_alert_1', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_2', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_3', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_4', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_5', 'alert_id') }}"
 
   ## Automation to trigger a spoken notification when there is an active weather alert.
-  ## Replace "friendly_name" with the name of your speakers and change or remove time condition is desired.
-  ## Disable or remove this automation if you don't want spoken alerts
+  ## Replace "friendly_name" with the name of your speakers and change or remove the "quiet hours" time conditions as desired.
+  ## Disable or remove this automation if you don't want spoken alerts.
 
   - id: '1630665623759'
     alias: Weather Alert Spoken Notifications

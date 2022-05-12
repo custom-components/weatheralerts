@@ -2708,6 +2708,12 @@ automation:
           entity_id: input_text.weatheralerts_1_triggered_ui_alert_ids
           value: "{{ state_attr('sensor.weatheralerts_1_alert_1', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_2', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_3', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_4', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_5', 'alert_id') }}"
 
+  ## Automation to trigger a spoken notification when there is an active weather alert.
+  ## Replace "friendly_name" with the name of your speakers.
+  ## Disable or remove this automation if you don't want spoken alerts
+
+  - id: '1630665623759'
+    alias: Weather Alert Spoken Notifications
     description: ''
     trigger:
       - platform: state

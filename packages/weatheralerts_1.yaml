@@ -2709,7 +2709,7 @@ automation:
           value: "{{ state_attr('sensor.weatheralerts_1_alert_1', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_2', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_3', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_4', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_5', 'alert_id') }}"
 
   ## Automation to trigger a spoken notification when there is an active weather alert.
-  ## Replace "friendly_name" with the name of your speakers.
+  ## Replace "friendly_name" with the name of your speakers and change or remove time condition is desired.
   ## Disable or remove this automation if you don't want spoken alerts
 
   - id: '1630665623759'
@@ -2729,6 +2729,21 @@ automation:
             value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_1', 'alert_sent'))) < 3600 }}"
           - condition: template
             value_template: "{{ state_attr('sensor.weatheralerts_1_alert_1', 'alert_id') not in states('input_text.weatheralerts_1_triggered_ui_alert_ids') }}"
+          - condition: time
+            before: '21:00:00'
+            after: '06:00:00'
+            weekday:
+              - mon
+              - tue
+              - wed
+              - thu
+              - fri
+          - condition: time
+            before: '11:00:00'
+            after: '08:00:00'
+            weekday:
+              - sun
+              - sat
     action:
     - service: media_player.volume_set
       data:

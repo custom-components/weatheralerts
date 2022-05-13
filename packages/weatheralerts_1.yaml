@@ -2719,25 +2719,29 @@ automation:
 #      - platform: state
 #        entity_id: sensor.weatheralerts_1_alert_1_last_changed
 #      - platform: homeassistant
-#    - condition: and
+#    condition:
+#      - condition: and
 #        conditions:
-#        - condition: template
-#          value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_1', 'alert_sent'))) < 3600 }}"
 #          - condition: template
+#            value_template: "{{ states('sensor.weatheralerts_1_alerts_are_active') == 'Yes' }}"
+#          - condition: template
+#            value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_1', 'alert_sent'))) < 3600 }}"
+#          - condition: template
+#            value_template: "{{ state_attr('sensor.weatheralerts_1_alert_1', 'alert_id') not in states('input_text.weatheralerts_1_triggered_ui_alert_ids') }}"
 #          - condition: time
-#            before: '21:00:00'
-#            after: '06:00:00'
-#            weekday:
-#              - mon
-#              - wed
-#              - thu
-#              - fri
-#          - condition: time
-#            before: '11:00:00'
-#            after: '08:00:00'
-#            weekday:
-#              - sun
-#              - sat
+#              before: '21:00:00'
+#              after: '06:00:00'
+#              weekday:
+#                - mon
+#                - wed
+#                - thu
+#                - fri
+#            - condition: time
+#              before: '11:00:00'
+#              after: '08:00:00'
+#              weekday:
+#                - sun
+#                - sat
 #    action:
 #    - service: media_player.volume_set
 #      data:

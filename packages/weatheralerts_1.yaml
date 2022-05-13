@@ -2729,19 +2729,19 @@ automation:
 #          - condition: template
 #            value_template: "{{ state_attr('sensor.weatheralerts_1_alert_1', 'alert_id') not in states('input_text.weatheralerts_1_triggered_ui_alert_ids') }}"
 #          - condition: time
-#              before: '21:00:00'
-#              after: '06:00:00'
-#              weekday:
-#                - mon
-#                - wed
-#                - thu
-#                - fri
-#            - condition: time
-#              before: '11:00:00'
-#              after: '08:00:00'
-#              weekday:
-#                - sun
-#                - sat
+#            before: '21:00:00'
+#            after: '06:00:00'
+#            weekday:
+#              - mon
+#              - wed
+#              - thu
+#              - fri
+#          - condition: time
+#            before: '11:00:00'
+#            after: '08:00:00'
+#            weekday:
+#              - sun
+#              - sat
 #    action:
 #    - service: media_player.volume_set
 #      data:

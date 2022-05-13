@@ -739,16 +739,16 @@ sensor:
               None
             {% endif %}
           spoken_title: >
-            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_1', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 0)) %}
-              A {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_2', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 1)) %}
+              A {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}. {{ states.sensor.weatheralerts_1.attributes.alerts[1].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
           spoken_message: >
-            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_1', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 0)) %}
-              {{ states.sensor.weatheralerts_1.attributes.alerts[0].description | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
-              {% if states.sensor.weatheralerts_1.attributes.alerts[0].instruction != None %}
-                {{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
+            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_2', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 1)) %}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[1].description | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
+              {% if states.sensor.weatheralerts_1.attributes.alerts[1].instruction != None %}
+                {{ states.sensor.weatheralerts_1.attributes.alerts[1].instruction | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
               {% endif %}
             {% else %}
               None
@@ -1037,16 +1037,16 @@ sensor:
               None
             {% endif %}
           spoken_title: >
-            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_1', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 0)) %}
-              A {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_3', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 2)) %}
+              A {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}. {{ states.sensor.weatheralerts_1.attributes.alerts[2].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
           spoken_message: >
-            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_1', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 0)) %}
-              {{ states.sensor.weatheralerts_1.attributes.alerts[0].description | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
-              {% if states.sensor.weatheralerts_1.attributes.alerts[0].instruction != None %}
-                {{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
+            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_3', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 2)) %}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[2].description | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
+              {% if states.sensor.weatheralerts_1.attributes.alerts[2].instruction != None %}
+                {{ states.sensor.weatheralerts_1.attributes.alerts[2].instruction | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
               {% endif %}
             {% else %}
               None
@@ -1335,16 +1335,16 @@ sensor:
               None
             {% endif %}
           spoken_title: >
-            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_1', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 0)) %}
-              A {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_4', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 3)) %}
+              A {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}. {{ states.sensor.weatheralerts_1.attributes.alerts[3].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
           spoken_message: >
-            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_1', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 0)) %}
-              {{ states.sensor.weatheralerts_1.attributes.alerts[0].description | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
-              {% if states.sensor.weatheralerts_1.attributes.alerts[0].instruction != None %}
-                {{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
+            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_4', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 3)) %}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[3].description | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
+              {% if states.sensor.weatheralerts_1.attributes.alerts[3].instruction != None %}
+                {{ states.sensor.weatheralerts_1.attributes.alerts[3].instruction | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
               {% endif %}
             {% else %}
               None
@@ -1633,16 +1633,16 @@ sensor:
               None
             {% endif %}
           spoken_title: >
-            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_1', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 0)) %}
-              A {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_5', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 4)) %}
+              A {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}. {{ states.sensor.weatheralerts_1.attributes.alerts[4].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
           spoken_message: >
-            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_1', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 0)) %}
-              {{ states.sensor.weatheralerts_1.attributes.alerts[0].description | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
-              {% if states.sensor.weatheralerts_1.attributes.alerts[0].instruction != None %}
-                {{ states.sensor.weatheralerts_1.attributes.alerts[0].instruction | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
+            {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_5', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 4)) %}
+              {{ states.sensor.weatheralerts_1.attributes.alerts[4].description | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
+              {% if states.sensor.weatheralerts_1.attributes.alerts[4].instruction != None %}
+                {{ states.sensor.weatheralerts_1.attributes.alerts[4].instruction | regex_replace('\n\n','<p>') | regex_replace('\n',' ') | regex_replace('\*','\n*') | regex_replace('<p>','\n\n') }}
               {% endif %}
             {% else %}
               None

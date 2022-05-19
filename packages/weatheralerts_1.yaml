@@ -2737,7 +2737,7 @@ automation:
 #              - thu
 #              - fri
 #          - condition: time
-#            before: '11:00:00'
+#            before: '23:00:00'
 #            after: '08:00:00'
 #            weekday:
 #              - sun

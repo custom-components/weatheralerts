@@ -2926,7 +2926,7 @@ script:
         data:
           notification_id: "weatheralerts_1_alert"
         ## Create a new persistant notification in the UI for a new alert
-      - service_template: >
+      - service: >
           {% if states.sensor.weatheralerts_1.state != '0' %}
             persistent_notification.create
           {% endif %}

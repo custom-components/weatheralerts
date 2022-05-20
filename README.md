@@ -66,7 +66,7 @@ Check the **Breaking Changes** section of this README to see if you need to manu
 [license-badge]: https://img.shields.io/github/license/custom-components/weatheralerts?style=plastic
 [license-link]: https://github.com/custom-components/weatheralerts/blob/master/LICENSE
 [hacs-badge]: https://img.shields.io/badge/HACS-Default-orange.svg?style=plastic
-[hacs-link]: https://github.com/custom-components/hacs
+[hacs-link]: https://github.com/hacs/integration
 [stars-badge]: https://img.shields.io/github/stars/custom-components/weatheralerts?style=plastic
 [stars-link]: https://github.com/custom-components/weatheralerts/stargazers
 [maintained-badge]: https://img.shields.io/maintenance/yes/2020.svg?style=plastic

@@ -69,7 +69,7 @@ Check the **Breaking Changes** section of this README to see if you need to manu
 [hacs-link]: https://github.com/custom-components/hacs
 [stars-badge]: https://img.shields.io/github/stars/custom-components/weatheralerts?style=plastic
 [stars-link]: https://github.com/custom-components/weatheralerts/stargazers
-[maintained-badge]: https://img.shields.io/maintenance/yes/2020.svg?style=plastic
+[maintained-badge]: https://img.shields.io/maintenance/yes/2022.svg?style=plastic
 [issues-badge]: https://img.shields.io/github/issues/custom-components/weatheralerts?style=plastic
 [issues-link]: https://github.com/custom-components/weatheralerts/issues
 [commits-badge]: https://img.shields.io/github/commits-since/custom-components/weatheralerts/latest?style=plastic

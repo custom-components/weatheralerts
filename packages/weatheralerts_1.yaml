@@ -442,7 +442,7 @@ sensor:
             {% endif %}
           spoken_title: >
             {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_1', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 0)) %}
-              A {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+              {{ states.sensor.weatheralerts_1.attributes.alerts[0].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[0].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
@@ -740,7 +740,7 @@ sensor:
             {% endif %}
           spoken_title: >
             {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_2', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 1)) %}
-              A {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}. {{ states.sensor.weatheralerts_1.attributes.alerts[1].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+              {{ states.sensor.weatheralerts_1.attributes.alerts[1].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[1].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
@@ -1038,7 +1038,7 @@ sensor:
             {% endif %}
           spoken_title: >
             {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_3', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 2)) %}
-              A {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}. {{ states.sensor.weatheralerts_1.attributes.alerts[2].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+              {{ states.sensor.weatheralerts_1.attributes.alerts[2].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[2].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
@@ -1336,7 +1336,7 @@ sensor:
             {% endif %}
           spoken_title: >
             {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_4', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 3)) %}
-              A {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}. {{ states.sensor.weatheralerts_1.attributes.alerts[3].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+              {{ states.sensor.weatheralerts_1.attributes.alerts[3].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[3].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
@@ -1634,7 +1634,7 @@ sensor:
             {% endif %}
           spoken_title: >
             {% if not is_state('sensor.weatheralerts_1', 'unavailable') and not is_state('sensor.weatheralerts_1', 'unknown') and is_state('sensor.weatheralerts_1_alert_5', 'on') or (is_number(states('sensor.weatheralerts_1')) and (states('sensor.weatheralerts_1')|int > 4)) %}
-              A {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}. {{ states.sensor.weatheralerts_1.attributes.alerts[4].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
+              {{ states.sensor.weatheralerts_1.attributes.alerts[4].title }}. {{ states.sensor.weatheralerts_1.attributes.alerts[4].NWSheadline | regex_replace('\[\'','') | regex_replace('\'\]','') | capitalize }}.
             {% else %}
               None
             {% endif %}
@@ -2708,9 +2708,9 @@ automation:
           entity_id: input_text.weatheralerts_1_triggered_ui_alert_ids
           value: "{{ state_attr('sensor.weatheralerts_1_alert_1', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_2', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_3', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_4', 'alert_id') }} {{ state_attr('sensor.weatheralerts_1_alert_5', 'alert_id') }}"
 
-  ## Automation to trigger a spoken notification when there is an active weather alert.
-  ## Replace "friendly_name" with the name of your speakers and change or remove the "quiet hours" time conditions as desired.
-  ## Enable this automation if you want spoken alerts.
+## Automation to trigger a spoken notification when there is an active weather alert.
+## Enable this automation if you want spoken alerts.
+## Replace "friendly_name" with the name of your speakers and change or remove the "quiet hours" time conditions as desired.
 
 #  - id: '1630665623759'
 #    alias: Weather Alert Spoken Notifications
@@ -2728,20 +2728,23 @@ automation:
 #            value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_1', 'alert_sent'))) < 3600 }}"
 #          - condition: template
 #            value_template: "{{ state_attr('sensor.weatheralerts_1_alert_1', 'alert_id') not in states('input_text.weatheralerts_1_triggered_ui_alert_ids') }}"
+#      - condition: or
+#        conditions:
 #          - condition: time
 #            before: '21:00:00'
-#            after: '06:00:00'
 #            weekday:
 #              - mon
+#              - tue
 #              - wed
 #              - thu
 #              - fri
+#            after: input_datetime.morning_alarm
 #          - condition: time
 #            before: '23:00:00'
-#            after: '08:00:00'
 #            weekday:
 #              - sun
 #              - sat
+#            after: '09:00:00'
 #    action:
 #    - service: media_player.volume_set
 #      data:
@@ -2760,56 +2763,58 @@ automation:
 #        message: >
 #            {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'warning_count')|int > 1) %}
-#                THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER WARNINGS FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#                The National Weather Service has issued Weather Warnings for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'warning_count')|int == 1) %}
-#                THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER WARNING FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#                The National Weather Service has issued a Weather Warning for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'watch_count')|int > 1) %}
-#                THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER WATCHES FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#                The National Weather Service has issued Weather Watches for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'watch_count')|int == 1) %}
-#                THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER WATCH FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#                The National Weather Service has issued a Weather Watch for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'advisory_count')|int > 1) %}
-#               THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER ADVISORIES FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#               The National Weather Service has issued Weather Advisories for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'advisory_count')|int == 1) %}
-#               THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER ADVISORY FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#               The National Weather Service has issued a Weather Advisory for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'statement_count')|int > 1) %}
-#               THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER STATEMENTS FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#               The National Weather Service has issued Weather Statements for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'statement_count')|int == 1) %}
-#               THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER STATEMENT FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#               The National Weather Service has issued a Weather Statement for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'outlook_count')|int > 1) %}
-#               THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER OUTLOOKS FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#               The National Weather Service has issued Weather Outlooks for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'outlook_count')|int == 1) %}
-#               THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER OUTLOOK FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#               The National Weather Service has issued a Weather Outlook for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'alert_count')|int > 1) %}
-#               THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER ALERTS FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#               The National Weather Service has issued Weather Alerts for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'alert_count')|int == 1) %}
-#               THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER ALERT FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#               The National Weather Service has issued a Weather Alert for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'message_count')|int > 1) %}
+#               The National Weather Service has issued Weather Messages for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
-#               THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER MESSAGE FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#            'message_count')|int == 1) %}
+#               The National Weather Service has issued a Weather Message for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'important_count')|int > 1) %}
-#               THE NATIONAL WEATHER SERVICE HAS ISSUED IMPORTANT WEATHER ALERTS FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#               The National Weather Service has issued important Weather Alerts for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'important_count')|int == 1) %}
-#               THE NATIONAL WEATHER SERVICE HAS ISSUED AN IMPORTANT WEATHER ALERT FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#               The National Weather Service has issued an important Weather Alert for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'test_count')|int > 1) %}
-#               THE NATIONAL WEATHER SERVICE HAS ISSUED WEATHER ALERT TESTS FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#               The National Weather Service has issued Weather Alert Tests for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %} {% if (state_attr( 'sensor.weatheralerts_1_active_alerts',
 #            'test_count')|int == 1) %}
-#               THE NATIONAL WEATHER SERVICE HAS ISSUED A WEATHER ALERT TEST FOR THE {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}
+#               The National Weather Service has issued a Weather Alert Test for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %}
 #              {{ state_attr('sensor.weatheralerts_1_alert_1', 'spoken_message') }}
 #            {% endif %}

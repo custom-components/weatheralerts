@@ -2816,6 +2816,7 @@ automation:
 #            'test_count')|int == 1) %}
 #               The National Weather Service has issued a Weather Alert Test for the {{ state_attr('sensor.weatheralerts_1', 'friendly_name') }}.
 #            {% endif %}
+#            {% if (states('sensor.weatheralerts_1_alert_1') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_1', 'alert_effective'))|float) <= 3600) %}
 #              {{ state_attr('sensor.weatheralerts_1_alert_1', 'spoken_message') }}
 #            {% endif %}
 #            {% if (states('sensor.weatheralerts_1_alert_1') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_1', 'alert_effective'))|float) > 3600) %}
@@ -2834,9 +2835,12 @@ automation:
 #            {% endif %}
 #            {% if (states('sensor.weatheralerts_1_alert_3') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_3', 'alert_effective'))|float) > 3600) %}
 #              {{ state_attr('sensor.weatheralerts_1_alert_3', 'spoken_title') }}
-#            {{ state_attr('sensor.weatheralerts_1_alert_4', 'spoken_title') }}
+#            {% if (states('sensor.weatheralerts_1_alert_4') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_4', 'alert_effective'))|float) <= 3600) %}
+#              {{ state_attr('sensor.weatheralerts_1_alert_4', 'spoken_title') }}
 #              {{ state_attr('sensor.weatheralerts_1_alert_4', 'spoken_message') }}
+#            {% endif %}
 #            {% if (states('sensor.weatheralerts_1_alert_4') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_4', 'alert_effective'))|float) > 3600) %}
+#              {{ state_attr('sensor.weatheralerts_1_alert_4', 'spoken_title') }}
 #            {% endif %}
 #            {% if (states('sensor.weatheralerts_1_alert_5') == 'on') and ((as_timestamp(now()) - as_timestamp(state_attr('sensor.weatheralerts_1_alert_5', 'alert_effective'))|float) <= 3600) %}
 #              {{ state_attr('sensor.weatheralerts_1_alert_5', 'spoken_title') }}

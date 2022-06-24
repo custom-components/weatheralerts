@@ -259,7 +259,7 @@ sensor:
               'Marine Weather Statement' : 'hass:sail-boat',
               'Nuclear Power Plant Warning' : 'hass:radioactive',
               'Radiological Hazard Warning' : 'hass:biohazard',
-              'Red Flag Warning' : 'fire-alert',
+              'Red Flag Warning' : 'hass:fire-alert',
               'Rip Current Statement' : 'hass:surfing',
               'Severe Thunderstorm Warning' : 'hass:weather-lightning',
               'Severe Thunderstorm Watch' : 'hass:weather-lightning',
@@ -557,7 +557,7 @@ sensor:
               'Marine Weather Statement' : 'hass:sail-boat',
               'Nuclear Power Plant Warning' : 'hass:radioactive',
               'Radiological Hazard Warning' : 'hass:biohazard',
-              'Red Flag Warning' : 'fire-alert',
+              'Red Flag Warning' : 'hass:fire-alert',
               'Rip Current Statement' : 'hass:surfing',
               'Severe Thunderstorm Warning' : 'hass:weather-lightning',
               'Severe Thunderstorm Watch' : 'hass:weather-lightning',
@@ -855,7 +855,7 @@ sensor:
               'Marine Weather Statement' : 'hass:sail-boat',
               'Nuclear Power Plant Warning' : 'hass:radioactive',
               'Radiological Hazard Warning' : 'hass:biohazard',
-              'Red Flag Warning' : 'fire-alert',
+              'Red Flag Warning' : 'hass:fire-alert',
               'Rip Current Statement' : 'hass:surfing',
               'Severe Thunderstorm Warning' : 'hass:weather-lightning',
               'Severe Thunderstorm Watch' : 'hass:weather-lightning',
@@ -1153,7 +1153,7 @@ sensor:
               'Marine Weather Statement' : 'hass:sail-boat',
               'Nuclear Power Plant Warning' : 'hass:radioactive',
               'Radiological Hazard Warning' : 'hass:biohazard',
-              'Red Flag Warning' : 'fire-alert',
+              'Red Flag Warning' : 'hass:fire-alert',
               'Rip Current Statement' : 'hass:surfing',
               'Severe Thunderstorm Warning' : 'hass:weather-lightning',
               'Severe Thunderstorm Watch' : 'hass:weather-lightning',
@@ -1451,7 +1451,7 @@ sensor:
               'Marine Weather Statement' : 'hass:sail-boat',
               'Nuclear Power Plant Warning' : 'hass:radioactive',
               'Radiological Hazard Warning' : 'hass:biohazard',
-              'Red Flag Warning' : 'fire-alert',
+              'Red Flag Warning' : 'hass:fire-alert',
               'Rip Current Statement' : 'hass:surfing',
               'Severe Thunderstorm Warning' : 'hass:weather-lightning',
               'Severe Thunderstorm Watch' : 'hass:weather-lightning',
@@ -1785,7 +1785,7 @@ sensor:
               'Marine Weather Statement' : 'hass:sail-boat',
               'Nuclear Power Plant Warning' : 'hass:radioactive',
               'Radiological Hazard Warning' : 'hass:biohazard',
-              'Red Flag Warning' : 'fire-alert',
+              'Red Flag Warning' : 'hass:fire-alert',
               'Rip Current Statement' : 'hass:surfing',
               'Severe Thunderstorm Warning' : 'hass:weather-lightning',
               'Severe Thunderstorm Watch' : 'hass:weather-lightning',
@@ -1969,7 +1969,7 @@ sensor:
               'Marine Weather Statement' : 'hass:sail-boat',
               'Nuclear Power Plant Warning' : 'hass:radioactive',
               'Radiological Hazard Warning' : 'hass:biohazard',
-              'Red Flag Warning' : 'fire-alert',
+              'Red Flag Warning' : 'hass:fire-alert',
               'Rip Current Statement' : 'hass:surfing',
               'Severe Thunderstorm Warning' : 'hass:weather-lightning',
               'Severe Thunderstorm Watch' : 'hass:weather-lightning',
@@ -2153,7 +2153,7 @@ sensor:
               'Marine Weather Statement' : 'hass:sail-boat',
               'Nuclear Power Plant Warning' : 'hass:radioactive',
               'Radiological Hazard Warning' : 'hass:biohazard',
-              'Red Flag Warning' : 'fire-alert',
+              'Red Flag Warning' : 'hass:fire-alert',
               'Rip Current Statement' : 'hass:surfing',
               'Severe Thunderstorm Warning' : 'hass:weather-lightning',
               'Severe Thunderstorm Watch' : 'hass:weather-lightning',
@@ -2337,7 +2337,7 @@ sensor:
               'Marine Weather Statement' : 'hass:sail-boat',
               'Nuclear Power Plant Warning' : 'hass:radioactive',
               'Radiological Hazard Warning' : 'hass:biohazard',
-              'Red Flag Warning' : 'fire-alert',
+              'Red Flag Warning' : 'hass:fire-alert',
               'Rip Current Statement' : 'hass:surfing',
               'Severe Thunderstorm Warning' : 'hass:weather-lightning',
               'Severe Thunderstorm Watch' : 'hass:weather-lightning',
@@ -2521,7 +2521,7 @@ sensor:
               'Marine Weather Statement' : 'hass:sail-boat',
               'Nuclear Power Plant Warning' : 'hass:radioactive',
               'Radiological Hazard Warning' : 'hass:biohazard',
-              'Red Flag Warning' : 'fire-alert',
+              'Red Flag Warning' : 'hass:fire-alert',
               'Rip Current Statement' : 'hass:surfing',
               'Severe Thunderstorm Warning' : 'hass:weather-lightning',
               'Severe Thunderstorm Watch' : 'hass:weather-lightning',
@@ -2804,7 +2804,7 @@ script:
         data:
           notification_id: "weatheralerts_2_alert"
         ## Create a new persistant notification in the UI for a new alert
-      - service_template: >
+      - service: >
           {% if states.sensor.weatheralerts_2.state != '0' %}
             persistent_notification.create
           {% endif %}

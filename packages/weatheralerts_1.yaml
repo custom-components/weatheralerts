@@ -248,7 +248,7 @@ sensor:
               'Marine Weather Statement' : 'hass:sail-boat',
               'Nuclear Power Plant Warning' : 'hass:radioactive',
               'Radiological Hazard Warning' : 'hass:biohazard',
-              'Red Flag Warning' : 'fire-alert',
+              'Red Flag Warning' : 'hass:fire-alert',
               'Rip Current Statement' : 'hass:surfing',
               'Severe Thunderstorm Warning' : 'hass:weather-lightning',
               'Severe Thunderstorm Watch' : 'hass:weather-lightning',

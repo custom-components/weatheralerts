@@ -2644,7 +2644,7 @@ automation:
   ## Automation to trigger a UI notification when there is an active weather alert.
   ## weatheralerts_1_alert_1 should always contain most recent alert.
   - alias: Weather Alert UI Notification - 1
-    initial_state: 'on'
+    initial_state: true
     trigger:
       - platform: state
         entity_id: sensor.weatheralerts_1_alert_1_last_changed

@@ -49,9 +49,9 @@ async def async_setup_platform(
     zone_config = config[CONF_ZONE]
     county_config = config[CONF_COUNTY]
 
-    zone=zone_config
-    county=county_config
-    
+    zone = zone_config
+    county = county_config
+
     if len(state) != 2:
         _LOGGER.critical("Configured (YAML) state '%s' is not valid", state)
         return False
@@ -63,7 +63,8 @@ async def async_setup_platform(
     if len(zone) == 3:
         zoneid = f"{state}Z{zone}"
     else:
-        _LOGGER.critical("Configured (YAML) zone ID '%s' is not valid", zone_config)
+        _LOGGER.critical(
+            "Configured (YAML) zone ID '%s' is not valid", zone_config)
         return False
 
     if len(county) == 1:
@@ -73,7 +74,8 @@ async def async_setup_platform(
     if len(county) == 3:
         countyid = f"{state}C{county}"
     elif county != '':
-        _LOGGER.critical("Configured (YAML) county ID '%s' is not valid", county_config)
+        _LOGGER.critical(
+            "Configured (YAML) county ID '%s' is not valid", county_config)
         return False
 
     if len(county) == 3:
@@ -89,17 +91,18 @@ async def async_setup_platform(
             zone_check_response = await session.get(URL_ID_CHECK.format(zoneid))
             zone_data = await zone_check_response.text()
 
-            if any (id_error in zone_data for id_error in ID_CHECK_ERRORS):
+            if any(id_error in zone_data for id_error in ID_CHECK_ERRORS):
                 _LOGGER.critical("Compiled zone ID '%s' is not valid", zoneid)
                 return False
 
         if len(county) == 3:
-             async with async_timeout.timeout(20):
+            async with async_timeout.timeout(20):
                 county_check_response = await session.get(URL_ID_CHECK.format(countyid))
                 county_data = await county_check_response.text()
 
-                if any (id_error in county_data for id_error in ID_CHECK_ERRORS):
-                    _LOGGER.critical("Compiled county ID '%s' is not valid", countyid)
+                if any(id_error in county_data for id_error in ID_CHECK_ERRORS):
+                    _LOGGER.critical(
+                        "Compiled county ID '%s' is not valid", countyid)
                     return False
 
         async with async_timeout.timeout(20):
@@ -108,7 +111,8 @@ async def async_setup_platform(
 
             if "status" in data:
                 if data["status"] == 404:
-                    _LOGGER.critical("Compiled zone ID '%s' is not valid", zoneid)
+                    _LOGGER.critical(
+                        "Compiled zone ID '%s' is not valid", zoneid)
                     return False
 
             _LOGGER.info(data)
@@ -155,9 +159,11 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
                             if alert.get("properties") is not None:
                                 properties = alert["properties"]
                                 if properties["ends"] is None:
-                                    properties["endsExpires"] = properties.get("expires", "null")
+                                    properties["endsExpires"] = properties.get(
+                                        "expires", "null")
                                 else:
-                                    properties["endsExpires"] = properties.get("ends", "null")
+                                    properties["endsExpires"] = properties.get(
+                                        "ends", "null")
                                 alerts.append(
                                     {
                                         "area": properties.get("areaDesc", "null"),
@@ -222,7 +228,8 @@ class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
 
             elif not self.connected:
                 if connected:
-                    _LOGGER.info("[%s] Update of the sensor completed", self.feedid)
+                    _LOGGER.info(
+                        "[%s] Update of the sensor completed", self.feedid)
                 else:
                     self._state = "unavailable"
                     _LOGGER.warning(

@@ -2638,13 +2638,13 @@ input_text:
     icon: mdi:information-variant
     max: 255
     initial: None
-    
+
   weatheralerts_2_triggered_pushbullet_alert_ids:
     name: Triggered Weather Alert IDs - Pushbullet
     icon: mdi:information-variant
     max: 255
     initial: None
-    
+
 
 
 
@@ -2655,7 +2655,7 @@ automation:
   ## Automation to trigger a UI notification when there is an active weather alert.
   ## weatheralerts_2_alert_1 should always contain most recent alert.
   - alias: Weather Alert UI Notification - 2
-    #initial_state: 'on'
+    #initial_state: true
     trigger:
       - platform: state
         entity_id: sensor.weatheralerts_2_alert_1_last_changed

@@ -33,13 +33,13 @@ sensor:
   state: <your state or marine two letter abbreviation>
   zone: <your zone ID number>
 ```
-Your state abbreviation is simply the standard two letter postal abbreviation. Your state or marine abbreviation can be found by going to [https://alerts.weather.gov/](https://alerts.weather.gov/), find your state or marine area in the list, and click the *Zone List* link to view the zones. The first two letters of the Zone Code is what you would use for the *state* configuration option.
+Your state abbreviation is simply the standard two letter postal abbreviation. It can be found by going to [https://alerts.weather.gov/](https://alerts.weather.gov/), click the `Land areas with zones` link, and click on your state name in the list. The URL in your browser address bar will contain `search?area=XX`. The `XX` after `area=` in your browser address bar will be your two letter state abbreviation and that is what you would use for the YAML *state* configuration option. 
 
-To find your zone ID number (both state and marine zones) for the *zone* configuration option, go to [https://alerts.weather.gov/](https://alerts.weather.gov/), scroll down the page to find your state or marine location, click the *Zone List* link for your state or marine location, and lookup the six character code in the *Zone Code* column for your county or marine zone. The first two letters of your six character zone code will be used for your state configuration option. The three digit number is your zone ID number and will be used for your zone configuration option. For example, Outagamie County in Wisconsin has a zone code of `WIZ038`. The state config is `WI` and the zone ID number for the *zone* config option is `38` (omit any leading zeros, so 038 = 38). 
+To find your zone ID number for the YAML *zone* configuration option, go to [https://alerts.weather.gov/](https://alerts.weather.gov/), click the `Land areas with zones` link, find your state in the list, and click the `Public Zones` link for your state. In the `Public Zones` list, find your county and its six character (3 letters and 3 numbers) zone ID. The last three characters is the three digit number portion of the zone ID. This three digit number is the zone ID number and will be used for your YAML *zone* configuration option. For example, Outagamie County in Wisconsin has a zone code of `WIZ038`. The *state* config is `WI` and the zone ID number for the *zone* config option is `38` (omit any leading zeros, so 038 = 38). 
 
-To find your county ID number, go to [https://alerts.weather.gov/](https://alerts.weather.gov/), scroll down the page to find your state, click the County List link next to your state, lookup the six character county code for your county in the table, and then take just the number from that county code to use as your county ID number. For example, Outagamie County in Wisconsin has county code `WIC087`. The county ID number for the *county* config option is `87` (omit any leading zeros, so 087 = 87).
+To find your county ID number, go to [https://alerts.weather.gov/](https://alerts.weather.gov/), click the `Land areas with zones` link, find your state in the list, and click the `County Zones` link for your state. In the `County Zones` list, find your county and its six character (3 letters and 3 numbers) county zone ID. The last three characters is the three digit number portion of the county zone ID. This three digit number is the county zone ID number and will be used for your YAML *county* configuration option. For example, Outagamie County in Wisconsin has county code `WIC087`. The county ID number for the *county* config option is `87` (omit any leading zeros, so 087 = 87).
 
-**Example configuration.yaml:**
+**Example configuration.yaml using the above sample instructions:**
 
 ```yaml
 sensor:
@@ -68,7 +68,8 @@ sensor:
 
 ![Sample overview](/sensor.png)
 
-The main *weatheralerts* sensor will be given the name of your zone or county and can be changed via the Home Assistant Entities Overview in the Home Assistant Configuration menu.
+The main *weatheralerts* sensor will be given the name of your zone or county and can be changed via the Home Assistant Settings menu. Click the into the *Settings* menu in the web UI, click the *Devices & Services* option on the *Settings* menu, and then select *Entities* option from the top horizontal menu. Then, use the search to search 
+box to search for your county name and you should be able to find the new sensor for the alerts.
 
 This main sensor state will be the number of alerts that are currently active, or it will be set to `unavailable` if *weatheralerts* is unable to update the sensor due to problems with the weather.gov API server. Due to the possiblity of the state being `unavailable`, you need to be careful when using it as a trigger for automations. Additional conditions may need to be applied to automations to prevent unwanted re-triggering.
 

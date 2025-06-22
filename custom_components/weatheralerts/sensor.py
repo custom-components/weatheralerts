@@ -16,8 +16,6 @@ from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
 
-__version__ = '0.1.5'
-
 CONF_STATE = "state"
 CONF_ZONE = "zone"
 CONF_COUNTY = "county"
@@ -42,18 +40,17 @@ HEADERS = {
 }
 
 
-async def async_setup_platform(
-    hass, config, add_entities, discovery_info=None
-):  # pylint: disable=missing-docstring, unused-argument
+async def _async_setup(hass, config, add_entities):
+    """Shared setup logic for YAML platform and config entry."""
     state = config[CONF_STATE].upper()
     zone_config = config[CONF_ZONE]
     county_config = config[CONF_COUNTY]
 
-    zone=zone_config
-    county=county_config
-    
+    zone = zone_config
+    county = county_config
+
     if len(state) != 2:
-        _LOGGER.critical("Configured (YAML) state '%s' is not valid", state)
+        _LOGGER.error("Configured state '%s' is not valid", state)
         return False
 
     if len(zone) == 1:
@@ -63,7 +60,7 @@ async def async_setup_platform(
     if len(zone) == 3:
         zoneid = f"{state}Z{zone}"
     else:
-        _LOGGER.critical("Configured (YAML) zone ID '%s' is not valid", zone_config)
+        _LOGGER.error("Configured zone ID '%s' is not valid", zone_config)
         return False
 
     if len(county) == 1:
@@ -72,8 +69,8 @@ async def async_setup_platform(
         county = f"0{county}"
     if len(county) == 3:
         countyid = f"{state}C{county}"
-    elif county != '':
-        _LOGGER.critical("Configured (YAML) county ID '%s' is not valid", county_config)
+    elif county != "":
+        _LOGGER.error("Configured county ID '%s' is not valid", county_config)
         return False
 
     if len(county) == 3:
@@ -83,44 +80,59 @@ async def async_setup_platform(
 
     session = async_create_clientsession(hass)
 
-    # Check the zoneid and set sensor name to county name from zoneid alert feed
     try:
         async with async_timeout.timeout(20):
             zone_check_response = await session.get(URL_ID_CHECK.format(zoneid))
             zone_data = await zone_check_response.text()
 
-            if any (id_error in zone_data for id_error in ID_CHECK_ERRORS):
-                _LOGGER.critical("Compiled zone ID '%s' is not valid", zoneid)
+            if any(id_error in zone_data for id_error in ID_CHECK_ERRORS):
+                _LOGGER.error("Compiled zone ID '%s' is not valid", zoneid)
                 return False
 
         if len(county) == 3:
-             async with async_timeout.timeout(20):
+            async with async_timeout.timeout(20):
                 county_check_response = await session.get(URL_ID_CHECK.format(countyid))
                 county_data = await county_check_response.text()
 
-                if any (id_error in county_data for id_error in ID_CHECK_ERRORS):
-                    _LOGGER.critical("Compiled county ID '%s' is not valid", countyid)
+                if any(id_error in county_data for id_error in ID_CHECK_ERRORS):
+                    _LOGGER.error("Compiled county ID '%s' is not valid", countyid)
                     return False
 
         async with async_timeout.timeout(20):
             response = await session.get(URL.format(zoneid))
             data = await response.json()
 
-            if "status" in data:
-                if data["status"] == 404:
-                    _LOGGER.critical("Compiled zone ID '%s' is not valid", zoneid)
-                    return False
+            if data.get("status") == 404:
+                _LOGGER.error("Compiled zone ID '%s' is not valid", zoneid)
+                return False
 
-            _LOGGER.info(data)
             name = data["title"].split("advisories for ")[1].split(" (")[0]
 
     except Exception as exception:  # pylint: disable=broad-except
         _LOGGER.warning("[%s] %s", sys.exc_info()[0].__name__, exception)
-        raise PlatformNotReady
+        raise PlatformNotReady from exception
 
     add_entities([WeatherAlertsSensor(name, state, feedid, session)], True)
-    _LOGGER.info("Added sensor with name '%s' for feedid '%s'", name, feedid)
+    _LOGGER.debug("Added sensor '%s' for feedid '%s'", name, feedid)
 
+    return True
+
+
+async def async_setup_platform(
+    hass, config, add_entities, discovery_info=None
+):  # pylint: disable=missing-docstring, unused-argument
+    """Legacy YAML setup."""
+    return await _async_setup(hass, config, add_entities)
+
+
+async def async_setup_entry(hass, entry, add_entities):
+    """Set up sensors from config entry."""
+    config = {
+        CONF_STATE: entry.data[CONF_STATE],
+        CONF_ZONE: entry.data[CONF_ZONE],
+        CONF_COUNTY: entry.data.get(CONF_COUNTY, ""),
+    }
+    return await _async_setup(hass, config, add_entities)
 
 class WeatherAlertsSensor(Entity):  # pylint: disable=missing-docstring
     def __init__(self, name, zone_state, feedid, session):

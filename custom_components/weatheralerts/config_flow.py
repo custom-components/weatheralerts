@@ -98,7 +98,7 @@ class WeatheralertsOptionsFlow(config_entries.OptionsFlow):
             {
                 vol.Required(CONF_STATE, default=self.config_entry.options.get(CONF_STATE, self.config_entry.data[CONF_STATE])): str,
                 vol.Required(CONF_ZONE, default=self.config_entry.options.get(CONF_ZONE, self.config_entry.data[CONF_ZONE])): str,
-                vol.Optional(CONF_COUNTY, default=self.config_entry.options.get(CONF_COUNTY, self.config_entry.data.get(CONF_COUNTY, ""))): str,
+                vol.Required(CONF_COUNTY, default=self.config_entry.options.get(CONF_COUNTY, self.config_entry.data.get(CONF_COUNTY, ""))): str,
             }
         )
         return self.async_show_form(step_id="init", data_schema=data_schema, errors=errors)

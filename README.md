@@ -53,9 +53,19 @@ Check the **Breaking Changes** section of this README to see if you need to manu
 
 
 
+## Reconfiguration via UI
+
+You can reconfigure the integration through the Home Assistant UI:
+
+1. Go to **Settings** > **Devices & Services**.
+2. Find the **Weather Alerts** integration and click on it.
+3. Click **Configure**.
+4. Update the **State**, **Zone**, and **County** values.
+5. Click **Save**. The integration will automatically reload.
+
 # Todo list
 - [x] Add more documentation
-- [ ] Add config flow to allow UI-based configuration (eliminate yaml-based platform configuration)
+- [x] Add config flow to allow UI-based configuration (eliminate yaml-based platform configuration)
 - [ ] Create alternative (possibly simpler) YAML package or move some template sensors into the integration
 - [ ] Add backup weather alert source for occasions when weather.gov json feed is experiencing an outage
 - [ ] Add Canadian weather alerts

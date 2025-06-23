@@ -127,10 +127,11 @@ async def async_setup_platform(
 
 async def async_setup_entry(hass, entry, add_entities):
     """Set up sensors from config entry."""
+    # Load configuration from entry options if available, else use initial data
     config = {
-        CONF_STATE: entry.data[CONF_STATE],
-        CONF_ZONE: entry.data[CONF_ZONE],
-        CONF_COUNTY: entry.data.get(CONF_COUNTY, ""),
+        CONF_STATE: entry.options.get(CONF_STATE, entry.data[CONF_STATE]),
+        CONF_ZONE: entry.options.get(CONF_ZONE, entry.data[CONF_ZONE]),
+        CONF_COUNTY: entry.options.get(CONF_COUNTY, entry.data.get(CONF_COUNTY, "")),
     }
     return await _async_setup(hass, config, add_entities)
 

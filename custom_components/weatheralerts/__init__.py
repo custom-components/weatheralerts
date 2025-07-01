@@ -7,6 +7,7 @@ import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
+from homeassistant import config_entries
 
 from .const import DOMAIN
 from .sensor import CONF_STATE, CONF_ZONE, CONF_COUNTY
@@ -18,9 +19,34 @@ PLATFORMS: list[str] = ["sensor"]
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:  # type: ignore[override]
     """Set up via YAML (now deprecated)."""
-    if DOMAIN in config:
+    # Migrate legacy YAML sensor platform configuration to UI config entries
+    sensor_conf = config.get("sensor")
+    if not sensor_conf:
+        return True
+    # Normalize to list
+    if isinstance(sensor_conf, dict):
+        yaml_sensors = [sensor_conf]
+    elif isinstance(sensor_conf, list):
+        yaml_sensors = sensor_conf
+    else:
+        return True
+
+    for conf in yaml_sensors:
+        if not isinstance(conf, dict) or conf.get("platform") != DOMAIN:
+            continue
         _LOGGER.warning(
-            "YAML configuration for Weather Alerts is deprecated; please remove it and use the UI config flow instead."
+            "YAML configuration for Weather Alerts platform is deprecated; migrating to UI config entries"
+        )
+        hass.async_create_task(
+            hass.config_entries.flow.async_init(
+                DOMAIN,
+                context={"source": config_entries.SOURCE_IMPORT},
+                data={
+                    CONF_STATE: conf.get(CONF_STATE),
+                    CONF_ZONE: conf.get(CONF_ZONE),
+                    CONF_COUNTY: conf.get(CONF_COUNTY, ""),
+                },
+            )
         )
     return True
 

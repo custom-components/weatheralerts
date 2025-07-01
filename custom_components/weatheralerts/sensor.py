@@ -15,6 +15,8 @@ from homeassistant.const import __version__
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.config_validation as cv
+from .const import DOMAIN
+
 
 CONF_STATE = "state"
 CONF_ZONE = "zone"
@@ -121,8 +123,15 @@ async def _async_setup(hass, config, add_entities):
 async def async_setup_platform(
     hass, config, add_entities, discovery_info=None
 ):  # pylint: disable=missing-docstring, unused-argument
-    """Legacy YAML setup."""
-    return await _async_setup(hass, config, add_entities)
+    """Deprecated YAML setup.
+
+    YAML configuration for weatheralerts is deprecated and no longer supported; please configure via the Home Assistant UI.
+    """
+    _LOGGER.warning(
+        "YAML configuration for weatheralerts is deprecated and no longer supported; please configure via the Home Assistant UI."
+    )
+    return True
+
 
 
 async def async_setup_entry(hass, entry, add_entities):

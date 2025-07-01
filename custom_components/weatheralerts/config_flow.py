@@ -61,6 +61,12 @@ class WeatheralertsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         )
         return self.async_show_form(step_id="user", data_schema=data_schema, errors=errors)
 
+
+    async def async_step_import(self, import_data: dict):
+        """Import a config entry from YAML."""
+        # Delegate to async_step_user for validation and entry creation
+        return await self.async_step_user(import_data)
+
     @staticmethod
     def async_get_options_flow(config_entry):  # type: ignore[override]
         """Get the options flow for this handler."""

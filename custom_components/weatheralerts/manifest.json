@@ -1,6 +1,6 @@
 {
   "domain": "weatheralerts",
-  "name": "Weatheralerts",
+  "name": "Weather Alerts",
   "documentation": "https://github.com/custom-components/weatheralerts",
   "config_flow": true,
   "dependencies": [],
@@ -9,5 +9,6 @@
     "@jlverhagen"
   ],
   "requirements": [],
-  "version": "2025.6.0"
+  "version": "2025.8.0",
+  "translations": [ "en" ]
 }

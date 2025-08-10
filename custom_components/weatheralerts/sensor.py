@@ -195,6 +195,44 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
                         update_error.append(previous_entry)
                     if self._last_good_data:
                         data = dict(self._last_good_data)
+                        # --- prune stale alerts when falling back to previous data ---
+                        try:
+                            now = dt_util.now()
+                            fallback_delete_buffer = timedelta(minutes=10)
+
+                            alerts = list(data.get("alerts", []))
+                            kept_alerts = []
+                            kept_ids = set()
+
+                            for a in alerts:
+                                exp = a.get("expires")
+                                drop = False
+                                if exp and exp != "null":
+                                    try:
+                                        exp_dt = dt_util.parse_datetime(exp)
+                                        if exp_dt and now >= (exp_dt + fallback_delete_buffer):
+                                            drop = True
+                                    except Exception:
+                                        # If we can't parse, keep it rather than accidentally dropping
+                                        pass
+
+                                if not drop:
+                                    kept_alerts.append(a)
+                                    if a.get("id"):
+                                        kept_ids.add(a["id"])
+
+                            # Replace with pruned alerts, update count + stats
+                            data["alerts"] = kept_alerts
+                            data["count"] = len(kept_alerts)
+                            data["alert_stats"] = _compute_active_alert_stats(kept_alerts)
+
+                            # Drop any alert_tracking rows for removed alerts
+                            tracking = list(data.get("alert_tracking", []))
+                            data["alert_tracking"] = [t for t in tracking if t.get("id") in kept_ids]
+
+                        except Exception as e:
+                            _LOGGER.debug("weatheralerts: prune-on-fallback failed: %s", e)
+                        # --- end prune block ---                self._last_error = update_error
                         data["error"] = update_error
                         self._last_error = update_error
                         return data
@@ -225,8 +263,45 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
             _LOGGER.debug("weatheralerts: Exception in _async_update_data: %s", err)
             if self._last_good_data:
                 data = dict(self._last_good_data)
+                # --- prune stale alerts when falling back to previous data ---
+                try:
+                    now = dt_util.now()
+                    fallback_delete_buffer = timedelta(minutes=10)
+
+                    alerts = list(data.get("alerts", []))
+                    kept_alerts = []
+                    kept_ids = set()
+
+                    for a in alerts:
+                        exp = a.get("expires")
+                        drop = False
+                        if exp and exp != "null":
+                            try:
+                                exp_dt = dt_util.parse_datetime(exp)
+                                if exp_dt and now >= (exp_dt + fallback_delete_buffer):
+                                    drop = True
+                            except Exception:
+                                # If we can't parse, keep it rather than accidentally dropping
+                                pass
+
+                        if not drop:
+                            kept_alerts.append(a)
+                            if a.get("id"):
+                                kept_ids.add(a["id"])
+
+                    # Replace with pruned alerts, update count + stats
+                    data["alerts"] = kept_alerts
+                    data["count"] = len(kept_alerts)
+                    data["alert_stats"] = _compute_active_alert_stats(kept_alerts)
+
+                    # Drop any alert_tracking rows for removed alerts
+                    tracking = list(data.get("alert_tracking", []))
+                    data["alert_tracking"] = [t for t in tracking if t.get("id") in kept_ids]
+
+                except Exception as e:
+                    _LOGGER.debug("weatheralerts: prune-on-fallback failed: %s", e)
+                # --- end prune block ---                self._last_error = update_error
                 data["error"] = update_error
-                self._last_error = update_error
                 return data
             else:
                 return {

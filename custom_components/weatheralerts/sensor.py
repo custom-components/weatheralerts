@@ -299,7 +299,6 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
 
         # ------- alert_tracking TRACKING LOGIC -------
         now = dt_util.now()
-        one_hour_ago = now - timedelta(hours=1)
 
         # 1. Build lookups for current and previous
         current_alerts_by_id = {a["id"]: a for a in alerts if a.get("id")}
@@ -312,44 +311,84 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
             expires = alert.get("expires")
             sent = alert.get("sent")
             prev_entry = prev_alerts_by_id.get(alert_tracking)
+
             if is_initial or prev_entry is None:
                 status = "new"
+                status_ts = now.isoformat()
             else:
                 # if it existed before—even if it was “delete”—treat as “old”
                 status = "old"
+                # keep old timestamp when status unchanged; bump when status changed
+                if prev_entry.get("status") == status and prev_entry.get("status_timestamp"):
+                    status_ts = prev_entry["status_timestamp"]
+                else:
+                    status_ts = now.isoformat()
 
             new_alert_tracking_list.append({
                 "id": alert_tracking,
                 "sent": sent,
                 "expires": expires,
                 "status": status,
+                "status_timestamp": status_ts,
             })
 
         # 3. Mark as deleted if missing from live alerts
         for alert_tracking, prev_entry in prev_alerts_by_id.items():
-            if alert_tracking not in current_alerts_by_id and prev_entry.get("status") != "delete":
+            if alert_tracking not in current_alerts_by_id:
+                prev_status = prev_entry.get("status")
+                # preserve timestamp if already 'delete', else bump to now
+                status_ts = (
+                    prev_entry.get("status_timestamp")
+                    if prev_status == "delete" and prev_entry.get("status_timestamp")
+                    else now.isoformat()
+                )
                 new_alert_tracking_list.append({
                     "id": alert_tracking,
                     "sent": prev_entry.get("sent"),
                     "expires": prev_entry.get("expires"),
                     "status": "delete",
+                    "status_timestamp": status_ts,
                 })
 
-        # 4. Remove deleted+expired entries (>1hr after expires)
+        # 4. Drop entries based on expiration or 'delete' age (delete_buffer window)
         cleaned_alert_tracking_list = []
+        delete_buffer = timedelta(minutes=10)
+
         for entry in new_alert_tracking_list:
-            if entry["status"] == "delete":
-                expires = entry.get("expires")
+            # Parse expires
+            exp_dt = None
+            expires = entry.get("expires")
+            if expires:
                 try:
                     exp_dt = dt_util.parse_datetime(expires)
                 except Exception:
                     exp_dt = None
-                if exp_dt is not None and exp_dt > one_hour_ago:
-                    cleaned_alert_tracking_list.append(entry)
-            else:
-                cleaned_alert_tracking_list.append(entry)
 
-        cleaned_alert_tracking_list.sort(key=lambda x: (x.get("sent", ""), x.get("id", "")), reverse=True)
+            # Parse status_timestamp
+            status_ts_dt = None
+            status_ts = entry.get("status_timestamp")
+            if status_ts:
+                try:
+                    status_ts_dt = dt_util.parse_datetime(status_ts)
+                except Exception:
+                    status_ts_dt = None
+
+            drop_for_expiry = exp_dt is not None and now >= (exp_dt + delete_buffer)
+            drop_for_delete_age = (
+                entry.get("status") == "delete"
+                and status_ts_dt is not None
+                and now >= (status_ts_dt + delete_buffer)
+            )
+
+            if drop_for_expiry or drop_for_delete_age:
+                # Skip adding -> effectively removed
+                continue
+
+            cleaned_alert_tracking_list.append(entry)
+
+        cleaned_alert_tracking_list.sort(
+            key=lambda x: (x.get("sent", ""), x.get("id", "")), reverse=True
+        )
         self._alert_tracking_list = cleaned_alert_tracking_list
         # ------- END alert_tracking TRACKING LOGIC -------
 

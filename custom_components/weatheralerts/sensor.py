@@ -29,12 +29,14 @@ from .const import (
     CONF_MARINE_ZONES,
     CONF_EVENT_ICONS,
     CONF_DEFAULT_ICON,
+    CONF_DEDUPLICATE_ALERTS,
     DEFAULT_EVENT_ICONS,
     DEFAULT_EVENT_ICON,
     CONF_UPDATE_INTERVAL,
     CONF_API_TIMEOUT,
     DEFAULT_UPDATE_INTERVAL,
     DEFAULT_API_TIMEOUT,
+    DEFAULT_DEDUPLICATE_ALERTS,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -107,6 +109,44 @@ def _compute_active_alert_stats(alerts):
                     stats[k] += 1
     return stats
 
+def _dedup_key(text):
+    return re.sub(r'\s+', '', text).lower()  # Remove all whitespace, make lowercase
+
+def _deduplicate_alerts_by_description(alerts):
+    """Deduplicate alerts by description, keeping only the newest sent, then latest expires, then top reverse-sorted id."""
+    from collections import defaultdict
+    grouped = defaultdict(list)
+    for alert in alerts:
+        key = _dedup_key(alert.get("description", ""))
+        grouped[key].append(alert)
+    deduped = []
+    for desc, group in grouped.items():
+        if len(group) == 1:
+            deduped.append(group[0])
+        else:
+            # Sort by sent DESC (newest first), then expires DESC, then id DESC
+            group.sort(key=lambda a: (
+                a.get("sent", ""),
+                a.get("expires", ""),
+                a.get("id", ""),
+            ), reverse=True)
+            # Find the best "sent"
+            best_sent = group[0].get("sent", "")
+            sent_group = [a for a in group if a.get("sent", "") == best_sent]
+            if len(sent_group) == 1:
+                deduped.append(sent_group[0])
+            else:
+                # Further filter by expires DESC
+                best_expires = max(a.get("expires", "") for a in sent_group)
+                expires_group = [a for a in sent_group if a.get("expires", "") == best_expires]
+                if len(expires_group) == 1:
+                    deduped.append(expires_group[0])
+                else:
+                    # Reverse sort by id and keep the first one
+                    expires_group.sort(key=lambda a: a.get("id", ""), reverse=True)
+                    deduped.append(expires_group[0])
+    return deduped
+
 class WeatherAlertsCoordinator(DataUpdateCoordinator):
     """Coordinator for fetching weather alerts and tracking alert_tracking."""
 
@@ -133,6 +173,7 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
                      if e.entry_id == self.config_entry_id), None)
         timeout_seconds = entry.options.get(CONF_API_TIMEOUT,
                             entry.data.get(CONF_API_TIMEOUT, DEFAULT_API_TIMEOUT)) if entry else DEFAULT_API_TIMEOUT
+        deduplicate_alerts = entry.options.get(CONF_DEDUPLICATE_ALERTS, entry.data.get(CONF_DEDUPLICATE_ALERTS, DEFAULT_DEDUPLICATE_ALERTS)) if entry else DEFAULT_DEDUPLICATE_ALERTS
 
         try:
             async with async_timeout.timeout(timeout_seconds):
@@ -154,6 +195,44 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
                         update_error.append(previous_entry)
                     if self._last_good_data:
                         data = dict(self._last_good_data)
+                        # --- prune stale alerts when falling back to previous data ---
+                        try:
+                            now = dt_util.now()
+                            fallback_delete_buffer = timedelta(minutes=10)
+
+                            alerts = list(data.get("alerts", []))
+                            kept_alerts = []
+                            kept_ids = set()
+
+                            for a in alerts:
+                                exp = a.get("expires")
+                                drop = False
+                                if exp and exp != "null":
+                                    try:
+                                        exp_dt = dt_util.parse_datetime(exp)
+                                        if exp_dt and now >= (exp_dt + fallback_delete_buffer):
+                                            drop = True
+                                    except Exception:
+                                        # If we can't parse, keep it rather than accidentally dropping
+                                        pass
+
+                                if not drop:
+                                    kept_alerts.append(a)
+                                    if a.get("id"):
+                                        kept_ids.add(a["id"])
+
+                            # Replace with pruned alerts, update count + stats
+                            data["alerts"] = kept_alerts
+                            data["count"] = len(kept_alerts)
+                            data["alert_stats"] = _compute_active_alert_stats(kept_alerts)
+
+                            # Drop any alert_tracking rows for removed alerts
+                            tracking = list(data.get("alert_tracking", []))
+                            data["alert_tracking"] = [t for t in tracking if t.get("id") in kept_ids]
+
+                        except Exception as e:
+                            _LOGGER.debug("weatheralerts: prune-on-fallback failed: %s", e)
+                        # --- end prune block ---
                         data["error"] = update_error
                         self._last_error = update_error
                         return data
@@ -184,6 +263,44 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
             _LOGGER.debug("weatheralerts: Exception in _async_update_data: %s", err)
             if self._last_good_data:
                 data = dict(self._last_good_data)
+                # --- prune stale alerts when falling back to previous data ---
+                try:
+                    now = dt_util.now()
+                    fallback_delete_buffer = timedelta(minutes=10)
+
+                    alerts = list(data.get("alerts", []))
+                    kept_alerts = []
+                    kept_ids = set()
+
+                    for a in alerts:
+                        exp = a.get("expires")
+                        drop = False
+                        if exp and exp != "null":
+                            try:
+                                exp_dt = dt_util.parse_datetime(exp)
+                                if exp_dt and now >= (exp_dt + fallback_delete_buffer):
+                                    drop = True
+                            except Exception:
+                                # If we can't parse, keep it rather than accidentally dropping
+                                pass
+
+                        if not drop:
+                            kept_alerts.append(a)
+                            if a.get("id"):
+                                kept_ids.add(a["id"])
+
+                    # Replace with pruned alerts, update count + stats
+                    data["alerts"] = kept_alerts
+                    data["count"] = len(kept_alerts)
+                    data["alert_stats"] = _compute_active_alert_stats(kept_alerts)
+
+                    # Drop any alert_tracking rows for removed alerts
+                    tracking = list(data.get("alert_tracking", []))
+                    data["alert_tracking"] = [t for t in tracking if t.get("id") in kept_ids]
+
+                except Exception as e:
+                    _LOGGER.debug("weatheralerts: prune-on-fallback failed: %s", e)
+                # --- end prune block ---
                 data["error"] = update_error
                 self._last_error = update_error
                 return data
@@ -249,12 +366,15 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
             alerts.append(alert)
         _LOGGER.debug("weatheralerts: Parsed %d alerts", len(alerts))
 
+        if deduplicate_alerts:
+            alerts = _deduplicate_alerts_by_description(alerts)
+            _LOGGER.debug("weatheralerts: %d alerts after deduplication", len(alerts))
+
         alerts.sort(key=lambda x: (x.get("sent", ""), x.get("id", "")), reverse=True)
         alert_stats = _compute_active_alert_stats(alerts)
 
         # ------- alert_tracking TRACKING LOGIC -------
         now = dt_util.now()
-        one_hour_ago = now - timedelta(hours=1)
 
         # 1. Build lookups for current and previous
         current_alerts_by_id = {a["id"]: a for a in alerts if a.get("id")}
@@ -267,44 +387,84 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
             expires = alert.get("expires")
             sent = alert.get("sent")
             prev_entry = prev_alerts_by_id.get(alert_tracking)
+
             if is_initial or prev_entry is None:
                 status = "new"
+                status_ts = now.isoformat()
             else:
                 # if it existed before—even if it was “delete”—treat as “old”
                 status = "old"
+                # keep old timestamp when status unchanged; bump when status changed
+                if prev_entry.get("status") == status and prev_entry.get("status_timestamp"):
+                    status_ts = prev_entry["status_timestamp"]
+                else:
+                    status_ts = now.isoformat()
 
             new_alert_tracking_list.append({
                 "id": alert_tracking,
                 "sent": sent,
                 "expires": expires,
                 "status": status,
+                "status_timestamp": status_ts,
             })
 
         # 3. Mark as deleted if missing from live alerts
         for alert_tracking, prev_entry in prev_alerts_by_id.items():
-            if alert_tracking not in current_alerts_by_id and prev_entry.get("status") != "delete":
+            if alert_tracking not in current_alerts_by_id:
+                prev_status = prev_entry.get("status")
+                # preserve timestamp if already 'delete', else bump to now
+                status_ts = (
+                    prev_entry.get("status_timestamp")
+                    if prev_status == "delete" and prev_entry.get("status_timestamp")
+                    else now.isoformat()
+                )
                 new_alert_tracking_list.append({
                     "id": alert_tracking,
                     "sent": prev_entry.get("sent"),
                     "expires": prev_entry.get("expires"),
                     "status": "delete",
+                    "status_timestamp": status_ts,
                 })
 
-        # 4. Remove deleted+expired entries (>1hr after expires)
+        # 4. Drop entries based on expiration or 'delete' age (delete_buffer window)
         cleaned_alert_tracking_list = []
+        delete_buffer = timedelta(minutes=10)
+
         for entry in new_alert_tracking_list:
-            if entry["status"] == "delete":
-                expires = entry.get("expires")
+            # Parse expires
+            exp_dt = None
+            expires = entry.get("expires")
+            if expires:
                 try:
                     exp_dt = dt_util.parse_datetime(expires)
                 except Exception:
                     exp_dt = None
-                if exp_dt is not None and exp_dt > one_hour_ago:
-                    cleaned_alert_tracking_list.append(entry)
-            else:
-                cleaned_alert_tracking_list.append(entry)
 
-        cleaned_alert_tracking_list.sort(key=lambda x: (x.get("sent", ""), x.get("id", "")), reverse=True)
+            # Parse status_timestamp
+            status_ts_dt = None
+            status_ts = entry.get("status_timestamp")
+            if status_ts:
+                try:
+                    status_ts_dt = dt_util.parse_datetime(status_ts)
+                except Exception:
+                    status_ts_dt = None
+
+            drop_for_expiry = exp_dt is not None and now >= (exp_dt + delete_buffer)
+            drop_for_delete_age = (
+                entry.get("status") == "delete"
+                and status_ts_dt is not None
+                and now >= (status_ts_dt + delete_buffer)
+            )
+
+            if drop_for_expiry or drop_for_delete_age:
+                # Skip adding -> effectively removed
+                continue
+
+            cleaned_alert_tracking_list.append(entry)
+
+        cleaned_alert_tracking_list.sort(
+            key=lambda x: (x.get("sent", ""), x.get("id", "")), reverse=True
+        )
         self._alert_tracking_list = cleaned_alert_tracking_list
         # ------- END alert_tracking TRACKING LOGIC -------
 

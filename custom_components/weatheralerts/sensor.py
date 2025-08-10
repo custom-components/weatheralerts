@@ -232,7 +232,7 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
 
                         except Exception as e:
                             _LOGGER.debug("weatheralerts: prune-on-fallback failed: %s", e)
-                        # --- end prune block ---                self._last_error = update_error
+                        # --- end prune block ---
                         data["error"] = update_error
                         self._last_error = update_error
                         return data
@@ -300,8 +300,9 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
 
                 except Exception as e:
                     _LOGGER.debug("weatheralerts: prune-on-fallback failed: %s", e)
-                # --- end prune block ---                self._last_error = update_error
+                # --- end prune block ---
                 data["error"] = update_error
+                self._last_error = update_error
                 return data
             else:
                 return {

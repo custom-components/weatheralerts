@@ -29,12 +29,14 @@ from .const import (
     CONF_MARINE_ZONES,
     CONF_EVENT_ICONS,
     CONF_DEFAULT_ICON,
+    CONF_DEDUPLICATE_ALERTS,
     DEFAULT_EVENT_ICONS,
     DEFAULT_EVENT_ICON,
     CONF_UPDATE_INTERVAL,
     CONF_API_TIMEOUT,
     DEFAULT_UPDATE_INTERVAL,
     DEFAULT_API_TIMEOUT,
+    DEFAULT_DEDUPLICATE_ALERTS,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -107,6 +109,44 @@ def _compute_active_alert_stats(alerts):
                     stats[k] += 1
     return stats
 
+def _dedup_key(text):
+    return re.sub(r'\s+', '', text).lower()  # Remove all whitespace, make lowercase
+
+def _deduplicate_alerts_by_description(alerts):
+    """Deduplicate alerts by description, keeping only the newest sent, then latest expires, then top reverse-sorted id."""
+    from collections import defaultdict
+    grouped = defaultdict(list)
+    for alert in alerts:
+        key = _dedup_key(alert.get("description", ""))
+        grouped[key].append(alert)
+    deduped = []
+    for desc, group in grouped.items():
+        if len(group) == 1:
+            deduped.append(group[0])
+        else:
+            # Sort by sent DESC (newest first), then expires DESC, then id DESC
+            group.sort(key=lambda a: (
+                a.get("sent", ""),
+                a.get("expires", ""),
+                a.get("id", ""),
+            ), reverse=True)
+            # Find the best "sent"
+            best_sent = group[0].get("sent", "")
+            sent_group = [a for a in group if a.get("sent", "") == best_sent]
+            if len(sent_group) == 1:
+                deduped.append(sent_group[0])
+            else:
+                # Further filter by expires DESC
+                best_expires = max(a.get("expires", "") for a in sent_group)
+                expires_group = [a for a in sent_group if a.get("expires", "") == best_expires]
+                if len(expires_group) == 1:
+                    deduped.append(expires_group[0])
+                else:
+                    # Reverse sort by id and keep the first one
+                    expires_group.sort(key=lambda a: a.get("id", ""), reverse=True)
+                    deduped.append(expires_group[0])
+    return deduped
+
 class WeatherAlertsCoordinator(DataUpdateCoordinator):
     """Coordinator for fetching weather alerts and tracking alert_tracking."""
 
@@ -133,6 +173,7 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
                      if e.entry_id == self.config_entry_id), None)
         timeout_seconds = entry.options.get(CONF_API_TIMEOUT,
                             entry.data.get(CONF_API_TIMEOUT, DEFAULT_API_TIMEOUT)) if entry else DEFAULT_API_TIMEOUT
+        deduplicate_alerts = entry.options.get(CONF_DEDUPLICATE_ALERTS, entry.data.get(CONF_DEDUPLICATE_ALERTS, DEFAULT_DEDUPLICATE_ALERTS)) if entry else DEFAULT_DEDUPLICATE_ALERTS
 
         try:
             async with async_timeout.timeout(timeout_seconds):
@@ -248,6 +289,10 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
             alert["icon"] = _get_icon_for_event(event_value, entry_options)
             alerts.append(alert)
         _LOGGER.debug("weatheralerts: Parsed %d alerts", len(alerts))
+
+        if deduplicate_alerts:
+            alerts = _deduplicate_alerts_by_description(alerts)
+            _LOGGER.debug("weatheralerts: %d alerts after deduplication", len(alerts))
 
         alerts.sort(key=lambda x: (x.get("sent", ""), x.get("id", "")), reverse=True)
         alert_stats = _compute_active_alert_stats(alerts)

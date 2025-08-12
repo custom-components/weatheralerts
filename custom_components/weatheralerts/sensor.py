@@ -198,7 +198,7 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
                         # --- prune stale alerts when falling back to previous data ---
                         try:
                             now = dt_util.now()
-                            fallback_delete_buffer = timedelta(minutes=10)
+                            fallback_delete_buffer = timedelta(minutes=60)
 
                             alerts = list(data.get("alerts", []))
                             kept_alerts = []
@@ -266,7 +266,7 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
                 # --- prune stale alerts when falling back to previous data ---
                 try:
                     now = dt_util.now()
-                    fallback_delete_buffer = timedelta(minutes=10)
+                    fallback_delete_buffer = timedelta(minutes=60)
 
                     alerts = list(data.get("alerts", []))
                     kept_alerts = []
@@ -426,20 +426,11 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
                     "status_timestamp": status_ts,
                 })
 
-        # 4. Drop entries based on expiration or 'delete' age (delete_buffer window)
+        # 4. Drop entries based on 'delete' age (delete_buffer window)
         cleaned_alert_tracking_list = []
         delete_buffer = timedelta(minutes=10)
 
         for entry in new_alert_tracking_list:
-            # Parse expires
-            exp_dt = None
-            expires = entry.get("expires")
-            if expires:
-                try:
-                    exp_dt = dt_util.parse_datetime(expires)
-                except Exception:
-                    exp_dt = None
-
             # Parse status_timestamp
             status_ts_dt = None
             status_ts = entry.get("status_timestamp")
@@ -449,15 +440,14 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
                 except Exception:
                     status_ts_dt = None
 
-            drop_for_expiry = exp_dt is not None and now >= (exp_dt + delete_buffer)
             drop_for_delete_age = (
                 entry.get("status") == "delete"
                 and status_ts_dt is not None
                 and now >= (status_ts_dt + delete_buffer)
             )
 
-            if drop_for_expiry or drop_for_delete_age:
-                # Skip adding -> effectively removed
+            # Skip adding if removed from feed for delete_buffer time window
+            if drop_for_delete_age:
                 continue
 
             cleaned_alert_tracking_list.append(entry)

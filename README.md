@@ -7,67 +7,144 @@
 
 # Breaking changes
 
-### v0.1.2
- * The [YAML packages](https://github.com/custom-components/weatheralerts/blob/master/documentation/YAML_PACKAGES_DOCS.md) currently available for *weatheralerts v0.1.2* are not compatible with prior versions of *weatheralerts*. Older YAML packages should still work with *weatheralerts v0.1.2*, however, the most recent YAML package files contain new features and fixes.
+### v2026.1.0
+ * This new version will migrate your YAML integration platform config to the new config flow automatically and create a new sensor. It will NOT migrate or re-use your old sensor (i.e. sensor.weatheralerts_1 or sensor.zone_name) and it will generate a new sensor named using data from your zone name and zone/county/marine codes. If you want to continue using the YAML package (not recommended) for its template sensors and automations, it should still be compatible; but you will need to delete the old sensor.weatheralerts_1 sensor entity and rename the new weatheralerts integration sensor entity to sensor.weatheralerts_1. This renaming is not require if you plan to use the new automation and dashboard examples. I highly recommend using the new automation and dashboard examples and to stop using the old YAML package due to the possibility of missed alert notifications.
 
 
-# Installation Quickstart
+# Upgrading
 
-This qickstart install guide assumes you are already familiar with custom component installation and with the Home Assistant YAML configuration. If you need more detailed step-by-step instructions, check the links at the bottom for detailed instructions. Troubleshooting information, weatheralerts YAML package information, and Lovelace UI examples are also included in the **Links** at the bottom.
+If you are upgrading from a previous version (v0.1.5 or earlier), installing this new version will migrate your YAML weatheralerts platform configuration(s) to the newer config entry system and will be found in the Home Assistant > Settings > Devices & Services > Weather Alerts menu. If you are using the YAML Package files which provides several template sensors and automations to work in conjuntion with the weatheralerts sensor, the migration will not migrate the sensor.weatheralerts_1 sensor to the new integration. A new sensor will be created and the old sensor will become abandoned. To continue using the YAML Package files (not recommended due to potential failure to get notifications for new alerts) or to continue using your custom automations and dashboard configuration using sensor.weatheralerts_1, you will have to delete the abandoned sensor.weatheralerts_1 sensor and rename the new sensor entity to sensor.weatheralerts_1. My recommendation is to use the new automation blueprint (or automation exmaples) and the updated dashboard examples.
 
-Install the *weatheralerts* integration via *HACS*. After installing via *HACS*, don't restart Home Assistant yet. We will do that after completing the YAML platform configuration.
+To fully upgrade and stop using the YAML config and YAML packages, these are the recommended steps:
+ * Install this new version of Weather Alerts
+ * Restart Home Assistant 
+ * Check to ensure Weather Alerts shows in Home Assistant > Settings > Devices & Services
+ * Check Home Assistant > Settings > Devices & Services > Weather Alerts menu to ensure your configuration was migrated to a config entry (config entry should be named with your zone/county name and the zone/county codes for your location)
+ * Delete your old YAML weatheralerts platform configuration and the YAML package files
+ * Restart Home Assistant again
+ * Delete any abandoned weatheralerts sensors (the new automations and dashboard examples should not need these extra sensors)
+ * Grab the Weather Alerts Persistent Automation blueprint or check the Automation Examples link to see how the blueprint works and for other example automations
+ * Check the Dashboard Examples link for examples of how to use the weatheralerts sensor arrays (with no need for YAML Package template sensors)
 
-You will need to find your zone and county codes by looking for your state or marine zone at [https://alerts.weather.gov/](https://alerts.weather.gov/). Once at [https://alerts.weather.gov/](https://alerts.weather.gov/), click the `Land area with zones` link and you will find a list of states with `Public Zones` and `County Zones` links. Once you find your state , click into the `Public Zones` and `County Zones` links and find the respective codes for your county. All you will need are just the first two letters (your state abbreviation) and the last three digits (zone/county ID number) of your zone code and county code to put into the platform configuration. The zone and county ID numbers are not usually the same number, so be sure to look up both codes. For marine zones, go to [https://alerts.weather.gov/](https://alerts.weather.gov/), click the `Marine regions/areas with zones` link and you will find a list of marine areas with `Zones` links. In the `Zones` link for the marine area you are interested in, find the exact marine zone. The first two letters of the marine zone is what will be used for the *state* configuration option, and the last three digits is what will be used for the *zone* configuration option (omit any leading zeros). 
+To fully upgrade and continue using the deprecated YAML Package files, these are the unrecommended steps:
+ * Install this new version of Weather Alerts
+ * Restart Home Assistant 
+ * Check to ensure Weather Alerts shows in Home Assistant > Settings > Devices & Services
+ * Check Home Assistant > Settings > Devices & Services > Weather Alerts menu to ensure your configuration was migrated to a config entry (config entry should be named with your zone/county name and the zone/county codes for your location)
+ * Delete your old YAML weatheralerts platform configuration but leave the rest of the YAML Package files
+ * Delete the abandoned sensor.weatheralerts_1 (and sensor.weatheralerts_2, etc. if you had more than one weatheralerts platform configured)
+ * Rename the new weatheralerts sensor entity for each config entry to the appropriate name (sensor.weatheralerts_1, sensor.weatheralerts_2, etc)
 
-Once installed and you have your state (or marine zone) abbreviation and ID numbers, add the weatheralerts sensor platform to your configuration. If your state is Wisconsin and your county is Outagamie, then the state abbreviation is `WI`, the zone ID number is `038`, and the county ID number is `087`. For the ID numbers, remove any leading zeros and your YAML platform configuration would look something like this:
-```yaml
-sensor:
-  platform: weatheralerts
-  state: WI
-  zone: 38
-  county: 87
-```
-Once your configuration is saved, restart Home Assistant. 
 
-That completes the integration (custom component) installation.
+# Installing and Using Weather Alerts Integration
 
-Check the **Links** below for more detailed instructions, troubleshooting, and for YAML package and Lovelace UI usage and examples.
+# Weather Alerts Home Assistant Integration
+
+## Installation Quickstart (via HACS & Home Assistant UI)
+
+### 1. Install via HACS
+
+- In Home Assistant, go to **HACS** > **Integrations**.
+- Search for **Weather Alerts** and click **Install**.
+- **Restart Home Assistant** after installation.
+
+### 2. Add the Integration
+
+- Go to **Settings** > **Devices & Services** > **Integrations**.
+- Click **+ Add Integration**, search for **Weather Alerts**, and select it.
+
+### 3. Setup via Config Flow
+
+1. **Location**  
+   - Enter your latitude and longitude (or use the prepopulated suggested values from your `zone.home`). The lat/lon should be entered as numbers only (no cardinal direction appended); in the United States the latitude will be a positive number and longitude will be a negative number. This lat/lon will be used to automatically fetch your zone and county code and prepopulate those fields in the next config step. If you leave the lat/lon fields blank, you will need to find your codes; just ask Google search: what is the nws zone and county code for city, state     Just replace city and state with your city and state. Google should reply with a NWS zone Code that is 3 letters + 3 numbers (xxZ###) and you should also see a 3 letter/3 number (xxC###) county code listed under FIPS County Code.
+
+2. **Zone and County Selection**
+   - **Zone Code:** Required. Example: `WIZ038`
+   - **County Code:** *(Optional)* Example: `WIC087`
+   - **Marine Zones:** *(Optional, comma-separated)* Marine zone lookup here: https://www.weather.gov/marine/wrdoffmz   Example: `LMZ043,LMZ080`
+
+3. **Sensor Update Settings**
+   - **Sensor Update Interval:** Default: `90` seconds (range: `30 - 600`)
+   - **API Request Timeout:** Default: `20` seconds (range: `10 - 60`, must be at least 5 seconds less than the update interval)
+
+> Once setup is complete, the integration will create a sensor (e.g., `sensor.weatheralerts_outagamie_wiz038` with friendly name like `Outagamie (WIZ038)`) and automatically fetch current NWS weather alerts for your configured area. If you don't want land-based alerts with marine alerts, you can create a config entry for just a marine zone by entering the marine zone code in the Zone Code field and leaving the other fields blank or one marine zone code in the Zone Code field and additional marine zone codes in the Marine Zones field. 
+
+---
+
+## Usage & Configuration Guide (Options Flow)
+
+You can change any settings after installation using the integration's options flow:
+
+1. Go to **Settings** > **Devices & Services** > **Integrations**.
+2. Click the Weather Alerts integration.
+3. Click the gear icon for the config entry you want to configure.
+
+### Editable Options
+
+- **Zone Code:** Your main NWS zone (e.g., `WIZ038`)
+- **County Code:** *(Optional)* More specific NWS county (e.g., `WIC087`)
+- **Marine Zones:** *(Optional)* Comma-separated NWS marine or public zone codes (e.g., `LMZ043,LMZ080`)
+
+#### Sensor Update Settings
+
+- **Sensor Update Interval:** How often to fetch new alerts (30 - 600 seconds)
+- **API Request Timeout:** How long to wait for NWS API response (10 - 60 seconds, at least 5 seconds less than update interval)
+
+#### Configure Alert Icons
+
+- **Default Icon:** Override for unknown event types (uses Material Design Icons)
+- **Custom Event Icons:** Add or edit mappings for specific alert events  
+  _Example:_
+
+  ```yaml
+  New Type Of Snow Warning: hass:snowflake-alert
+  ```
+
+> Changes take effect immediately after saving.
+
+---
+
+## Additional Notes
+
+- **No YAML needed:** All setup and changes are handled through the Home Assistant UI.
+- **No YAML package(s) needed:** Sensor contains everything needed for automations and dashboard usage.
+- **Live validation:** All codes are validated during entry.
+- **Monitor multiple sources:** You can track land and marine zones together or seperately with multiple config entries.
+- **Error Handling:** User-friendly error messages are shown if you enter invalid codes or encounter API issues.
+
+---
+
+## Need Help?
+
+- Open an [issue on GitHub](https://github.com/custom-components/weatheralerts/issues)
+- Check the **Links** below for more detailed instructions, troubleshooting, and for automation and dashboard examples.
 
 
 # Updating via HACS
 
-Check the **Breaking Changes** section of this README to see if you need to manually update the YAML packages or make any changes to your custom YAML or Lovelace UI cards. Simply use the **Update** button for the *weatheralerts* integration within *HACS* if there are no breaking changes and then restart Home Assistant. 
+Check the **Breaking Changes** section of this README to see if any special attention is needed before or after updating the integration. Simply use the **Update** button for the *weatheralerts* integration within *HACS* if there are no breaking changes and then restart Home Assistant. If there are significant breaking changes, take a backup, check the breaking changes and plan your update accordingly, and then use the **Update** button for the *weatheralerts* integration within *HACS* to start the update process.
 
 
 # Links
 
   * [Detailed Instructions](https://github.com/custom-components/weatheralerts/blob/master/documentation/DOCUMENTATION.md)
   * [Troubleshooting](https://github.com/custom-components/weatheralerts/blob/master/documentation/TROUBLESHOOTING.md)
-  * [YAML Package Info](https://github.com/custom-components/weatheralerts/blob/master/documentation/YAML_PACKAGES_DOCS.md)
+  * [Automation Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/AUTOMATION_EXAMPLES.md)
   * [Lovelace UI Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/LOVELACE_EXAMPLES.md)
   * [GitHub Repository](https://github.com/custom-components/weatheralerts)
   * [View Issues/Feature Requests](https://github.com/custom-components/weatheralerts/issues)
   * [Report an Issue/Feature Request](https://github.com/custom-components/weatheralerts/issues/new/choose)
-  * [Changelog](https://github.com/custom-components/weatheralerts/blob/master/CHANGELOG.md)
+
+>Deprecated:
+>  * [YAML Package Info](https://github.com/custom-components/weatheralerts/blob/master/documentation/YAML_PACKAGES_DOCS.md)
 
 
-
-
-## Reconfiguration via UI
-
-You can reconfigure the integration through the Home Assistant UI:
-
-1. Go to **Settings** > **Devices & Services**.
-2. Find the **Weather Alerts** integration and click on it.
-3. Click **Configure**.
-4. Update the **State**, **Zone**, and **County** values.
-5. Click **Save**. The integration will automatically reload.
 
 # Todo list
 - [x] Add more documentation
 - [x] Add config flow to allow UI-based configuration (eliminate yaml-based platform configuration)
-- [ ] Create alternative (possibly simpler) YAML package or move some template sensors into the integration
-- [ ] Add backup weather alert source for occasions when weather.gov json feed is experiencing an outage
+- [x] Create alternative (possibly simpler) YAML package or move some template sensors into the integration
+- [ ] Add backup weather alert source for occasions when weather.gov alerts api is experiencing an outage
 - [ ] Add Canadian weather alerts
 
 

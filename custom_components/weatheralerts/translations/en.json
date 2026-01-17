@@ -1,7 +1,4 @@
 {
-  "create_entry": {
-    "default": "NWS {feed_id}"
-  },
   "config": {
     "step": {
       "user": {

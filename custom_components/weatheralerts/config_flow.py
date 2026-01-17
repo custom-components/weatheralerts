@@ -84,7 +84,8 @@ async def _validate_zone_api(hass, zone, county, marine_zones, errors):
                 marine_resp = await session.get(MARINE_API.format(zone), headers=HEADERS)
                 if marine_resp.status == 404:
                     errors["zone"] = "invalid_zone"
-                    errors["base"] = f"Invalid zone code: {zone}"
+                    errors["base"] = "invalid_zone"
+                    _LOGGER.debug("Invalid zone code entered: %s", zone)
                     return False
             elif resp.status != 200:
                 errors["base"] = "api_outage"
@@ -98,7 +99,8 @@ async def _validate_zone_api(hass, zone, county, marine_zones, errors):
                 resp = await session.get(COUNTY_API.format(county), headers=HEADERS)
                 if resp.status == 404:
                     errors["county"] = "invalid_county"
-                    errors["base"] = f"Invalid county code: {county}"
+                    errors["base"] = "invalid_county"
+                    _LOGGER.debug("Invalid county code entered: %s", county)
                     return False
                 elif resp.status != 200:
                     errors["base"] = "api_outage"
@@ -118,7 +120,8 @@ async def _validate_zone_api(hass, zone, county, marine_zones, errors):
                     zone_resp = await session.get(ZONE_API.format(m), headers=HEADERS)
                     if zone_resp.status == 404:
                         errors["marine_zones"] = "invalid_marine"
-                        errors["base"] = f"Invalid marine_zones code: {m}"
+                        errors["base"] = "invalid_marine"
+                        _LOGGER.debug("Invalid zone code entered: %s", m)
                         return False
                     elif zone_resp.status != 200:
                         errors["base"] = "api_outage"
@@ -299,14 +302,17 @@ class WeatheralertsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
             if not re.match(NWS_CODE_REGEX, zone):
                 errors["zone"] = "invalid_zone"
-                errors["base"] = f"Invalid zone code: {zone}"
+                errors["base"] = "invalid_zone"
+                _LOGGER.debug("Invalid zone code entered: %s", zone)
             elif county and not re.match(NWS_CODE_REGEX, county):
                 errors["county"] = "invalid_county"
-                errors["base"] = f"Invalid county code: {county}"
+                errors["base"] = "invalid_county"
+                _LOGGER.debug("Invalid county code entered: %s", county)
             elif marine and not all(re.match(NWS_CODE_REGEX, m.strip()) for m in marine.split(",") if m.strip()):
                 errors["marine_zones"] = "invalid_marine"
                 invalid_m = next((m for m in marine.split(",") if not re.match(NWS_CODE_REGEX, m.strip())), "")
-                errors["base"] = f"Invalid zone code: {invalid_m}"
+                errors["base"] = "invalid_marine"
+                _LOGGER.debug("Invalid zone code entered: %s", invalid_m)
             else:
                 valid = await _validate_zone_api(self.hass, zone, county, marine, errors)
                 if not valid:
@@ -347,11 +353,11 @@ class WeatheralertsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             deduplicate = user_input.get(CONF_DEDUPLICATE_ALERTS, DEFAULT_DEDUPLICATE_ALERTS)
 
             if update < MIN_UPDATE_INTERVAL or update > MAX_UPDATE_INTERVAL:
-                errors[CONF_UPDATE_INTERVAL] = f"Must be between {MIN_UPDATE_INTERVAL} and {MAX_UPDATE_INTERVAL}"
+                errors[CONF_UPDATE_INTERVAL] = "invalid_update_interval"
             elif timeout < MIN_API_TIMEOUT or timeout > MAX_API_TIMEOUT:
-                errors[CONF_API_TIMEOUT] = f"Must be between {MIN_API_TIMEOUT} and {MAX_API_TIMEOUT}"
+                errors[CONF_API_TIMEOUT] = "invalid_api_timeout_range"
             elif timeout >= update - TIMEOUT_BUFFER:
-                errors[CONF_API_TIMEOUT] = f"Must be at least {TIMEOUT_BUFFER}s less than update interval"
+                errors[CONF_API_TIMEOUT] = "invalid_api_timeout_buffer"
             else:
                 # Construct entity
                 parts = [self._zone]
@@ -517,13 +523,12 @@ class WeatheralertsOptionsFlow(config_entries.OptionsFlow):
             timeout = int(user_input[CONF_API_TIMEOUT])
             deduplicate = user_input.get(CONF_DEDUPLICATE_ALERTS, DEFAULT_DEDUPLICATE_ALERTS)
 
-
             if update < MIN_UPDATE_INTERVAL or update > MAX_UPDATE_INTERVAL:
-                errors[CONF_UPDATE_INTERVAL] = f"Must be between {MIN_UPDATE_INTERVAL} and {MAX_UPDATE_INTERVAL}"
+                errors[CONF_UPDATE_INTERVAL] = "invalid_update_interval"
             elif timeout < MIN_API_TIMEOUT or timeout > MAX_API_TIMEOUT:
-                errors[CONF_API_TIMEOUT] = f"Must be between {MIN_API_TIMEOUT} and {MAX_API_TIMEOUT}"
+                errors[CONF_API_TIMEOUT] = "invalid_api_timeout_range"
             elif timeout >= update - TIMEOUT_BUFFER:
-                errors[CONF_API_TIMEOUT] = f"Must be at least {TIMEOUT_BUFFER}s less than update interval"
+                errors[CONF_API_TIMEOUT] = "invalid_api_timeout_buffer"
             else:
                 self.updated_options[CONF_UPDATE_INTERVAL] = update
                 self.updated_options[CONF_API_TIMEOUT] = timeout

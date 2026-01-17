@@ -21,7 +21,7 @@
         "data": {
           "update_interval": "Sensor Update Interval (seconds)",
           "api_timeout": "API Request Timeout (seconds)",
-		  "deduplicate_alerts": "Remove duplicate alerts with identical descriptions (not recommended)"
+          "deduplicate_alerts": "Remove duplicate alerts with identical descriptions (not recommended)"
         }
       }
     },
@@ -31,10 +31,11 @@
       "invalid_zone": "Invalid code: Must be a single valid NWS public zone code (e.g., WIZ013, LMZ043).",
       "invalid_county": "Invalid code: Must be a single valid NWS county code (e.g., WIC087).",
       "invalid_marine": "Invalid code: Must be a valid NWS marine zone code or public zone code; single or comma separated list (e.g., WIZ013, LMZ043).",
-      "api_outage": "Could not reach the National Weather Service API. Please try again.",
-      "unknown_error": "An unknown error has occurred.",
       "invalid_update_interval": "Update interval must be between 30 and 600 seconds.",
-      "invalid_api_timeout": "Timeout must be between 10 and 60 seconds, and at least 5 seconds less than update interval."
+      "invalid_api_timeout_range": "Timeout must be between 10 and 60 seconds.",
+      "invalid_api_timeout_buffer": "API timeout must be at least 5 seconds less than the update interval.",
+      "api_outage": "Could not reach the National Weather Service API. Please try again.",
+      "unknown_error": "An unknown error has occurred."
     }
   },
   "options": {
@@ -52,7 +53,7 @@
         "data": {
           "update_interval": "Sensor Update Interval (seconds)",
           "api_timeout": "API Request Timeout (seconds)",
-		  "deduplicate_alerts": "Remove duplicate alerts with identical descriptions (not recommended)"
+          "deduplicate_alerts": "Remove duplicate alerts with identical descriptions (not recommended)"
         }
       },
       "icon_config": {
@@ -68,20 +69,11 @@
       "invalid_zone": "Invalid code: Must be a single valid NWS public zone code (e.g., WIZ013, LMZ043).",
       "invalid_county": "Invalid code: Must be a single valid NWS county code (e.g., WIC087).",
       "invalid_marine": "Invalid code: Must be a valid NWS marine zone code or public zone code; single or comma separated list (e.g., WIZ013, LMZ043).",
-      "api_outage": "Could not reach the National Weather Service API. Please try again.",
-      "unknown_error": "An unknown error has occurred.",
       "invalid_update_interval": "Update interval must be between 30 and 600 seconds.",
-      "invalid_api_timeout": "Timeout must be between 10 and 60 seconds, and at least 5 seconds less than update interval."
+      "invalid_api_timeout_range": "Timeout must be between 10 and 60 seconds.",
+      "invalid_api_timeout_buffer": "API timeout must be at least 5 seconds less than the update interval.",
+      "api_outage": "Could not reach the National Weather Service API. Please try again.",
+      "unknown_error": "An unknown error has occurred."
     }
-  },
-  "error": {
-    "invalid_latlon": "Latitude and Longitude must be valid numbers.",
-    "invalid_zone": "Invalid code: Must be a single valid NWS public zone code (e.g., WIZ013, LMZ043).",
-    "invalid_county": "Invalid code: Must be a single valid NWS county code (e.g., WIC087).",
-    "invalid_marine": "Invalid code: Must be a valid NWS marine zone code or public zone code; single or comma separated list (e.g., WIZ013, LMZ043).",
-    "api_outage": "Possible NWS weather alerts API outage. Try again, or try again later if this error persists.",
-    "unknown_error": "An unknown error has occurred.",
-    "invalid_update_interval": "Update interval must be between 30 and 600 seconds.",
-    "invalid_api_timeout": "Timeout must be between 10 and 60 seconds, and at least 5 seconds less than update interval."
   }
 }

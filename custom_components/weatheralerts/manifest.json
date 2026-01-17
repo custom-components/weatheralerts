@@ -2,6 +2,8 @@
   "domain": "weatheralerts",
   "name": "Weather Alerts",
   "documentation": "https://github.com/custom-components/weatheralerts",
+  "issue_tracker": "https://github.com/custom-components/weatheralerts/issues",
+  "iot_class": "cloud_polling",
   "config_flow": true,
   "dependencies": [],
   "codeowners": [

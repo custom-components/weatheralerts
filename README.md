@@ -16,13 +16,13 @@
 
 # Upgrading
 
-If you are upgrading from a previous version (v0.1.5 or earlier), installing this new version will migrate your YAML weatheralerts platform configuration(s) to the newer config entry system and will be found in the Home Assistant > Settings > Devices & Services > Weather Alerts menu. If you are using the YAML Package files which provides several template sensors and automations to work in conjuntion with the weatheralerts sensor, the migration will not migrate the sensor.weatheralerts_1 sensor to the new integration. A new sensor will be created and the old sensor will become abandoned. To continue using the YAML Package files (not recommended due to potential failure to get notifications for new alerts) or to continue using your custom automations and dashboard configuration using sensor.weatheralerts_1, you will have to delete the abandoned sensor.weatheralerts_1 sensor and rename the new sensor entity to sensor.weatheralerts_1. My recommendation is to use the new automation blueprint (or automation exmaples) and the updated dashboard examples.
+If you are upgrading from a previous version (v0.1.5 or earlier), installing this new version will migrate your YAML weatheralerts platform configuration(s) to the newer config entry system and will be found in the **Home Assistant → Settings → Devices & Services → Integrations → Weather Alerts** menu. If you are using the YAML Package files which provides several template sensors and automations to work in conjuntion with the weatheralerts sensor, the migration will not migrate the sensor.weatheralerts_1 sensor to the new integration. A new sensor will be created and the old sensor will become abandoned. To continue using the YAML Package files (not recommended due to potential failure to get notifications for new alerts) or to continue using your custom automations and dashboard configuration using sensor.weatheralerts_1, you will have to delete the abandoned sensor.weatheralerts_1 sensor and rename the new sensor entity to sensor.weatheralerts_1. My recommendation is to use the new automation blueprint (or automation exmaples) and the updated dashboard examples.
 
 To fully upgrade and stop using the YAML config and YAML packages, these are the recommended steps:
  * Install this new version of Weather Alerts
  * Restart Home Assistant 
- * Check to ensure Weather Alerts shows in **Home Assistant → Settings → Devices & Services**
- * Check **Home Assistant → Settings → Devices & Services → Weather Alerts** menu to ensure your configuration was migrated to a config entry (config entry should be named with your zone/county name and the zone/county codes for your location)
+ * Check to ensure Weather Alerts shows in **Home Assistant → Settings → Devices & Services → Integrations**
+ * Check **Home Assistant → Settings → Devices & Services → Integrations → Weather Alerts** menu to ensure your configuration was migrated to a config entry (config entry should be named with your zone/county name and the zone/county codes for your location)
  * Delete your old YAML weatheralerts platform configuration and the YAML package files
  * Restart Home Assistant again
  * Delete any abandoned weatheralerts sensors (the new automations and dashboard examples should not need these extra sensors)
@@ -32,8 +32,8 @@ To fully upgrade and stop using the YAML config and YAML packages, these are the
 To fully upgrade and continue using the deprecated YAML Package files, these are the unrecommended steps:
  * Install this new version of Weather Alerts
  * Restart Home Assistant 
- * Check to ensure Weather Alerts shows in **Home Assistant → Settings → Devices & Services**
- * Check **Home Assistant → Settings → Devices & Services → Weather Alerts** menu to ensure your configuration was migrated to a config entry (config entry should be named with your zone/county name and the zone/county codes for your location)
+ * Check to ensure Weather Alerts shows in **Home Assistant → Settings → Devices & Services → Integrations**
+ * Check **Home Assistant → Settings → Devices & Services → Integrations → Weather Alerts** menu to ensure your configuration was migrated to a config entry (config entry should be named with your zone/county name and the zone/county codes for your location)
  * Delete your old YAML weatheralerts platform configuration but leave the rest of the YAML Package files
  * Delete the abandoned sensor.weatheralerts_1 (and sensor.weatheralerts_2, etc. if you had more than one weatheralerts platform configured)
  * Rename the new weatheralerts sensor entity for each config entry to the appropriate name (sensor.weatheralerts_1, sensor.weatheralerts_2, etc)
@@ -41,7 +41,11 @@ To fully upgrade and continue using the deprecated YAML Package files, these are
 
 # Installing and Using Weather Alerts Integration
 
-## Installation Quickstart (via HACS & Home Assistant UI)
+## Manual Installation
+
+Check the [Installation](https://github.com/custom-components/weatheralerts/blob/master/documentation/installation.md) documentation for full manual installation instructions.
+
+## New Installation Quickstart (via HACS & Home Assistant UI)
 
 ### 1. Install via HACS
 
@@ -51,7 +55,7 @@ To fully upgrade and continue using the deprecated YAML Package files, these are
 
 ### 2. Add the Integration
 
-- Go to **Settings → Devices & Services → Integrations**
+- In Home Assistant, go to **Settings → Devices & Services → Integrations**
 - Click **+ Add Integration**, search for **Weather Alerts**, and select it
 
 ### 3. Initial Setup via Config Flow
@@ -177,3 +181,4 @@ Full documentation for the Weather Alerts integration is available in the reposi
 [issues-link]: https://github.com/custom-components/weatheralerts/issues
 [commits-badge]: https://img.shields.io/github/commits-since/custom-components/weatheralerts/latest?style=plastic
 [commits-link]: https://github.com/custom-components/weatheralerts/commits/master
+

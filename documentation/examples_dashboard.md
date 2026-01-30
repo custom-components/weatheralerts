@@ -23,10 +23,6 @@ The Weather Alerts sensor exposes these key attributes:
 - `alert_stats`: Computed counts by category
 - `error`: Structured list containing recent success and failure entries
 
-The `error` attribute is an array of objects. It typically includes:
-- One entry for the most recent success (`type: success`)
-- One entry for the most recent failure (`type: http_error` or `type: exception`), if applicable
-
 ---
 
 ## Dashboard Examples
@@ -67,7 +63,7 @@ Note the font color usage to color the icon and the <ha-icon icon=""></ha-icon> 
 type: markdown
 title: Weather Alerts (Full Details)
 content: |
-  {% set alerts = state_attr('sensor.weatheralerts_baldwin_coastal_alz266_alc003', 'alerts') or [] %}
+  {% set alerts = state_attr('sensor.weather_alerts', 'alerts') or [] %}
   {% if alerts|length == 0 %}
   No active alerts.
   {% else %}

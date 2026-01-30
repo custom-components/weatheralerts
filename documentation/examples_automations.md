@@ -37,12 +37,12 @@ The `error` attribute is an array of objects. It typically includes:
 For a persistent notification automation that works like the YAML package automation/script combo, install the `weatheralerts_persistent_notification_original.yaml` blueprint from the repository blueprint directory. To install the blueprint:
 1. Go to **Home Assistant → Settings → Automations & Scenes → Blueprints**
 2. Click the **Import Blueprint** button
-3. Copy the blueprint raw file URL from Github
-   Example: https://github.com/custom-components/weatheralerts/raw/refs/heads/master/blueprints/weatheralerts_persistent_notification_original.yaml
-4. Paste the URL into the Blueprint Address field in the **Import a Blueprint** dialog
+3. Copy the blueprint raw file URL from Github:
+   - https://github.com/custom-components/weatheralerts/raw/refs/heads/master/blueprints/weatheralerts_persistent_notification_original.yaml
+4. Paste the URL into the **Blueprint Address** field in the **Import a Blueprint** dialog
 5. Clicking **Preview** and then **Import Blueprint** will give you a `WeatherAlerts - Persistent Notification and Cleanup` blueprint
 6. Click the three vertical dots for the blueprint and choose **Create Automation**
-7. Set the WeatherAlerts Sensor option to the appropriate entity
+7. Set the **WeatherAlerts Sensor** option to the appropriate entity
 That is all that is required. You can go back to **Settings → Automations & Scenes → Automations** and find the new automation and make any changes to the logic and alert format to suit your preferences. 
 
 ### Notify when the integration reports an error

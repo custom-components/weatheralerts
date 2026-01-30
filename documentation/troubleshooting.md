@@ -8,7 +8,7 @@ This page describes common troubleshooting steps for the Weather Alerts integrat
 
 The most common issue that pops up relates to NWS API outages. These outages and intermittent outages can persist for hours or even days. These outages are typically regional and don't affect everyone at the same time, so you may be able to overcome the issue by using a VPN to route your Internet connection to a different part of the country. These outages manifest as Timeout and HTTP errors and are almost always going to be related to an Internet or network issue on your end or a NWS API outage on the NWS end. These errors don't generally need to be reported since there isn't anything in the integration that can be done to fix those errors; the integration just reports them as an FYI for you. If you believe the issue isn't the Internet or network on your end and https://api.weather.gov seems functional, feel free to open an issue on Github.
 
-If you install the Weather Alerts integration during one of these NWS API outages, you will likely get hung up on Step 2 of the config flow where you submit your zone, county, and marine codes. If that happens, you will have to keep trying until the NWS API is working again. If you've waited several hours or a full day and it still isn't allowing you to get past the second config flow step, follow the directions below to enable debug logging and reporting the issue on Github.
+If you install the Weather Alerts integration during one of these NWS API outages, you will likely get hung up on Step 2 of the config flow where you submit your zone, county, and marine codes. If that happens, you will have to keep trying until the NWS API is working again. If you've waited several hours or a full day and it still isn't allowing you to get past the second config flow step, follow the directions below under **Enabling Debug Logging** and **Reporting Issues** to report the issue on Github.
 
 ---
 
@@ -91,6 +91,8 @@ Disable debug logging once troubleshooting is complete.
 
 ## Reporting Issues
 
+Before opening a new issue, check the [current issues](https://github.com/custom-components/weatheralerts/issues) to see if it's a known issue.
+
 If you need to report an issue:
 
 1. Enable debug logging
@@ -99,7 +101,7 @@ If you need to report an issue:
 4. Disable debug logging
 5. Open an issue at:
 
-https://github.com/custom-components/weatheralerts/issues
+https://github.com/custom-components/weatheralerts/issues/new/choose
 
 Include:
 - Your Weather Alerts version
@@ -109,11 +111,11 @@ Include:
 
 Before attaching log files, be sure scan for and censor or remove usernames, passwords, API keys, and any other sensitive data you don't want to share publicly.
 
-Preference for log postings in Github issues (1 to 4, most prefered to least prefered):
-- 1. Use grep or similar command-line tool to create a clean log file with all `weatheralerts` log entries from your log file
-- 2. Your full log file (censored to remove any sensitive or private data)
-- 3. Just the log entries that indicate errors
-- 4. No log data, just describe the error you are observing
+Preference for log postings in Github issues (1 to 4, #1 is most prefered, #4 is least prefered):
+1. Use grep or similar command-line tool to create a clean log file with all `weatheralerts` log entries from your log file
+2. Your full log file (censored to remove any sensitive or private data)
+3. Just the log entries that indicate errors
+4. No log data, just describe the error you are observing
 
 ---
 

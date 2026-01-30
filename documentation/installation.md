@@ -6,27 +6,27 @@
 
 ## Manual Installation
 
-- 1. Download the repository
-- 2. Create a `weatheralerts` directory in your Home Assistant `config/custom_components` directory
-  - If the `config/custom_components/weatheralerts` directory already exists, delete any files and directories in the existing `weatheralerts` directory
-- 3. Copy the repository `custom_components/weatheralerts` directory contents into your Home Assistant `config/custom_components/weatheralerts` directory
-- 4. Restart Home Assistant
-- 5. Continue with **Step 5** in the **Install via HACS** section below
+1. Download the repository
+2. Create a `weatheralerts` directory in your Home Assistant `config/custom_components` directory
+   - If the `config/custom_components/weatheralerts` directory already exists, delete any files and directories in the existing `weatheralerts` directory
+3. Copy the repository `custom_components/weatheralerts` directory contents into your Home Assistant `config/custom_components/weatheralerts` directory
+4. Restart Home Assistant
+5. Continue with **Step 5** in the **Install via HACS** section below
 
 ## Install via HACS (Recommended)
 
 Weather Alerts is included in the default HACS integration list.
 
-- 1. In Home Assistant go to **HACS → Integrations**
-- 2. In the search bar at the top of the page, search for **Weather Alerts**
-- 3. Install the integration
-- 4. Restart Home Assistant after installation
-- 5. For new installs (skip this step if you are upgrading from a previous version):
-  - Go to **Home Assistant → Settings → Devices & Services → Integrations**
-  - Click **Add integration**
-  - Search for and select **Weather Alerts**
-  - Follow the config flow to finish the configuration. See the [Configuration](https://github.com/custom-components/weatheralerts/blob/master/documentation/configuration.md) link for a config walk-through. 
-  - Check out the rest of the documentation to learn more about config options, automations, and dashboard usage
+1. In Home Assistant go to **HACS → Integrations**
+2. In the search bar at the top of the page, search for **Weather Alerts**
+3. Install the integration
+4. Restart Home Assistant after installation
+5. For new installs (skip this step if you are upgrading from a previous version):
+   - Go to **Home Assistant → Settings → Devices & Services → Integrations**
+   - Click **Add integration**
+   - Search for and select **Weather Alerts**
+   - Follow the config flow to finish the configuration. See the [Configuration](https://github.com/custom-components/weatheralerts/blob/master/documentation/configuration.md) link for a config walk-through. 
+   - Check out the rest of the documentation to learn more about config options, automations, and dashboard usage
 
 If you are upgrading from a previous version (v0.1.5 or earlier), installing this new version will migrate your YAML weatheralerts platform configuration(s) to the newer config entry system and will be found in the **Home Assistant > Settings > Devices & Services > Weather Alerts** menu after restarting Home Assistant after installing the Weather Alerts update. If you are using the YAML Package files which provides several template sensors and automations to work in conjuntion with the weatheralerts sensor, the migration will not migrate the `sensor.weatheralerts_1` sensor to the new integration. A new sensor will be created and the old sensor will become abandoned. To continue using the YAML Package files (not recommended due to potential failure to get notifications for new alerts) or to continue using your custom automations and dashboard configuration using `sensor.weatheralerts_1`, you will have to delete the abandoned `sensor.weatheralerts_1` sensor and rename the new sensor entity to `sensor.weatheralerts_1`. My recommendation is to use the new automation blueprint (or automation exmaples) and the updated dashboard examples.
 

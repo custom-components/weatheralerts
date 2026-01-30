@@ -572,7 +572,7 @@ actions:
         action: persistent_notification.dismiss
 mode: restart
 variables:
-  sensor_id: sensor.weatheralerts_outagamie_wiz038_wic087
+  sensor_id: sensor.weather_alerts
   integration: "{{ state_attr(sensor_id, 'integration') or 'weatheralerts' }}"
   zone: "{{ state_attr(sensor_id, 'zone') or 'unknown' }}"
   zone_name: "{{ state_attr(sensor_id, 'zone_name') or 'unknown' }}"

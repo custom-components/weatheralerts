@@ -1,29 +1,64 @@
 # Changelog
 
-  * [Detailed Instructions](https://github.com/custom-components/weatheralerts/blob/master/documentation/DOCUMENTATION.md)
-  * [Troubleshooting](https://github.com/custom-components/weatheralerts/blob/master/documentation/TROUBLESHOOTING.md)
-  * [Automation Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/AUTOMATION_EXAMPLES.md)
-  * [Lovelace UI Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/LOVELACE_EXAMPLES.md)
-  * [GitHub Repository](https://github.com/custom-components/weatheralerts)
-  * [View Issues/Feature Requests](https://github.com/custom-components/weatheralerts/issues)
-  * [Report an Issue/Feature Request](https://github.com/custom-components/weatheralerts/issues/new/choose)
+All notable changes to this project will be documented in this file.
 
+The format is based on Keep a Changelog, and this project follows calendar-based versioning.
 
-## **Changelog**
+---
 
-## [v2026.1.0](https://github.com/custom-components/weatheralerts/blob/master/CHANGELOG.md) (2026-01-12)
+## [2026.1.0] - 2026-01-30
 
-**Changes:**
+### Breaking Changes
 
-weatheralerts v2026.1.0
-  * Finally updated with config and options flow to allow setup and configuration from Home Assistant UI
-  * Will attempt to prepopulate the correct zone and county codes during setup using your Home Assistant Home Zone latitude and longitude
-  * Configuration options for county/zone/marine codes, sensor update interval, API timeout, deduplication of identical alerts, and custom icon definitions
-  * Sensor now includes many of the features used in the YAML packages (i.e. counts for each alert type, alert icons, alert tracking for persistent notifications)
-  * Sensor now has an error array that can be used to see when the sensor isn't being updated due to network/internet/api failures or bugs in the integration
-  * Deprecrated YAML platform/integration configuration
-  * YAML packages are also deprecated and will no longer be maintained
-  * Updated documentation
-  * Added automation blueprint for easy setup of persistent notifications
-  * Added automation example that can be used as a template for additional weather alert notifications (i.e. TTS notifications)
-  * Added examples of dashboard cards for displaying the alerts without the need of the YAML package
+- YAML-based configuration is deprecated and no longer supported for new setups.
+- All configuration must now be performed through the Home Assistant UI.
+- Existing YAML platform configurations are automatically imported into UI-based config entries on startup.
+- The YAML package should be considered deprecated and will no longer be supported or updated. See the documenation for instructions on using the automation blueprint and dashboard examples.
+
+### Added
+
+- Persistent alert lifecycle tracking (`alert_tracking`) with support for `new`, `old`, and `delete` states.
+- Alert tracking state is preserved across Home Assistant restarts.
+- Support for National Weather Service marine zones.
+- Configurable sensor update interval (30–600 seconds).
+- Configurable API request timeout (10–60 seconds).
+- Validation to ensure API timeout is always less than the update interval.
+- Optional alert deduplication based on alert description.
+- Customizable alert icons by alert event type.
+- Default fallback icon for unknown or unmapped alert events.
+- Improved structured error reporting via sensor attributes.
+- Automatic pruning of stale alerts during API outages.
+- Human-readable zone name resolution from the NWS API.
+- Combined feed support for zone, county, and marine alerts in a single sensor.
+
+### Changed
+
+- Sensor state now strictly represents the number of active alerts.
+- Alert data is normalized and sorted consistently by recency.
+- API failures now fall back to the last known good data instead of failing silently.
+- Alert expiration handling has been made more robust during outages.
+- Entity naming and unique ID generation have been standardized.
+
+### Fixed
+
+- Incorrect handling of expired alerts during temporary API failures.
+- Configuration validation failure due to alerts.weather.gov shutting down.
+- Zone and county code validation edge cases.
+
+### Internal
+
+- Refactored alert processing and sorting logic.
+- Added RestoreEntity support for persistent sensor attributes.
+- Improved coordinator-based update handling.
+- Centralized default alert event icon mappings.
+- Added translation coverage for configuration and options flows.
+- Improved logging for debugging and troubleshooting.
+- Additional validation and error handling improvements.
+
+---
+
+## Other Changes
+
+- Documentation updates and clarifications.
+- Added automation blueprint for persistent notifications.
+- Added automation and dashboard examples.

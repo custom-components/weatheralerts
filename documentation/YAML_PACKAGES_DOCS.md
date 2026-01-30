@@ -1,16 +1,6 @@
 # YAML Package Info
 
-Note: Don't forget to *Star* or *Watch* the *weatheralerts* GitHub repository so you can get notifications when the YAML packages are updated in between releases!
-
-  * [Detailed Instructions](DOCUMENTATION.md)
-  * [Troubleshooting](TROUBLESHOOTING.md)
-  * **YAML Package Info**
-  * [Lovelace UI Examples](LOVELACE_EXAMPLES.md)
-  * [GitHub Repository](https://github.com/custom-components/weatheralerts)
-  * [View Issues/Feature Requests](https://github.com/custom-components/weatheralerts/issues)
-  * [Report an Issue/Feature Request](https://github.com/custom-components/weatheralerts/issues/new/choose)
-  * [Changelog](/CHANGELOG.md)
-
+The YAML package is deprecated and will no longer be updated or supported. Alert event icons, active event stats, and alert tracking for persistent notifications are now built-in features of the integration and do not need the YAML package to provide this data. Check the repository blueprints directory for easy to use automation blueprints. Also check the documentation directory for dashboard and automation examples.
 
 ## YAML Package Setup
 The YAML packages provided here are not required for the weatheralerts integration to function. They contain scripts, automations, and some template sensors to make the automations a bit simpler and easier to follow.

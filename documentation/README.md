@@ -1,80 +1,102 @@
 # An integration to get weather alerts from weather.gov
 
-[![GitHub release (latest by date)][release-badge]][release-link]
-[![GitHub][license-badge]][license-link]
-[![hacs_badge][hacs-badge]][hacs-link]
+> This documentation applies to Weather Alerts version 2026.1.0 and newer.
+>  
+> Behavior and configuration may differ in earlier versions.
 
-[![GitHub stars][stars-badge]][stars-link]
-![GitHub][maintained-badge]
-[![GitHub issues][issues-badge]][issues-link]
-[![GitHub commits since latest release (by SemVer)][commits-badge]][commits-link]
+# Weather Alerts Documentation
+
+This directory contains detailed documentation for the Weather Alerts integration for Home Assistant.
+
+The documentation applies to Weather Alerts version 2026.1.0 and newer.
+
+---
+
+## Getting Started
+
+- **[Overview](https://github.com/custom-components/weatheralerts/blob/master/documentation/overview.md)**  
+  General description of the integration and its purpose.
+
+- **[Installation](https://github.com/custom-components/weatheralerts/blob/master/documentation/installation.md)**  
+  Instructions for installing via HACS or manually.
+
+- **[Configuration](https://github.com/custom-components/weatheralerts/blob/master/documentation/configuration.md)**  
+  UI-based setup, zone selection, update interval, timeout, and options.
+
+---
+
+## Sensor and Data Model
+
+- **[Sensor Behavior](https://github.com/custom-components/weatheralerts/blob/master/documentation/sensor.md)**  
+  Explanation of the sensor state and attributes.
+
+- **[Alert Tracking](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_tracking.md)**  
+  How alert lifecycle tracking works and persists across restarts.
+
+- **[Alert Deduplication](https://github.com/custom-components/weatheralerts/blob/master/documentation/deduplication.md)**  
+  Optional deduplication behavior and how it affects alerts.
+
+- **[Alert Icon Configuration](https://github.com/custom-components/weatheralerts/blob/master/documentation/icons.md)**  
+  Customizing alert icons via the integration options menu.
+
+---
+
+## Examples
+
+- **[Automation Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_automations.md)**  
+  Notification logic, error detection, new alert detection, and all-clear automations.
+
+- **[Dashboard Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_dashboard.md)**  
+  Lovelace examples for short alert summaries and full alert details.
+
+---
+
+## Troubleshooting and Maintenance
+
+- **[Error Handling](https://github.com/custom-components/weatheralerts/blob/master/documentation/error_handling.md)**  
+  API outage behavior and fallback logic.
+
+- **[Troubleshooting](https://github.com/custom-components/weatheralerts/blob/master/documentation/troubleshooting.md)**  
+  Enabling debug logging and collecting logs for support.
+
+- **[Migration from YAML](https://github.com/custom-components/weatheralerts/blob/master/documentation/migration.md)**  
+  Legacy configuration handling and cleanup.
+
+- **[Documentation Versioning Policy](https://github.com/custom-components/weatheralerts/blob/master/documentation/versioning.md)**  
+  How documentation is maintained across releases.
+
+---
 
 
-# Breaking changes
+## Documentation
 
-### v0.1.2
- * The [YAML packages](YAML_PACKAGES_DOCS.md) currently available for *weatheralerts v0.1.2* are not compatible with prior versions of *weatheralerts*. Older YAML packages should still work with *weatheralerts v0.1.2*, however, the most recent YAML package files contain new features and fixes.
+Full documentation for the Weather Alerts integration is available in the repository:
 
+- [Overview](https://github.com/custom-components/weatheralerts/blob/master/documentation/overview.md)
+- [Installation](https://github.com/custom-components/weatheralerts/blob/master/documentation/installation.md)
+- [Configuration](https://github.com/custom-components/weatheralerts/blob/master/documentation/configuration.md)
+- [Sensor Behavior](https://github.com/custom-components/weatheralerts/blob/master/documentation/sensor.md)
+- [Alert Tracking](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_tracking.md)
+- [Alert Deduplication](https://github.com/custom-components/weatheralerts/blob/master/documentation/deduplication.md)
+- [Alert Icon Configuration](https://github.com/custom-components/weatheralerts/blob/master/documentation/icons.md)
+- [Error Handling](https://github.com/custom-components/weatheralerts/blob/master/documentation/error_handling.md)
+- [Automation Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_automations.md)
+- [Dashboard Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_dashboard.md)
+- [Troubleshooting](https://github.com/custom-components/weatheralerts/blob/master/documentation/troubleshooting.md)
+- [Migration from YAML](https://github.com/custom-components/weatheralerts/blob/master/documentation/migration.md)
+- [Documentation Versioning Policy](https://github.com/custom-components/weatheralerts/blob/master/documentation/versioning.md)
 
-# Installation Quickstart
+## Support and Issues
 
-This qickstart install guide assumes you are already familiar with custom component installation and with the Home Assistant YAML configuration. If you need more detailed step-by-step instructions, check the links at the bottom for detailed instructions. Troubleshooting information, weatheralerts YAML package information, and Lovelace UI examples are also included in the [links](README.md#links) at the bottom.
+For troubleshooting steps and debug logging instructions, see the [Troubleshooting](https://github.com/custom-components/weatheralerts/blob/master/documentation/troubleshooting.md) documentation.
 
-Install the *weatheralerts* integration via *HACS*. After installing via *HACS*, don't restart Home Assistant yet. We will do that after completing the YAML platform configuration.
+- [Support Forum](https://github.com/custom-components/weatheralerts/discussions)
+- [GitHub Repository Home](https://github.com/custom-components/weatheralerts)
+- [View Issues/Feature Requests](https://github.com/custom-components/weatheralerts/issues)
+- [Report an Issue/Feature Request](https://github.com/custom-components/weatheralerts/issues/new/choose)
 
-You will need to find your zone and county codes by looking for your state or marine zone at [https://alerts.weather.gov/](https://alerts.weather.gov/). Once you find your state or marine zone, click into the **Zone List** and **County List** links and find the **Zone Code** and **County Code** your county. All you need are just the first two letters (your state or marine zone abbreviation) and the last three digits (zone/county ID number) of your zone code and county code to put into the platform configuration. The zone and county ID numbers are not usually the same number, so be sure to look up both codes. 
+---
 
-Once installed and you have your state (or marine zone) abbreviation and ID numbers, add the weatheralerts sensor platform to your configuration. If your state is Wisconsin and your county is Outagamie, then the state abbreviation is `WI`, the zone ID number is `038`, and the county ID number is `087`. For the ID numbers, remove any leading zeros and your YAML platform configuration would look something like this:
-```yaml
-sensor:
-  platform: weatheralerts
-  state: WI
-  zone: 38
-  county: 87
-```
-Once your configuration is saved, restart Home Assistant. 
+## License
 
-That completes the integration (custom component) installation.
-
-Check the [links](README.md#links) below for more detailed instructions, troubleshooting, and for YAML package and Lovelace UI usage and examples.
-
-
-# Updating via HACS
-
-Check the [Breaking Changes](README.md#breaking-changes) section of this README to see if you need to manually update the YAML packages or make any changes to your custom YAML or Lovelace UI cards. Simply use the **Update** button for the *weatheralerts* integration within *HACS* if there are no breaking changes and then restart Home Assistant. 
-
-
-# Links
-
-  * [Detailed Instructions](DOCUMENTATION.md)
-  * [Troubleshooting](TROUBLESHOOTING.md)
-  * [YAML Package Info](YAML_PACKAGES_DOCS.md)
-  * [Lovelace UI Examples](LOVELACE_EXAMPLES.md)
-  * [GitHub Repository](https://github.com/custom-components/weatheralerts)
-  * [View Issues/Feature Requests](https://github.com/custom-components/weatheralerts/issues)
-  * [Report an Issue/Feature Request](https://github.com/custom-components/weatheralerts/issues/new/choose)
-  * [Changelog](/CHANGELOG.md)
-
-
-
-
-# Todo list
-- [x] Add more documentation
-- [ ] Add config flow to allow UI-based configuration (eliminate yaml-based platform configuration)
-- [ ] Create alternative (possibly simpler) YAML package or move some template sensors into the integration
-- [ ] Add backup weather alert source for occasions when weather.gov json feed is experiencing an outage
-
-
-[release-badge]: https://img.shields.io/github/v/release/custom-components/weatheralerts?style=plastic
-[release-link]: https://github.com/custom-components/weatheralerts/releases
-[license-badge]: https://img.shields.io/github/license/custom-components/weatheralerts?style=plastic
-[license-link]: https://github.com/custom-components/weatheralerts/blob/master/LICENSE
-[hacs-badge]: https://img.shields.io/badge/HACS-Default-orange.svg?style=plastic
-[hacs-link]: https://github.com/custom-components/hacs
-[stars-badge]: https://img.shields.io/github/stars/custom-components/weatheralerts?style=plastic
-[stars-link]: https://github.com/custom-components/weatheralerts/stargazers
-[maintained-badge]: https://img.shields.io/maintenance/yes/2020.svg?style=plastic
-[issues-badge]: https://img.shields.io/github/issues/custom-components/weatheralerts?style=plastic
-[issues-link]: https://github.com/custom-components/weatheralerts/issues
-[commits-badge]: https://img.shields.io/github/commits-since/custom-components/weatheralerts/latest?style=plastic
-[commits-link]: https://github.com/custom-components/weatheralerts/commits/master
+MIT License

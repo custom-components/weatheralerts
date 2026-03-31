@@ -346,7 +346,7 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
                 "severity": props.get("severity", "null"),
                 "title": props.get("headline", "null").split(" by ")[0],
                 "urgency": props.get("urgency", "null"),
-                "NWSheadline": props.get("parameters", {}).get("NWSheadline", ["null"])[0],
+                "NWSheadline": props.get("parameters", {}).get("NWSheadline", "null"),
                 "hailSize": props.get("hailSize", "null"),
                 "windGust": props.get("windGust", "null"),
                 "waterspoutDetection": props.get("waterspoutDetection", "null"),

@@ -334,6 +334,10 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
                 else props.get("ends", "null")
             )
             event_value = props.get("event", "null")
+            params = props.get("parameters") or {}
+            nws_headline = params.get("NWSheadline") or "null"
+            if isinstance(nws_headline, list):
+                nws_headline = nws_headline[0] if nws_headline else "null"
             alert = {
                 "area": props.get("areaDesc", "null"),
                 "certainty": props.get("certainty", "null"),
@@ -346,7 +350,8 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
                 "severity": props.get("severity", "null"),
                 "title": props.get("headline", "null").split(" by ")[0],
                 "urgency": props.get("urgency", "null"),
-                "NWSheadline": props.get("parameters", {}).get("NWSheadline", "null"),
+                "NWSheadline": nws_headline,
+                "NWSheadlines": props.get("parameters", {}).get("NWSheadline", "null"),
                 "hailSize": props.get("hailSize", "null"),
                 "windGust": props.get("windGust", "null"),
                 "waterspoutDetection": props.get("waterspoutDetection", "null"),

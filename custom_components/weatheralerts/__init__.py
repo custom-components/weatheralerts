@@ -9,6 +9,8 @@ from homeassistant.helpers.typing import ConfigType
 from homeassistant.helpers import config_validation as cv
 from homeassistant import config_entries
 
+from .frontend import async_register_frontend
+
 from .const import (
     DOMAIN,
     CONF_ZONE,
@@ -30,6 +32,8 @@ CONFIG_SCHEMA = cv.empty_config_schema(DOMAIN)
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     _LOGGER.debug("weatheralerts: async_setup called")
+    await async_register_frontend(hass)
+
     entries = hass.config_entries.async_entries(DOMAIN)
     if entries:
         _LOGGER.debug("weatheralerts: skipping migration, existing entries found")
@@ -76,6 +80,15 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     _LOGGER.debug("weatheralerts: async_setup_entry called for %s", entry.entry_id)
+
+    # Register the bundled frontend from async_setup_entry as well as async_setup.
+    # Home Assistant may set up a config-entry-only integration path without
+    # calling async_setup first, especially after all entries/resources were
+    # removed and a new entry is added from the UI. The frontend helper is
+    # guarded, so calling it here is safe for existing installations and
+    # multiple WeatherAlerts config entries.
+    await async_register_frontend(hass)
+
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
 
     hass.data.setdefault(DOMAIN, {})

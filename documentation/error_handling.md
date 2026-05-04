@@ -37,6 +37,7 @@ The `error` attribute is a two element array; `error[0]` and `error[1]`. `error[
 - [Error Handling](https://github.com/custom-components/weatheralerts/blob/master/documentation/error_handling.md) **<-- You are here**
 - [Automation Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_automations.md)
 - [Dashboard Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_dashboard.md)
+- [Alert Card](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_card.md)
 - [Troubleshooting](https://github.com/custom-components/weatheralerts/blob/master/documentation/troubleshooting.md)
 - [Migration from YAML](https://github.com/custom-components/weatheralerts/blob/master/documentation/migration.md)
 - [Documentation Versioning Policy](https://github.com/custom-components/weatheralerts/blob/master/documentation/versioning.md)

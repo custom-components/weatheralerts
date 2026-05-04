@@ -12,7 +12,15 @@ Alerts are retrieved from the official NWS API and exposed with detailed attribu
 
 ## Version
 
-**Current version:** 2026.1.0
+**Current version:** 2026.5.0
+
+This release is a bug fix and enhancement release.
+
+- NWSHeadline is now properly populated from the NWS alert JSON (https://github.com/custom-components/weatheralerts/pull/94 thanks lmilius)
+- Adds a fancy new WeatherAlerts Alert Card for use in dashboards (inspired by [AlertTicker-Card](https://github.com/djdevil/AlertTicker-Card))
+- Documentation for new WeatherAlerts Alert Card @ [Alert Card](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_card.md)
+
+**Previous version:** 2026.1.0
 
 This release represents a significant evolution of the integration and includes:
 
@@ -70,6 +78,7 @@ A custom minimal User-Agent is sent with all requests as required by the NWS API
 - [Error Handling](https://github.com/custom-components/weatheralerts/blob/master/documentation/error_handling.md)
 - [Automation Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_automations.md)
 - [Dashboard Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_dashboard.md)
+- [Alert Card](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_card.md)
 - [Troubleshooting](https://github.com/custom-components/weatheralerts/blob/master/documentation/troubleshooting.md)
 - [Migration from YAML](https://github.com/custom-components/weatheralerts/blob/master/documentation/migration.md)
 - [Documentation Versioning Policy](https://github.com/custom-components/weatheralerts/blob/master/documentation/versioning.md)

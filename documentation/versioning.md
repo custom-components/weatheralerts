@@ -55,7 +55,7 @@ If older documentation must be preserved:
 When releasing a new major or minor series:
 
 - Update all version notice headers consistently
-- Use a single version range (for example: 2027.1.0 and newer)
+- Use a single version range (for example: 2026.1.0 and newer)
 - Avoid ambiguous phrasing such as “latest” or “current”
 
 ---
@@ -80,6 +80,7 @@ If the code and the documentation disagree, the code is considered authoritative
 - [Error Handling](https://github.com/custom-components/weatheralerts/blob/master/documentation/error_handling.md)
 - [Automation Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_automations.md)
 - [Dashboard Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_dashboard.md)
+- [Alert Card](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_card.md)
 - [Troubleshooting](https://github.com/custom-components/weatheralerts/blob/master/documentation/troubleshooting.md)
 - [Migration from YAML](https://github.com/custom-components/weatheralerts/blob/master/documentation/migration.md)
 - [Documentation Versioning Policy](https://github.com/custom-components/weatheralerts/blob/master/documentation/versioning.md)  **<-- You are here**

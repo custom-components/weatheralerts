@@ -17,27 +17,50 @@ Example:
 A list of parsed alert objects from the National Weather Service.
 
 Each alert includes:
-- event
-- headline
-- description
-- severity
-- urgency
-- certainty
-- sent
-- effective
-- onset
-- expires
-- instruction
 - area
+- category
+- certainty
+- description
+- effective
+- ends
+- endsExpires
+- event
+- expires
+- hailSize
 - icon
+- id
+- instruction
+- messageType
+- NWSheadline
+- NWSheadlines
+- onset
+- response
+- severity
+- sender
+- senderName
+- sent
+- status
+- title
+- urgency
+- windGust
+- waterspoutDetection
+- zoneid
 
 ### alert_stats
 Computed statistics for currently active alerts, including counts for:
-- warnings
-- watches
-- advisories
-- statements
-- emergencies
+- warning
+- watch
+- advisory
+- statement
+- outlook
+- alert
+- message
+- important
+- test
+- outage
+- emergency
+- immediate
+- forecast
 - total active alerts
 
 ### alert_tracking
@@ -66,6 +89,7 @@ Structured error history including most recent successes and failures. See [Erro
 - [Error Handling](https://github.com/custom-components/weatheralerts/blob/master/documentation/error_handling.md)
 - [Automation Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_automations.md)
 - [Dashboard Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_dashboard.md)
+- [Alert Card](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_card.md)
 - [Troubleshooting](https://github.com/custom-components/weatheralerts/blob/master/documentation/troubleshooting.md)
 - [Migration from YAML](https://github.com/custom-components/weatheralerts/blob/master/documentation/migration.md)
 - [Documentation Versioning Policy](https://github.com/custom-components/weatheralerts/blob/master/documentation/versioning.md)

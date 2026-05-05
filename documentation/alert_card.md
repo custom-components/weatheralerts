@@ -6,7 +6,7 @@
 
 The WeatherAlerts Alert Card is a bundled Lovelace custom card for displaying active alerts from a weatheralerts sensor. It reads the `alerts` attribute array from the configured sensor entity. This card is currently a work-in-progress inspired by [AlertTicker-Card](https://github.com/djdevil/AlertTicker-Card).
 
-## Dashboard resource
+## Dashboard Resource
 
 The integration auto-registers the bundled card as a Lovelace dashboard resource when Home Assistant is using storage-mode dashboards. The registered resource URL includes the integration version for browser cache busting:
 
@@ -24,11 +24,15 @@ lovelace:
       type: module
 ```
 
-## Basic rotating card
+### Dashboard Resource Recovery
+
+Weather Alerts automatically registers the Weather Alerts Alert Card dashboard resource when the integration is set up. If the dashboard resource is manually deleted while Home Assistant is still running, restart Home Assistant to allow the integration to register the resource again.
+
+## Basic Rotating Card
 
 ```yaml
 type: custom:weatheralerts-alert-card
-entity: sensor.weatheralerts_wiz013
+entity: sensor.weatheralerts_outagamie_wiz038_wic087
 display_mode: rotating
 content_mode: compact
 show_icon: true
@@ -38,13 +42,13 @@ rotation_pause: 1
 rotation_type: fold
 ```
 
-## Rotating animation examples
+## Rotating Animation Examples
 
 Use `rotation_type` to change how alerts rotate.
 
 ```yaml
 type: custom:weatheralerts-alert-card
-entity: sensor.weatheralerts_wiz013
+entity: sensor.weatheralerts_outagamie_wiz038_wic087
 display_mode: rotating
 content_mode: compact
 rotation_interval: 7
@@ -69,11 +73,11 @@ Supported rotation types:
 - `twirl_left`
 - `twirl_right`
 
-## Ticker banner example
+## Ticker Banner Example
 
 ```yaml
 type: custom:weatheralerts-alert-card
-entity: sensor.weatheralerts_wiz013
+entity: sensor.weatheralerts_outagamie_wiz038_wic087
 display_mode: ticker
 content_mode: compact
 ticker_pixels_per_second: 70
@@ -95,22 +99,22 @@ ticker_loop_gap: 80px   # explicit pixel gap
 ticker_loop_gap: 25%    # percentage of visible card width
 ```
 
-## List display example
+## List Display Example
 
 ```yaml
 type: custom:weatheralerts-alert-card
-entity: sensor.weatheralerts_wiz013
+entity: sensor.weatheralerts_outagamie_wiz038_wic087
 display_mode: list
 content_mode: summary
 show_icon: true
 max_alerts: 10
 ```
 
-## Full alert display example
+## Full Alert Display Example
 
 ```yaml
 type: custom:weatheralerts-alert-card
-entity: sensor.weatheralerts_wiz013
+entity: sensor.weatheralerts_outagamie_wiz038_wic087
 display_mode: rotating
 content_mode: full
 rotation_interval: 10
@@ -120,11 +124,11 @@ show_icon: true
 show_navigation: true
 ```
 
-## All-clear card example
+## All-Clear Card Example
 
 ```yaml
 type: custom:weatheralerts-alert-card
-entity: sensor.weatheralerts_wiz013
+entity: sensor.weatheralerts_outagamie_wiz038_wic087
 show_when_empty: true
 empty_message: No active weather alerts
 no_alert_color: "#55cc00"
@@ -174,7 +178,7 @@ no_alert_muted_text_color: "rgba(255,255,255,0.82)"
 | `border_radius` | `12px` | CSS size | Alert section border radius. |
 | `section_gap` | `6px` | CSS size | Gap between alert sections. |
 
-## Color rules
+## Color Rules
 
 The card checks the alert event, title, and NWSheadline text:
 
@@ -184,9 +188,9 @@ The card checks the alert event, title, and NWSheadline text:
 - All other active alerts use `other_color`, `other_text_color`, and `other_muted_text_color`.
 - The all-clear card uses `no_alert_color`, `no_alert_text_color`, and `no_alert_muted_text_color` when `show_when_empty` is true.
 
-## Automatic resource registration notes
+## Automatic Resource Registration Notes
 
-For Home Assistant storage-mode dashboards, WeatherAlerts attempts to add the card resource automatically when the integration loads and when a WeatherAlerts config entry is set up. This covers both existing installations after restart and the case where all WeatherAlerts config entries were removed before creating a new one.
+For Home Assistant storage-mode dashboards, Weather Alerts attempts to add the card resource automatically when the integration loads and when a Weather Alerts config entry is set up. This covers both existing installations after restart and the case where all Weather Alerts config entries were removed before creating a new one.
 
 If the card does not appear after installation, restart Home Assistant and check **Settings -> Dashboards -> Resources** for:
 

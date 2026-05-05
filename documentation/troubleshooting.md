@@ -89,6 +89,12 @@ Disable debug logging once troubleshooting is complete.
 
 ---
 
+## Dashboard Resource Recovery
+
+Weather Alerts automatically registers the WeatherAlerts Alert Card dashboard resource when the integration is set up. If the dashboard resource is manually deleted while Home Assistant is still running, restart Home Assistant to allow the integration to register the resource again.
+
+---
+
 ## Reporting Issues
 
 Before opening a new issue, check the [current issues](https://github.com/custom-components/weatheralerts/issues) to see if it's a known issue.

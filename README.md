@@ -4,7 +4,7 @@
 
 [![GitHub stars][stars-badge]][stars-link]  ![GitHub][maintained-badge]  [![GitHub issues][issues-badge]][issues-link]  [![GitHub commits since latest release (by SemVer)][commits-badge]][commits-link]
 
-> This documentation applies to Weather Alerts version 2026.1.0 and newer.
+> This documentation applies to Weather Alerts version 2026.5.0 and newer. Some migration notes also apply to 2026.1.0.
 >  
 > Behavior and configuration may differ in earlier versions.
 
@@ -14,7 +14,7 @@
  * No breaking changes
 
 ### v2026.1.0
- * This new version will migrate your YAML integration platform config to the new config flow automatically and create a new sensor. It will NOT migrate or re-use your old sensor (i.e. sensor.weatheralerts_1 or sensor.zone_name) and it will generate a new sensor named using data from your zone name and zone/county/marine codes. If you want to continue using the YAML package (not recommended) for its template sensors and automations, it should still be compatible; but you will need to delete the old sensor.weatheralerts_1 sensor entity and rename the new weatheralerts integration sensor entity to sensor.weatheralerts_1. This renaming is not require if you plan to use the new automation and dashboard examples. I highly recommend using the new automation and dashboard examples and to stop using the old YAML package due to the possibility of missed alert notifications.
+ * This new version will migrate your YAML integration platform config to the new config flow automatically and create a new sensor. It will NOT migrate or re-use your old sensor (i.e. sensor.weatheralerts_1 or sensor.zone_name) and it will generate a new sensor named using data from your zone name and zone/county/marine codes. If you want to continue using the YAML package (not recommended) for its template sensors and automations, it should still be compatible; but you will need to delete the old sensor.weatheralerts_1 sensor entity and rename the new weatheralerts integration sensor entity to sensor.weatheralerts_1. This renaming is not required if you plan to use the new automation and dashboard examples. I highly recommend using the new automation and dashboard examples and to stop using the old YAML package due to the possibility of missed alert notifications.
 
 
 # Upgrading from v2026.1.0

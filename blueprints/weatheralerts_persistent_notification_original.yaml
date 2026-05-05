@@ -4,7 +4,7 @@ blueprint:
     Persistent notification for Weather Alerts from a weatheralerts integration 
     sensor, plus automatic cleanup when no active alerts remain for 30 minutes. 
     New alerts and alerts less than 30 minutes old will display as a full alert 
-    message in the psrsistent notification. Alerts older than 30 minutes will 
+    message in the persistent notification. Alerts older than 30 minutes will 
     only display as a short alert event title in the persistent notification.
   domain: automation
   input:

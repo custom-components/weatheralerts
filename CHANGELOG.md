@@ -16,7 +16,7 @@ The format is based on Keep a Changelog, and this project follows calendar-based
 
 - Added a fancy new WeatherAlerts Alert Card with `rotating` (various animation), `ticker`, `list`, and `full` modes, inspired by [AlertTicker-Card](https://github.com/djdevil/AlertTicker-Card).
 - Added documentation for WeatherAlerts Alert Card: [Alert Card](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_card.md)
-- Added `NWSheadlines` to the alert array to properly bring in headlines if alerts are ever split into mutliple headlines
+- Added `NWSheadlines` to the alert array to properly bring in headlines if alerts are ever split into multiple headlines
 
 ### Fixed
 
@@ -31,7 +31,7 @@ The format is based on Keep a Changelog, and this project follows calendar-based
 - YAML-based configuration is deprecated and no longer supported for new setups.
 - All configuration must now be performed through the Home Assistant UI.
 - Existing YAML platform configurations are automatically imported into UI-based config entries on startup.
-- The YAML package should be considered deprecated and will no longer be supported or updated. See the documenation for instructions on using the automation blueprint and dashboard examples.
+- The YAML package should be considered deprecated and will no longer be supported or updated. See the documentation for instructions on using the automation blueprint and dashboard examples.
 
 ### Added
 

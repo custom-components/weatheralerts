@@ -23,7 +23,7 @@ If latitude and longitude are not prepopulated, this step may be skipped by leav
 The latitude and longitude should be entered as numbers only (no degree symbol or cardinal direction appended); in the United States the latitude will be a positive number and longitude will be a negative number. If you leave the latitude and longitude fields blank, you will need to find your codes; just ask Google search:
 - what is the nws zone and county code for _city_, _state_
 
-In the Google search, just replace _city_ and _state_ with your city and state. Google should reply with a NWS zone Code that is 3 letters (State abbreviatation + Z) + 3 numbers (xxZ###) and you should also see a 3 letter (State abbreviation + C) + 3 numbers (xxC###) county code listed under FIPS County Code.
+In the Google search, just replace _city_ and _state_ with your city and state. Google should reply with a NWS zone Code that is 3 letters (State abbreviation + Z) + 3 numbers (xxZ###) and you should also see a 3 letter (State abbreviation + C) + 3 numbers (xxC###) county code listed under FIPS County Code.
 
 ### Step 2: Zone Selection
 

@@ -16,7 +16,7 @@ Alerts are retrieved from the official NWS API and exposed with detailed attribu
 
 This release is a bug fix and enhancement release.
 
-- NWSHeadline is now properly populated from the NWS alert JSON (https://github.com/custom-components/weatheralerts/pull/94 thanks lmilius)
+- NWSHeadline is now properly populated from the NWS alert JSON (https://github.com/custom-components/weatheralerts/pull/94) - thanks lmilius
 - Adds a fancy new WeatherAlerts Alert Card for use in dashboards (inspired by [AlertTicker-Card](https://github.com/djdevil/AlertTicker-Card))
 - Documentation for new WeatherAlerts Alert Card @ [Alert Card](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_card.md)
 

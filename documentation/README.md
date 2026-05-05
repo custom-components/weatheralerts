@@ -51,6 +51,13 @@ The documentation applies to Weather Alerts version 2026.1.0 and newer.
 
 ---
 
+## WeatherAlerts Alert Card
+
+- **[Alert Card](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_card.md)**  
+  A weatheralerts alert card inspired by [AlertTicker-Card](https://github.com/djdevil/AlertTicker-Card) to display alerts in various ways.
+
+---
+
 ## Troubleshooting and Maintenance
 
 - **[Error Handling](https://github.com/custom-components/weatheralerts/blob/master/documentation/error_handling.md)**  
@@ -82,6 +89,7 @@ Full documentation for the Weather Alerts integration is available in the reposi
 - [Error Handling](https://github.com/custom-components/weatheralerts/blob/master/documentation/error_handling.md)
 - [Automation Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_automations.md)
 - [Dashboard Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_dashboard.md)
+- [Alert Card](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_card.md)
 - [Troubleshooting](https://github.com/custom-components/weatheralerts/blob/master/documentation/troubleshooting.md)
 - [Migration from YAML](https://github.com/custom-components/weatheralerts/blob/master/documentation/migration.md)
 - [Documentation Versioning Policy](https://github.com/custom-components/weatheralerts/blob/master/documentation/versioning.md)

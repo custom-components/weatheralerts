@@ -6,6 +6,24 @@ The format is based on Keep a Changelog, and this project follows calendar-based
 
 ---
 
+## [2026.5.0] - 2026-05-06
+
+### Breaking Changes
+
+- No breaking changes
+
+### Added
+
+- Added a fancy new WeatherAlerts Alert Card with `rotating` (various animation), `ticker`, `list`, and `full` modes, inspired by [AlertTicker-Card](https://github.com/djdevil/AlertTicker-Card).
+- Added documentation for WeatherAlerts Alert Card: [Alert Card](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_card.md)
+- Added `NWSheadlines` to the alert array to properly bring in headlines if alerts are ever split into mutliple headlines
+
+### Fixed
+
+- Fixed NWSheadline which was not working (https://github.com/custom-components/weatheralerts/pull/94). Thanks lmilius!
+
+---
+
 ## [2026.1.0] - 2026-01-30
 
 ### Breaking Changes

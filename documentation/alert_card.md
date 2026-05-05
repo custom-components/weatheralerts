@@ -1,8 +1,10 @@
 # WeatherAlerts Alert Card
 
-Version notice: This document describes the bundled WeatherAlerts Alert Card for the weatheralerts integration 2026.5.0 and later.
+> This documentation applies to Weather Alerts version 2026.5.0 and newer.
+>  
+> Behavior and configuration may differ in earlier versions.
 
-The WeatherAlerts Alert Card is a bundled Lovelace custom card for displaying active alerts from a weatheralerts sensor. It reads the `alerts` attribute array from the configured sensor entity.
+The WeatherAlerts Alert Card is a bundled Lovelace custom card for displaying active alerts from a weatheralerts sensor. It reads the `alerts` attribute array from the configured sensor entity. This card is currently a work-in-progress inspired by [AlertTicker-Card](https://github.com/djdevil/AlertTicker-Card).
 
 ## Dashboard resource
 
@@ -67,7 +69,7 @@ Supported rotation types:
 - `twirl_left`
 - `twirl_right`
 
-## Ticker banner
+## Ticker banner example
 
 ```yaml
 type: custom:weatheralerts-alert-card
@@ -93,7 +95,7 @@ ticker_loop_gap: 80px   # explicit pixel gap
 ticker_loop_gap: 25%    # percentage of visible card width
 ```
 
-## List display
+## List display example
 
 ```yaml
 type: custom:weatheralerts-alert-card
@@ -104,7 +106,7 @@ show_icon: true
 max_alerts: 10
 ```
 
-## Full alert display
+## Full alert display example
 
 ```yaml
 type: custom:weatheralerts-alert-card
@@ -118,7 +120,7 @@ show_icon: true
 show_navigation: true
 ```
 
-## All-clear card
+## All-clear card example
 
 ```yaml
 type: custom:weatheralerts-alert-card

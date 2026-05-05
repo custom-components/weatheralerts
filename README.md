@@ -10,11 +10,18 @@
 
 # Breaking changes
 
+### v2026.5.0
+ * No breaking changes
+
 ### v2026.1.0
  * This new version will migrate your YAML integration platform config to the new config flow automatically and create a new sensor. It will NOT migrate or re-use your old sensor (i.e. sensor.weatheralerts_1 or sensor.zone_name) and it will generate a new sensor named using data from your zone name and zone/county/marine codes. If you want to continue using the YAML package (not recommended) for its template sensors and automations, it should still be compatible; but you will need to delete the old sensor.weatheralerts_1 sensor entity and rename the new weatheralerts integration sensor entity to sensor.weatheralerts_1. This renaming is not require if you plan to use the new automation and dashboard examples. I highly recommend using the new automation and dashboard examples and to stop using the old YAML package due to the possibility of missed alert notifications.
 
 
-# Upgrading
+# Upgrading from v02026.1.0
+
+If you are upgrading from v2026.1.0, this new version will show up as an update in your `Settings` dashboard. Simply click `WeatherAlerts` in the update list and then click the `Update` button to update to this new version. This upgrade does not contain any breaking changes, so all dashboard cards and automations that worked for v2026.1.0 will still work.
+
+# Upgrading from v0.1.5 or earlier
 
 If you are upgrading from a previous version (v0.1.5 or earlier), installing this new version will migrate your YAML weatheralerts platform configuration(s) to the newer config entry system and will be found in the **Home Assistant → Settings → Devices & Services → Integrations → Weather Alerts** menu. If you are using the YAML Package files which provides several template sensors and automations to work in conjuntion with the weatheralerts sensor, the migration will not migrate the sensor.weatheralerts_1 sensor to the new integration. A new sensor will be created and the old sensor will become abandoned. To continue using the YAML Package files (not recommended due to potential failure to get notifications for new alerts) or to continue using your custom automations and dashboard configuration using sensor.weatheralerts_1, you will have to delete the abandoned sensor.weatheralerts_1 sensor and rename the new sensor entity to sensor.weatheralerts_1. My recommendation is to use the new automation blueprint (or automation exmaples) and the updated dashboard examples.
 
@@ -80,6 +87,8 @@ Check the [Installation](https://github.com/custom-components/weatheralerts/blob
    - **API Request Timeout:** Default: `20` seconds (range: `10 - 60`, must be at least 5 seconds less than the update interval)
 
 > Once setup is complete, the integration will create a sensor (e.g., `sensor.weatheralerts_outagamie_wiz038` with friendly name like `Outagamie (WIZ038)`) and automatically fetch current NWS weather alerts for your configured area. If you don't want land-based alerts with marine alerts, you can create a config entry for just a marine zone by entering the marine zone code in the Zone Code field and leaving the other fields blank or one marine zone code in the Zone Code field and additional marine zone codes in the Marine Zones field. 
+
+> Be sure to check out the new [WeatherAlerts Alert Card](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_card.md) inspired by [AlertTicker-Card](https://github.com/djdevil/AlertTicker-Card).
 
 ---
 
@@ -151,6 +160,7 @@ Full documentation for the Weather Alerts integration is available in the reposi
 - [Error Handling](https://github.com/custom-components/weatheralerts/blob/master/documentation/error_handling.md)
 - [Automation Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_automations.md)
 - [Dashboard Examples](https://github.com/custom-components/weatheralerts/blob/master/documentation/examples_dashboard.md)
+- [Alert Card](https://github.com/custom-components/weatheralerts/blob/master/documentation/alert_card.md)
 - [Troubleshooting](https://github.com/custom-components/weatheralerts/blob/master/documentation/troubleshooting.md)
 - [Migration from YAML](https://github.com/custom-components/weatheralerts/blob/master/documentation/migration.md)
 - [Documentation Versioning Policy](https://github.com/custom-components/weatheralerts/blob/master/documentation/versioning.md)

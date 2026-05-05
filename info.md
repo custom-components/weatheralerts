@@ -1,21 +1,13 @@
-**Example configuration.yaml:**
+# Weather Alerts
 
-```yaml
-sensor:
-  platform: weatheralerts
-  sameid: '034035'
-```
+Weather Alerts is a Home Assistant custom integration that retrieves active National Weather Service alerts from weather.gov.
 
-**Configuration variables:**  
-  
-key | description  
-:--- | :---  
-**platform (Required)** | The platform name.  
-**sameid (Required)** | The SAME ID for your county.  
-  
-## Sample overview
+Configuration is handled through the Home Assistant UI.
 
-![Sample overview](overview.png)
-  
-To find the sameid go to [http://www.nws.noaa.gov/nwr/coverage/county_coverage.html](http://www.nws.noaa.gov/nwr/coverage/county_coverage.html).  
-  
+After installing or updating through HACS, restart Home Assistant, then add Weather Alerts from:
+
+Settings > Devices & Services > Add Integration > Weather Alerts
+
+For current documentation, see:
+
+https://github.com/custom-components/weatheralerts

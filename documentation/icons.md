@@ -22,7 +22,7 @@ Icons use standard Home Assistant icon definition.
     - In `New Event Type` field, enter the new event type such as `UFO Alert`
     - In `New Icon Definition` enter a valid icon definition such as `hass:ufo`
 - You can change any existing pre-defined alert event to use whatever valid icon definition you have available
-- You can revert a changed icon back to default value by blanking the icon defintion for any changed event types and clicking **Submit**
+- You can revert a changed icon back to default value by blanking the icon definition for any changed event types and clicking **Submit**
 
 Once you click **Submit**, the changes apply immediately without needing to restart Home Assistant.
 

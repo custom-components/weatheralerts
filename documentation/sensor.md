@@ -46,6 +46,10 @@ Each alert includes:
 - waterspoutDetection
 - zoneid
 
+A notes regarding NWSheadline and NWSheadlines: 
+- `NWSheadline`: The first NWS headline value as a string, or `"null"` when unavailable.
+- `NWSheadlines`: The full NWS headline list. If unavailable, this is set to `["null"]` so templates can safely access `alert.NWSheadlines[0]`.
+
 ### alert_stats
 Computed statistics for currently active alerts, including counts for:
 - warning

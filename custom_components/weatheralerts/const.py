@@ -1,7 +1,7 @@
 """Constants for weatheralerts integration."""
 
 DOMAIN = "weatheralerts"
-VERSION = "2025.7.0"
+VERSION = "2026.5.0"
 
 # Configuration keys
 CONF_ZONE = "zone"

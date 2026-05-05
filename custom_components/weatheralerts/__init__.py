@@ -123,9 +123,9 @@ async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> Non
         name = entry.data.get(CONF_NAME, "").strip()
 
     if CONF_ZONE_NAME in entry.options:
-        name = entry.options[CONF_ZONE_NAME].strip()
+        zone_name = entry.options[CONF_ZONE_NAME].strip()
     else:
-        name = entry.data.get(CONF_ZONE_NAME, "").strip()
+        zone_name = entry.data.get(CONF_ZONE_NAME, "").strip()
 
     if CONF_ENTITY_NAME in entry.options:
         entity_name = entry.options[CONF_ENTITY_NAME].strip()

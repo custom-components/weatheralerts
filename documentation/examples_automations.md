@@ -199,9 +199,9 @@ conditions:
       state_attr('sensor.weather_alerts','alerts') or []
       %}
 
-      {% set events = alerts | map(attribute='event') | map('lower') | list %}
+      {% set text = alerts | map(attribute='event') | join(' ') | lower %}
 
-      {{ 'warning' in events or 'watch' in events or 'advisory' in events }}
+      {{ 'warning' in text }}
 actions:
   - data:
       title: Weather Warning

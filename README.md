@@ -17,7 +17,7 @@
  * This new version will migrate your YAML integration platform config to the new config flow automatically and create a new sensor. It will NOT migrate or re-use your old sensor (i.e. sensor.weatheralerts_1 or sensor.zone_name) and it will generate a new sensor named using data from your zone name and zone/county/marine codes. If you want to continue using the YAML package (not recommended) for its template sensors and automations, it should still be compatible; but you will need to delete the old sensor.weatheralerts_1 sensor entity and rename the new weatheralerts integration sensor entity to sensor.weatheralerts_1. This renaming is not require if you plan to use the new automation and dashboard examples. I highly recommend using the new automation and dashboard examples and to stop using the old YAML package due to the possibility of missed alert notifications.
 
 
-# Upgrading from v02026.1.0
+# Upgrading from v2026.1.0
 
 If you are upgrading from v2026.1.0, this new version will show up as an update in your `Settings` dashboard. Simply click `WeatherAlerts` in the update list and then click the `Update` button to update to this new version. This upgrade does not contain any breaking changes, so all dashboard cards and automations that worked for v2026.1.0 will still work.
 

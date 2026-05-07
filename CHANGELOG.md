@@ -8,6 +8,14 @@ The format is based on Keep a Changelog, and this project follows calendar-based
 
 ## [2026.5.0] - 2026-05-06
 
+### Fixed
+
+- Fix WeatherAlerts Alert Card not auto registering resource after upgrading integration
+
+---
+
+## [2026.5.0] - 2026-05-06
+
 ### Breaking Changes
 
 - No breaking changes

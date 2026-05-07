@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from homeassistant.components.http import StaticPathConfig
+from homeassistant.components.lovelace.const import LOVELACE_DATA, MODE_STORAGE
 from homeassistant.const import EVENT_HOMEASSISTANT_STARTED
 from homeassistant.core import CoreState, HomeAssistant
 from homeassistant.helpers.event import async_call_later
@@ -88,12 +89,13 @@ async def _async_register_lovelace_resource(
     attempt: int,
 ) -> None:
     """Add or update the WeatherAlerts Alert Card dashboard resource."""
-    lovelace = hass.data.get("lovelace")
+    lovelace = hass.data.get(LOVELACE_DATA) or hass.data.get("lovelace")
     if lovelace is None or not hasattr(lovelace, "resources"):
         await _async_retry_resource_registration(hass, attempt, "Lovelace is not ready")
         return
 
-    if getattr(lovelace, "mode", None) != "storage":
+    resource_mode = getattr(lovelace, "resource_mode", getattr(lovelace, "mode", None))
+    if resource_mode != MODE_STORAGE:
         _LOGGER.debug(
             "weatheralerts: Lovelace is not in storage mode; dashboard resource must be added manually"
         )

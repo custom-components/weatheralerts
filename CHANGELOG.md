@@ -6,7 +6,7 @@ The format is based on Keep a Changelog, and this project follows calendar-based
 
 ---
 
-## [2026.5.0] - 2026-05-06
+## [2026.5.2] - 2026-05-06
 
 ### Fixed
 

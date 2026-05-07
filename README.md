@@ -10,7 +10,7 @@
 
 # Breaking changes
 
-### v2026.5.1
+### v2026.5.2
  * No breaking changes
 
 ### v2026.5.0

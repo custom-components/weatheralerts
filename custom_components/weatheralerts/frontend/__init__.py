@@ -81,10 +81,8 @@ def _async_schedule_resource_registration(hass: HomeAssistant) -> None:
         "weatheralerts: scheduling dashboard resource registration for WeatherAlerts Alert Card"
     )
 
-    # Do not wait for EVENT_HOMEASSISTANT_STARTED here. Start trying now and let
-    # the retry loop handle Lovelace not being ready yet. This avoids startup
-    # ordering edge cases where the started-event listener never visibly reaches
-    # the resource registration code.
+    # Start trying now and let the retry loop handle Lovelace not being ready yet.
+    # This avoids startup ordering edge cases with EVENT_HOMEASSISTANT_STARTED.
     hass.async_create_task(_async_register_lovelace_resource(hass, attempt=1))
 
 

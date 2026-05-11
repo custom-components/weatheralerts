@@ -12,6 +12,10 @@ class WeatherAlertsAlertCard extends HTMLElement {
     this._rotationSerial = 0;
     this._rotationAnimation = null;
     this._tickerAnimation = null;
+    this._tickerAnchorIndex = 0;
+    this._tickerTimelineKey = "";
+    this._tickerTimelineStart = null;
+    this._tickerReconnectScheduled = false;
     this._suppressNextEnterAnimation = false;
   }
 
@@ -94,6 +98,16 @@ class WeatherAlertsAlertCard extends HTMLElement {
       this._resetTimer();
       this._render();
     }
+  }
+
+  connectedCallback() {
+    if (this._tickerReconnectScheduled) return;
+    this._tickerReconnectScheduled = true;
+    window.requestAnimationFrame(() => {
+      this._tickerReconnectScheduled = false;
+      if (!this.isConnected || this._mode() !== "ticker") return;
+      this._setupTickerAnimation();
+    });
   }
 
   disconnectedCallback() {
@@ -388,11 +402,11 @@ class WeatherAlertsAlertCard extends HTMLElement {
 
   _ticker(alerts, contentMode) {
     const parts = alerts.map((alert) => this._alertSection(alert, contentMode, false, "ticker-item")).join("");
+
     return `
       <div class="ticker-window">
         <div class="ticker-track">
-          <div class="ticker-content">${parts}</div>
-          <div class="ticker-content ticker-content-copy" aria-hidden="true">${parts}</div>
+          <div class="ticker-content ticker-content-primary">${parts}</div>
         </div>
       </div>
     `;
@@ -404,60 +418,173 @@ class WeatherAlertsAlertCard extends HTMLElement {
       this._tickerFrame = null;
       const windowEl = this.shadowRoot?.querySelector(".ticker-window");
       const trackEl = this.shadowRoot?.querySelector(".ticker-track");
-      const contentEl = this.shadowRoot?.querySelector(".ticker-content");
+      const contentEl = this.shadowRoot?.querySelector(".ticker-content-primary")
+        || this.shadowRoot?.querySelector(".ticker-content");
       if (!windowEl || !trackEl || !contentEl) return;
 
       const viewportWidth = Math.max(1, windowEl.clientWidth);
-      const contentWidth = Math.max(1, contentEl.scrollWidth);
+      if (viewportWidth <= 1) {
+        this._tickerFrame = window.requestAnimationFrame(() => this._setupTickerAnimation());
+        return;
+      }
+
+      const contentWidth = Math.max(
+        1,
+        contentEl.scrollWidth,
+        contentEl.getBoundingClientRect?.().width || 0
+      );
       const pixelsPerSecond = this._tickerPixelsPerSecond();
       const gap = this._tickerLoopGapPixels(viewportWidth);
-      const cycleDistance = contentWidth + gap;
-      const firstStart = String(this._config.ticker_start_position || "visible").toLowerCase() === "offscreen" ? viewportWidth : 0;
+      const startsOffscreen = String(this._config.ticker_start_position || "visible").toLowerCase() === "offscreen";
+      const period = Math.max(1, contentWidth + gap);
 
       trackEl.style.setProperty("--ticker-gap", `${gap}px`);
+      const anchorIndex = this._syncTickerCopies(trackEl, contentEl, viewportWidth, contentWidth, gap);
+      this._tickerAnchorIndex = anchorIndex;
       trackEl.style.visibility = "visible";
-      this._runTickerCycle(trackEl, windowEl, firstStart, cycleDistance, pixelsPerSecond);
+
+      // Offscreen mode starts the anchor copy just outside the right edge.
+      // The strip also includes leading copies before the anchor so restoring or
+      // wrapping phase never removes a partly visible copy on the left side.
+      const start = startsOffscreen ? viewportWidth : 0;
+      const timelineKey = this._tickerTimelineStorageKey(contentEl.innerText || contentEl.textContent || "");
+      const timelineStart = this._ensureTickerTimelineStart(timelineKey);
+      this._runTickerAnimation(trackEl, windowEl, start, period, pixelsPerSecond, anchorIndex, timelineKey, timelineStart);
     });
   }
 
-  _runTickerCycle(trackEl, windowEl, start, cycleDistance, pixelsPerSecond) {
-    if (!trackEl || !windowEl || !this.isConnected) return;
+  _syncTickerCopies(trackEl, contentEl, viewportWidth, contentWidth, gap) {
+    const period = Math.max(1, contentWidth + gap);
 
-    if (this._tickerAnimation) {
-      this._tickerAnimation.cancel();
-      this._tickerAnimation = null;
+    // Keep enough copies before and after the active anchor copy. This is the
+    // important part for offscreen mode: when the phase wraps or a dashboard view
+    // is rebuilt, a copy that was partly visible on the left still has an
+    // equivalent leading copy in the same visual position.
+    const beforeCopies = Math.max(8, Math.ceil((viewportWidth + contentWidth) / period) + 4);
+    const afterCopies = Math.max(8, Math.ceil((viewportWidth + contentWidth) / period) + 4);
+    const requiredCopies = beforeCopies + 1 + afterCopies;
+
+    const existingCopies = Array.from(trackEl.querySelectorAll(".ticker-content-copy"));
+    while (existingCopies.length > Math.max(0, requiredCopies - 1)) {
+      existingCopies.pop()?.remove();
     }
 
-    const end = start - cycleDistance;
-    const distance = Math.abs(start - end);
-    const duration = Math.max(2500, (distance / pixelsPerSecond) * 1000);
-    trackEl.style.transform = `translateX(${start}px)`;
+    while (trackEl.querySelectorAll(".ticker-content").length < requiredCopies) {
+      const clone = contentEl.cloneNode(true);
+      clone.classList.remove("ticker-content-primary");
+      clone.classList.add("ticker-content-copy");
+      clone.setAttribute("aria-hidden", "true");
+      trackEl.appendChild(clone);
+    }
 
-    this._tickerAnimation = trackEl.animate(
-      [
-        { transform: `translateX(${start}px)` },
-        { transform: `translateX(${end}px)` },
-      ],
-      {
-        duration,
-        iterations: 1,
-        easing: "linear",
-        fill: "forwards",
-      }
-    );
+    return beforeCopies;
+  }
 
-    const pause = () => this._tickerAnimation?.pause();
-    const play = () => this._tickerAnimation?.play();
+  _runTickerAnimation(trackEl, windowEl, start, period, pixelsPerSecond, anchorIndex, timelineKey, timelineStart) {
+    if (!trackEl || !windowEl || !this.isConnected) return;
+
+    if (this._tickerAnimation?.cancel) {
+      this._tickerAnimation.cancel();
+    }
+    this._tickerAnimation = null;
+
+    let paused = false;
+    let cancelled = false;
+    let pausedPhase = null;
+
+    const phaseFromClock = () => {
+      const elapsed = Math.max(0, Date.now() - timelineStart);
+      return ((elapsed * pixelsPerSecond) / 1000) % period;
+    };
+
+    const setPosition = (phase) => {
+      const x = start - phase - (anchorIndex * period);
+      trackEl.style.transform = `translate3d(${x}px, 0, 0)`;
+    };
+
+    const step = () => {
+      if (cancelled || !this.isConnected || this._mode() !== "ticker") return;
+
+      const phase = paused ? (pausedPhase ?? phaseFromClock()) : phaseFromClock();
+      setPosition(phase);
+      this._tickerFrame = window.requestAnimationFrame(step);
+    };
+
+    const controller = {
+      pause: () => {
+        if (!paused) {
+          pausedPhase = phaseFromClock();
+          paused = true;
+        }
+      },
+      play: () => {
+        if (paused) {
+          // Shift the wall-clock timeline so the saved phase becomes the current
+          // phase. This resumes hover pauses without jumping or counting paused time.
+          const phase = pausedPhase ?? 0;
+          const now = Date.now();
+          const newStart = now - ((phase / pixelsPerSecond) * 1000);
+          this._writeTickerTimelineStart(timelineKey, newStart);
+          timelineStart = newStart;
+          paused = false;
+          pausedPhase = null;
+        }
+      },
+      cancel: () => {
+        cancelled = true;
+      },
+    };
+    this._tickerAnimation = controller;
+
+    const pause = () => this._tickerAnimation?.pause?.();
+    const play = () => this._tickerAnimation?.play?.();
     if (this._config.ticker_pause_on_hover !== false && !windowEl.dataset.waHoverBound) {
       windowEl.addEventListener("mouseenter", pause);
       windowEl.addEventListener("mouseleave", play);
       windowEl.dataset.waHoverBound = "true";
     }
 
-    this._tickerAnimation.onfinish = () => {
-      if (!this.isConnected || this._mode() !== "ticker") return;
-      this._runTickerCycle(trackEl, windowEl, 0, cycleDistance, pixelsPerSecond);
-    };
+    setPosition(phaseFromClock());
+    this._tickerFrame = window.requestAnimationFrame(step);
+  }
+
+  _tickerTimelineStorageKey(contentText) {
+    const data = [
+      this._config.entity || "",
+      this._config.display_mode || "ticker",
+      this._config.content_mode || "compact",
+      this._config.ticker_start_position || "visible",
+      this._config.ticker_loop_gap ?? this._config.ticker_gap ?? "full",
+      this._config.headline_source || "title",
+      contentText || "",
+    ].join("|");
+
+    let hash = 0;
+    for (let i = 0; i < data.length; i += 1) {
+      hash = ((hash << 5) - hash + data.charCodeAt(i)) | 0;
+    }
+    return `weatheralerts:tickerTimeline:${Math.abs(hash)}`;
+  }
+
+  _ensureTickerTimelineStart(key) {
+    try {
+      const stored = Number(window.sessionStorage?.getItem(key));
+      if (Number.isFinite(stored) && stored > 0) return stored;
+    } catch (_err) {
+      // Ignore storage access errors. The ticker can still run with memory state.
+    }
+
+    const start = Date.now();
+    this._writeTickerTimelineStart(key, start);
+    return start;
+  }
+
+  _writeTickerTimelineStart(key, value) {
+    try {
+      window.sessionStorage?.setItem(key, String(value));
+    } catch (_err) {
+      // Ignore storage access errors.
+    }
   }
 
   _tickerLoopGapPixels(viewportWidth) {

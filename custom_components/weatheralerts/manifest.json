@@ -7,8 +7,10 @@
   ],
   "config_flow": true,
   "dependencies": [
-    "frontend",
     "http"
+  ],
+  "after_dependencies": [
+    "lovelace"
   ],
   "documentation": "https://github.com/custom-components/weatheralerts",
   "iot_class": "cloud_polling",

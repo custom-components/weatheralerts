@@ -1,6 +1,9 @@
 {
   "domain": "weatheralerts",
   "name": "Weather Alerts",
+  "after_dependencies": [
+    "lovelace"
+  ],
   "codeowners": [
     "@ludeeus",
     "@jlverhagen"
@@ -8,9 +11,6 @@
   "config_flow": true,
   "dependencies": [
     "http"
-  ],
-  "after_dependencies": [
-    "lovelace"
   ],
   "documentation": "https://github.com/custom-components/weatheralerts",
   "iot_class": "cloud_polling",

@@ -10,6 +10,12 @@
 
 # Breaking changes
 
+### v2026.11.0
+ * No breaking changes
+
+### v2026.5.3
+ * No breaking changes
+
 ### v2026.5.2
  * No breaking changes
 

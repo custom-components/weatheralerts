@@ -41,7 +41,10 @@ Multiple zone types may be combined into a single sensor.
 - Update Interval: 30–600 seconds
 - API Timeout: 10–60 seconds
   Must be at least 5 seconds less than the update interval
-- Deduplicate Alerts (optional)
+- Remove duplicate alerts with identical NWS alert IDs (optional, recommended)
+- Remove duplicate alerts with identical descriptions (optional, not recommended)
+
+Both deduplication options are disabled by default. NWS alert ID deduplication only removes repeated alerts that share the same usable NWS alert ID; alerts without a usable ID are preserved. See [Alert Deduplication](https://github.com/custom-components/weatheralerts/blob/master/documentation/deduplication.md) for details.
 
 Changes take effect immediately after submitting.
 

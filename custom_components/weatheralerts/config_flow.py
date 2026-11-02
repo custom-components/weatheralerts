@@ -27,6 +27,7 @@ from .const import (
     CONF_EVENT_ICONS,
     CONF_DEFAULT_ICON,
     CONF_DEDUPLICATE_ALERTS,
+    CONF_DEDUPLICATE_ALERTS_BY_ID,
     ALERTS_API,
     POINTS_API,
     ZONE_API,
@@ -44,6 +45,7 @@ from .const import (
     MAX_API_TIMEOUT,
     TIMEOUT_BUFFER,
     DEFAULT_DEDUPLICATE_ALERTS,
+    DEFAULT_DEDUPLICATE_ALERTS_BY_ID,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -344,12 +346,14 @@ class WeatheralertsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         schema = vol.Schema({
             vol.Required(CONF_UPDATE_INTERVAL, default=DEFAULT_UPDATE_INTERVAL): int,
             vol.Required(CONF_API_TIMEOUT, default=DEFAULT_API_TIMEOUT): int,
+            vol.Optional(CONF_DEDUPLICATE_ALERTS_BY_ID, default=DEFAULT_DEDUPLICATE_ALERTS_BY_ID): bool,
             vol.Optional(CONF_DEDUPLICATE_ALERTS, default=DEFAULT_DEDUPLICATE_ALERTS): bool,
        })
 
         if user_input:
             update = int(user_input[CONF_UPDATE_INTERVAL])
             timeout = int(user_input[CONF_API_TIMEOUT])
+            deduplicate_by_id = user_input.get(CONF_DEDUPLICATE_ALERTS_BY_ID, DEFAULT_DEDUPLICATE_ALERTS_BY_ID)
             deduplicate = user_input.get(CONF_DEDUPLICATE_ALERTS, DEFAULT_DEDUPLICATE_ALERTS)
 
             if update < MIN_UPDATE_INTERVAL or update > MAX_UPDATE_INTERVAL:
@@ -385,6 +389,7 @@ class WeatheralertsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     CONF_ENTITY_NAME: entity_name,
                     CONF_UPDATE_INTERVAL: update,
                     CONF_API_TIMEOUT: timeout,
+                    CONF_DEDUPLICATE_ALERTS_BY_ID: deduplicate_by_id,
                     CONF_DEDUPLICATE_ALERTS: deduplicate,
                 }
                 if self._county:
@@ -510,17 +515,20 @@ class WeatheralertsOptionsFlow(config_entries.OptionsFlow):
         errors = {}
         update = self.updated_options.get(CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL)
         timeout = self.updated_options.get(CONF_API_TIMEOUT, DEFAULT_API_TIMEOUT)
+        dedup_by_id_default = self.updated_options.get(CONF_DEDUPLICATE_ALERTS_BY_ID, DEFAULT_DEDUPLICATE_ALERTS_BY_ID)
         dedup_default = self.updated_options.get(CONF_DEDUPLICATE_ALERTS, DEFAULT_DEDUPLICATE_ALERTS)
 
         schema = vol.Schema({
             vol.Required(CONF_UPDATE_INTERVAL, default=update): int,
             vol.Required(CONF_API_TIMEOUT, default=timeout): int,
+            vol.Optional(CONF_DEDUPLICATE_ALERTS_BY_ID, default=dedup_by_id_default): bool,
             vol.Optional(CONF_DEDUPLICATE_ALERTS, default=dedup_default): bool,
         })
 
         if user_input:
             update = int(user_input[CONF_UPDATE_INTERVAL])
             timeout = int(user_input[CONF_API_TIMEOUT])
+            deduplicate_by_id = user_input.get(CONF_DEDUPLICATE_ALERTS_BY_ID, DEFAULT_DEDUPLICATE_ALERTS_BY_ID)
             deduplicate = user_input.get(CONF_DEDUPLICATE_ALERTS, DEFAULT_DEDUPLICATE_ALERTS)
 
             if update < MIN_UPDATE_INTERVAL or update > MAX_UPDATE_INTERVAL:
@@ -532,6 +540,7 @@ class WeatheralertsOptionsFlow(config_entries.OptionsFlow):
             else:
                 self.updated_options[CONF_UPDATE_INTERVAL] = update
                 self.updated_options[CONF_API_TIMEOUT] = timeout
+                self.updated_options[CONF_DEDUPLICATE_ALERTS_BY_ID] = deduplicate_by_id
                 self.updated_options[CONF_DEDUPLICATE_ALERTS] = deduplicate
                 return await self.async_step_icon_config()
 

@@ -30,6 +30,7 @@ from .const import (
     CONF_EVENT_ICONS,
     CONF_DEFAULT_ICON,
     CONF_DEDUPLICATE_ALERTS,
+    CONF_DEDUPLICATE_ALERTS_BY_ID,
     DEFAULT_EVENT_ICONS,
     DEFAULT_EVENT_ICON,
     CONF_UPDATE_INTERVAL,
@@ -37,6 +38,7 @@ from .const import (
     DEFAULT_UPDATE_INTERVAL,
     DEFAULT_API_TIMEOUT,
     DEFAULT_DEDUPLICATE_ALERTS,
+    DEFAULT_DEDUPLICATE_ALERTS_BY_ID,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -109,6 +111,21 @@ def _compute_active_alert_stats(alerts):
                     stats[k] += 1
     return stats
 
+def _deduplicate_alerts_by_id(alerts):
+    """Deduplicate alerts by NWS alert ID while preserving alerts without a usable ID."""
+    seen_ids = set()
+    deduped = []
+    for alert in alerts:
+        alert_id = alert.get("id")
+        if not alert_id or alert_id == "null":
+            deduped.append(alert)
+            continue
+        if alert_id in seen_ids:
+            continue
+        seen_ids.add(alert_id)
+        deduped.append(alert)
+    return deduped
+
 def _dedup_key(text):
     return re.sub(r'\s+', '', text).lower()  # Remove all whitespace, make lowercase
 
@@ -174,6 +191,8 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
         timeout_seconds = entry.options.get(CONF_API_TIMEOUT,
                             entry.data.get(CONF_API_TIMEOUT, DEFAULT_API_TIMEOUT)) if entry else DEFAULT_API_TIMEOUT
         deduplicate_alerts = entry.options.get(CONF_DEDUPLICATE_ALERTS, entry.data.get(CONF_DEDUPLICATE_ALERTS, DEFAULT_DEDUPLICATE_ALERTS)) if entry else DEFAULT_DEDUPLICATE_ALERTS
+        deduplicate_alerts_by_id = entry.options.get(CONF_DEDUPLICATE_ALERTS_BY_ID,
+                                   entry.data.get(CONF_DEDUPLICATE_ALERTS_BY_ID, DEFAULT_DEDUPLICATE_ALERTS_BY_ID)) if entry else DEFAULT_DEDUPLICATE_ALERTS_BY_ID
 
         try:
             async with async_timeout.timeout(timeout_seconds):
@@ -372,9 +391,13 @@ class WeatherAlertsCoordinator(DataUpdateCoordinator):
             alerts.append(alert)
         _LOGGER.debug("weatheralerts: Parsed %d alerts", len(alerts))
 
+        if deduplicate_alerts_by_id:
+            alerts = _deduplicate_alerts_by_id(alerts)
+            _LOGGER.debug("weatheralerts: %d alerts after NWS alert ID deduplication", len(alerts))
+
         if deduplicate_alerts:
             alerts = _deduplicate_alerts_by_description(alerts)
-            _LOGGER.debug("weatheralerts: %d alerts after deduplication", len(alerts))
+            _LOGGER.debug("weatheralerts: %d alerts after description deduplication", len(alerts))
 
         alerts.sort(key=lambda x: (x.get("sent", ""), x.get("id", "")), reverse=True)
         alert_stats = _compute_active_alert_stats(alerts)

@@ -21,6 +21,7 @@
         "data": {
           "update_interval": "Sensor Update Interval (seconds)",
           "api_timeout": "API Request Timeout (seconds)",
+          "deduplicate_alerts_by_id": "Remove duplicate alerts with identical NWS alert IDs (recommended)",
           "deduplicate_alerts": "Remove duplicate alerts with identical descriptions (not recommended)"
         }
       }
@@ -53,6 +54,7 @@
         "data": {
           "update_interval": "Sensor Update Interval (seconds)",
           "api_timeout": "API Request Timeout (seconds)",
+          "deduplicate_alerts_by_id": "Remove duplicate alerts with identical NWS alert IDs (recommended)",
           "deduplicate_alerts": "Remove duplicate alerts with identical descriptions (not recommended)"
         }
       },

@@ -15,6 +15,7 @@ CONF_MARINE_ZONES = "marine_zones"
 CONF_UPDATE_INTERVAL = "update_interval"
 CONF_API_TIMEOUT = "api_timeout"
 CONF_DEDUPLICATE_ALERTS = "deduplicate_alerts"
+CONF_DEDUPLICATE_ALERTS_BY_ID = "deduplicate_alerts_by_id"
 
 # Icon config keys for options flow
 CONF_EVENT_ICONS = "event_icons"
@@ -45,6 +46,7 @@ MIN_API_TIMEOUT = 10
 MAX_API_TIMEOUT = 60
 TIMEOUT_BUFFER = 5  # Minimum difference between update interval and timeout
 DEFAULT_DEDUPLICATE_ALERTS = False
+DEFAULT_DEDUPLICATE_ALERTS_BY_ID = False
 
 # Default icon for unknown/other event types
 DEFAULT_EVENT_ICON = "hass:alert-rhombus"

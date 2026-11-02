@@ -4,7 +4,19 @@
 >  
 > Behavior and configuration may differ in earlier versions.
 
-Alert deduplication is an optional feature.
+Alert deduplication is optional and can be performed in two different ways.
+
+## NWS Alert ID Deduplication (Recommended)
+
+When enabled, alerts with the same NWS alert ID are treated as the same alert and only the first copy is retained.
+
+This is useful when a sensor monitors overlapping zone types, such as a public forecast zone and a county zone, because the NWS API can return the same alert more than once when it applies to multiple requested zones.
+
+Alerts without a usable ID are always preserved and are not deduplicated by this option.
+
+NWS alert ID deduplication is disabled by default for backward compatibility.
+
+## Description Deduplication (Not Recommended)
 
 When enabled, alerts with identical descriptions are grouped together internally.
 
@@ -14,9 +26,11 @@ The integration processes the internally grouped duplicates and retains a single
 2. Latest expires timestamp
 3. Highest alert ID
 
-Deduplication is disabled by default and is not recommended unless the user understands the implications.
+Description deduplication is disabled by default and is not recommended unless the user understands the implications.
 
 The implication is the potential for severe weather alerts not triggering a notification if a new alert is omitted from the sensor as a duplicate. While it _shouldn't_ happen, there are absolutely no guarantees that it won't happen.
+
+If both options are enabled, NWS alert ID deduplication is applied first, followed by description deduplication.
 
 ---
 
